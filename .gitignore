@@ -15,7 +15,7 @@
 
 # Maven files
 target/
-*.xml
+dependency-reduced-pom.xml
 
 # BlueJ files
 *.ctxt
