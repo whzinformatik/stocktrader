@@ -15,7 +15,9 @@ import io.vlingo.http.resource.Configuration.Sizing;
 import io.vlingo.http.resource.Configuration.Timing;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
-import io.vlingo.xoom.Boot;
+import io.vlingo.symbio.store.common.jdbc.DatabaseType;
+import org.eclipse.persistence.internal.helper.DatabaseTable;
+import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,8 @@ public class Bootstrap {
   private final World world;
 
   public Bootstrap(final int port) throws Exception {
+    Flyway.configure().dataSource("jdbc:postgresql://[::1]:5432/", "vlingo_test", "vlingo123").load().migrate();
+
     world = World.startWithDefaults(NAME);
 
     final Stage stage =
