@@ -7,6 +7,18 @@ import com.whz.portfolio.model.portfolio.PortfolioState;
 public class PortfolioData {
   public final String id;
   public final String placeholderValue;
+  
+  // TODO
+  private String owner;
+  private double total;
+  private String loyalty;
+  private double balance;
+  private double commissions;
+  private int free;
+  private String sentiment;
+  private double nextCommission;
+
+ // private List<Stock> stockList = new ArrayList<Stock>();
 
   public static PortfolioData empty() {
     return new PortfolioData("", "");
