@@ -10,10 +10,12 @@
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <exec.mainClass>com.whz.stock-quote.infrastructure.Bootstrap</exec.mainClass>
+    <exec.mainClass>com.whz.stockquote.infrastructure.Bootstrap</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.xoom.version>1.3.0</vlingo.xoom.version>
+
+    <vlingo.version>1.3.4-SNAPSHOT</vlingo.version>
+    <flyway.version>7.0.3</flyway.version>
   </properties>
   <repositories>
     <repository>
@@ -36,25 +38,25 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>1.3.0</version>
+      <version>${vlingo.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio-jdbc</artifactId>
-      <version>1.3.0</version>
+      <version>${vlingo.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>1.3.0</version>
+      <version>${vlingo.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom</artifactId>
-      <version>${vlingo.xoom.version}</version>
+      <version>${vlingo.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -62,6 +64,11 @@
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.6.0</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>${flyway.version}</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -157,7 +164,7 @@
               <path>
                 <groupId>io.vlingo</groupId>
                 <artifactId>vlingo-xoom</artifactId>
-                <version>${vlingo.xoom.version}</version>
+                <version>${vlingo.version}</version>
               </path>
             </annotationProcessorPaths>
           </configuration>
@@ -175,7 +182,7 @@
                   <path>
                     <groupId>io.vlingo</groupId>
                     <artifactId>vlingo-xoom</artifactId>
-                    <version>${vlingo.xoom.version}</version>
+                    <version>${vlingo.version}</version>
                   </path>
                 </annotationProcessorPaths>
               </configuration>
