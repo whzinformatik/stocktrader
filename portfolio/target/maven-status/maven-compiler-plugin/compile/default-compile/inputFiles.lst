@@ -1,0 +1,15 @@
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\model\portfolio\PortfolioOpened.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\PortfolioQueriesActor.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\model\portfolio\Portfolio.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\model\portfolio\PortfolioState.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\resource\PortfolioResource.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\CommandModelJournalProvider.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\QueryModelStateStoreProvider.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\PortfolioPlaceholderDefinedAdapter.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\PortfolioQueries.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\PortfolioData.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\PortfolioProjectionActor.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\EventTypes.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\ProjectionDispatcherProvider.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\Bootstrap.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\model\portfolio\PortfolioEntity.java
