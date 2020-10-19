@@ -1,4 +1,4 @@
-package com.whz.stock-quote.infrastructure;
+package com.whz.stockquote.infrastructure;
 
 public enum EventTypes {
   StockQuotePlaceholderDefined,

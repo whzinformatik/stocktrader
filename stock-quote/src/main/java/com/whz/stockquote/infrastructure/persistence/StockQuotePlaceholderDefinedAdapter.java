@@ -1,6 +1,6 @@
-package com.whz.stock-quote.infrastructure.persistence;
+package com.whz.stockquote.infrastructure.persistence;
 
-import com.whz.stock-quote.model.stockquote.StockQuotePlaceholderDefined;
+import com.whz.stockquote.model.stockquote.StockQuotePlaceholderDefined;
 
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.symbio.BaseEntry.TextEntry;

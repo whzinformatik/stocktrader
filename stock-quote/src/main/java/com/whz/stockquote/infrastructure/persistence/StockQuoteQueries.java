@@ -1,9 +1,9 @@
-package com.whz.stock-quote.infrastructure.persistence;
+package com.whz.stockquote.infrastructure.persistence;
 
 import java.util.Collection;
 import io.vlingo.common.Completes;
 
-import com.whz.stock-quote.infrastructure.StockQuoteData;
+import com.whz.stockquote.infrastructure.StockQuoteData;
 
 public interface StockQuoteQueries {
   Completes<StockQuoteData> stockQuoteOf(String id);

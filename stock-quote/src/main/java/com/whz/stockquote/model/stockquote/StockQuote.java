@@ -1,4 +1,4 @@
-package com.whz.stock-quote.model.stockquote;
+package com.whz.stockquote.model.stockquote;
 
 import io.vlingo.actors.Address;
 import io.vlingo.actors.Definition;

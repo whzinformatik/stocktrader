@@ -1,4 +1,4 @@
-package com.whz.stock-quote.resource;
+package com.whz.stockquote.resource;
 
 import io.vlingo.actors.Stage;
 import io.vlingo.http.resource.Resource;

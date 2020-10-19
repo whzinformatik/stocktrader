@@ -1,10 +1,10 @@
-package com.whz.stock-quote.infrastructure.persistence;
+package com.whz.stockquote.infrastructure.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.whz.stock-quote.infrastructure.EventTypes;
-import com.whz.stock-quote.infrastructure.StockQuoteData;
+import com.whz.stockquote.infrastructure.EventTypes;
+import com.whz.stockquote.infrastructure.StockQuoteData;
 
 import io.vlingo.lattice.model.DomainEvent;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;

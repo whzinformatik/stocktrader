@@ -1,4 +1,4 @@
-package com.whz.stock-quote.infrastructure.persistence;
+package com.whz.stockquote.infrastructure.persistence;
 
 import java.util.Arrays;
 import java.util.List;

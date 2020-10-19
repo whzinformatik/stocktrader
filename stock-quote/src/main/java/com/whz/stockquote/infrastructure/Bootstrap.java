@@ -1,11 +1,11 @@
-package com.whz.stock-quote.infrastructure;
+package com.whz.stockquote.infrastructure;
 
-import com.whz.stock-quote.infrastructure.persistence.QueryModelStateStoreProvider;
-import com.whz.stock-quote.infrastructure.persistence.ProjectionDispatcherProvider;
+import com.whz.stockquote.infrastructure.persistence.QueryModelStateStoreProvider;
+import com.whz.stockquote.infrastructure.persistence.ProjectionDispatcherProvider;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
-import com.whz.stock-quote.resource.StockQuoteResource;
+import com.whz.stockquote.resource.StockQuoteResource;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
-import com.whz.stock-quote.infrastructure.persistence.CommandModelJournalProvider;
+import com.whz.stockquote.infrastructure.persistence.CommandModelJournalProvider;
 
 import io.vlingo.actors.GridAddressFactory;
 import io.vlingo.actors.Stage;
@@ -24,10 +24,10 @@ public class Bootstrap {
   private final World world;
 
   public Bootstrap(final int port) throws Exception {
-    world = World.startWithDefaults("stock-quote");
+    world = World.startWithDefaults("stockquote");
 
     final Stage stage =
-            world.stageNamed("stock-quote", Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
+            world.stageNamed("stockquote", Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
 
     final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
     final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
@@ -48,7 +48,7 @@ public class Bootstrap {
 
         System.out.println("\n");
         System.out.println("=========================");
-        System.out.println("Stopping stock-quote.");
+        System.out.println("Stopping stockquote.");
         System.out.println("=========================");
       }
     }));
@@ -63,7 +63,7 @@ public class Bootstrap {
 
   public static void main(final String[] args) throws Exception {
     System.out.println("=========================");
-    System.out.println("service: stock-quote.");
+    System.out.println("service: stockquote.");
     System.out.println("=========================");
 
     int port;
@@ -72,7 +72,7 @@ public class Bootstrap {
       port = Integer.parseInt(args[0]);
     } catch (Exception e) {
       port = DefaultPort;
-      System.out.println("stock-quote: Command line does not provide a valid port; defaulting to: " + port);
+      System.out.println("stockquote: Command line does not provide a valid port; defaulting to: " + port);
     }
 
     instance = new Bootstrap(port);
