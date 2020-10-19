@@ -4,6 +4,14 @@
 # Log file
 *.log
 
+# Intellij files
+.idea/
+*.iml
+
+# Maven files
+target/
+dependency-reduced-pom.xml
+
 # BlueJ files
 *.ctxt
 
