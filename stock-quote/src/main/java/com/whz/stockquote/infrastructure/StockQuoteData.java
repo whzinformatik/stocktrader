@@ -1,8 +1,8 @@
-package com.whz.stock-quote.infrastructure;
+package com.whz.stockquote.infrastructure;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.whz.stock-quote.model.stockquote.StockQuoteState;
+import com.whz.stockquote.model.stockquote.StockQuoteState;
 
 public class StockQuoteData {
   public final String id;

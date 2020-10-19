@@ -1,8 +1,8 @@
-package com.whz.stock-quote.infrastructure.persistence;
+package com.whz.stockquote.infrastructure.persistence;
 
 import java.util.List;
 
-import com.whz.stock-quote.model.stockquote.StockQuotePlaceholderDefined;
+import com.whz.stockquote.model.stockquote.StockQuotePlaceholderDefined;
 
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;

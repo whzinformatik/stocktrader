@@ -1,4 +1,4 @@
-package com.whz.stock-quote.infrastructure.persistence;
+package com.whz.stockquote.infrastructure.persistence;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +7,7 @@ import io.vlingo.common.Completes;
 import io.vlingo.lattice.query.StateStoreQueryActor;
 import io.vlingo.symbio.store.state.StateStore;
 
-import com.whz.stock-quote.infrastructure.StockQuoteData;
+import com.whz.stockquote.infrastructure.StockQuoteData;
 
 public class StockQuoteQueriesActor extends StateStoreQueryActor implements StockQuoteQueries {
 

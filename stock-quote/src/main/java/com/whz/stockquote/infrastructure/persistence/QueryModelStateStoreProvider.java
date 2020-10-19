@@ -1,10 +1,10 @@
-package com.whz.stock-quote.infrastructure.persistence;
+package com.whz.stockquote.infrastructure.persistence;
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.whz.stock-quote.infrastructure.persistence.StockQuoteQueries;
-import com.whz.stock-quote.infrastructure.persistence.StockQuoteQueriesActor;
+import com.whz.stockquote.infrastructure.persistence.StockQuoteQueries;
+import com.whz.stockquote.infrastructure.persistence.StockQuoteQueriesActor;
 
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;

@@ -1,4 +1,4 @@
-package com.whz.stock-quote.model.stockquote;
+package com.whz.stockquote.model.stockquote;
 
 public final class StockQuoteState {
   public final String id;
