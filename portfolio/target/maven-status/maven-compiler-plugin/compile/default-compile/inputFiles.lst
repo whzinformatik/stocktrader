@@ -11,5 +11,6 @@ D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infr
 D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\PortfolioProjectionActor.java
 D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\EventTypes.java
 D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\persistence\ProjectionDispatcherProvider.java
+D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\Bootstrap.java
 D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\infrastructure\Bootstrap.java
 D:\Dev\Java\Workspace\stocktrader\portfolio\src\main\java\com\whz\portfolio\model\portfolio\PortfolioEntity.java
