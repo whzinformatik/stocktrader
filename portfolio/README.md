@@ -1,1 +1,30 @@
-## Portfolio
+# Portfolio
+
+### Resources
+[IBMStockTrader Java EE Portfolio Implementation](https://github.com/IBMStockTrader/portfolio/blob/master/src/main/java/com/ibm/hybrid/cloud/sample/stocktrader/portfolio/json/Portfolio.java)
+
+### Data Structure
+	public class Portfolio {
+		private String owner;
+		private double total;
+	    private String loyalty;
+	    private double balance;
+	    private double commissions;
+	    private int free;
+	    private String sentiment;
+	    private double nextCommission;
+	    private List<Stock> stockList;
+    }
+
+
+### Events
+* PortfolioCreated
+* PortfolioRetrieved
+* PortfolioUpdated
+* PortfolioDeleted
+
+### API
+* /portfolio/create		(POST)
+* /portfolio/retrieve	(GET)
+* /portfolio/update		(POST)
+* /portfolio/delete		(POST)
