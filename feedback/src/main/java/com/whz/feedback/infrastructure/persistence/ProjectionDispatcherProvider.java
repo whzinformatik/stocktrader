@@ -1,11 +1,6 @@
 package com.whz.feedback.infrastructure.persistence;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.whz.feedback.infrastructure.EventTypes;
-import com.whz.feedback.model.feedback.FeedbackSubmittedEvent;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
@@ -14,7 +9,9 @@ import io.vlingo.lattice.model.projection.ProjectionDispatcher.ProjectToDescript
 import io.vlingo.lattice.model.projection.TextProjectionDispatcherActor;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 
-@SuppressWarnings("rawtypes")
+import java.util.Collections;
+import java.util.List;
+
 public class ProjectionDispatcherProvider {
 
 	private static ProjectionDispatcherProvider instance;

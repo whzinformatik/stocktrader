@@ -1,8 +1,9 @@
 package com.whz.feedback.infrastructure;
 
+import com.whz.feedback.model.feedback.FeedbackState;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.whz.feedback.model.feedback.FeedbackState;
 
 public class FeedbackData {
 	

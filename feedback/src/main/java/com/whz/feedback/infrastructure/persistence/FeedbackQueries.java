@@ -1,9 +1,9 @@
 package com.whz.feedback.infrastructure.persistence;
 
-import java.util.Collection;
+import com.whz.feedback.infrastructure.FeedbackData;
 import io.vlingo.common.Completes;
 
-import com.whz.feedback.infrastructure.FeedbackData;
+import java.util.Collection;
 
 public interface FeedbackQueries {
 	

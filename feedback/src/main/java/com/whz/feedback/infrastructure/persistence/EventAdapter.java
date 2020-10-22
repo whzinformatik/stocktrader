@@ -1,7 +1,6 @@
 package com.whz.feedback.infrastructure.persistence;
 
 import com.whz.feedback.model.feedback.FeedbackSubmittedEvent;
-
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.symbio.BaseEntry.TextEntry;
 import io.vlingo.symbio.EntryAdapter;

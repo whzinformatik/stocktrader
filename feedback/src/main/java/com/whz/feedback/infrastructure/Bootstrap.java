@@ -1,13 +1,11 @@
 package com.whz.feedback.infrastructure;
 
-import com.whz.feedback.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.feedback.infrastructure.persistence.CommandModelJournalProvider;
-import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
-import com.whz.feedback.resource.FeedbackResource;
 import com.whz.feedback.infrastructure.persistence.ProjectionDispatcherProvider;
-import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
-
+import com.whz.feedback.infrastructure.persistence.QueryModelStateStoreProvider;
+import com.whz.feedback.resource.FeedbackResource;
 import io.vlingo.actors.GridAddressFactory;
+import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
 import io.vlingo.common.identity.IdentityGeneratorType;
@@ -15,15 +13,13 @@ import io.vlingo.http.resource.Configuration.Sizing;
 import io.vlingo.http.resource.Configuration.Timing;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
-import io.vlingo.symbio.store.common.jdbc.DatabaseType;
-import org.eclipse.persistence.internal.helper.DatabaseTable;
+import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
+import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import org.flywaydb.core.Flyway;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Bootstrap {
 
-  private static final Logger LOG = LoggerFactory.getLogger(Bootstrap.class);
+  private static final Logger logger = Logger.basicLogger();
 
   private static final int DEFAULT_PORT = 18080;
   private static final String NAME = "feedback";
@@ -57,10 +53,10 @@ public class Bootstrap {
       if (instance != null) {
         instance.server.stop();
 
-        LOG.info("\n");
-        LOG.info("=========================");
-        LOG.info("Stopping feedback.");
-        LOG.info("=========================");
+        logger.info("\n");
+        logger.info("=========================");
+        logger.info("Stopping feedback.");
+        logger.info("=========================");
       }
     }));
   }
@@ -73,9 +69,9 @@ public class Bootstrap {
   }
 
   public static void main(final String[] args) throws Exception {
-    LOG.info("=========================");
-    LOG.info("service: feedback.");
-    LOG.info("=========================");
+    logger.info("=========================");
+    logger.info("service: feedback.");
+    logger.info("=========================");
 
     int port;
 
@@ -83,7 +79,7 @@ public class Bootstrap {
       port = Integer.parseInt(args[0]);
     } catch (Exception e) {
       port = DEFAULT_PORT;
-      LOG.warn("feedback: Command line does not provide a valid port; defaulting to: {}", port);
+      logger.warn("feedback: Command line does not provide a valid port; defaulting to: {}", port);
     }
 
     instance = new Bootstrap(port);

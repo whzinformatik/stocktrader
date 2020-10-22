@@ -1,16 +1,15 @@
 package com.whz.feedback.infrastructure.persistence;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.infrastructure.EventTypes;
-
+import com.whz.feedback.infrastructure.FeedbackData;
 import io.vlingo.lattice.model.DomainEvent;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Entry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackData> {
 	

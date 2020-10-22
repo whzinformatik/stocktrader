@@ -4,9 +4,7 @@ import com.whz.feedback.model.feedback.FeedbackSubmittedEvent;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
-import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapterProvider;
-import io.vlingo.symbio.State;
 import io.vlingo.symbio.store.dispatch.Dispatchable;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.DispatcherControl;
@@ -28,7 +26,9 @@ public class CommandModelJournalProvider  {
 
   public static CommandModelJournalProvider using(final Stage stage, final SourcedTypeRegistry registry) {
     final Dispatcher noop = new Dispatcher() {
+      @Override
       public void controlWith(final DispatcherControl control) { }
+      @Override
       public void dispatch(Dispatchable d) { }
     };
 
