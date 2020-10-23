@@ -176,6 +176,7 @@
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <flyway.version>7.0.3</flyway.version>
     <exec.mainClass>com.whz.portfolio.infrastructure.Bootstrap</exec.mainClass>
     <jdk.version>1.8</jdk.version>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>

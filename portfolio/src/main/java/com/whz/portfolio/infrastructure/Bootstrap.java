@@ -5,9 +5,13 @@ import com.whz.portfolio.infrastructure.persistence.ProjectionDispatcherProvider
 import com.whz.portfolio.resource.PortfolioResource;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
+
+import org.flywaydb.core.Flyway;
+
 import com.whz.portfolio.infrastructure.persistence.CommandModelJournalProvider;
 
 import io.vlingo.actors.GridAddressFactory;
+import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
 import io.vlingo.common.identity.IdentityGeneratorType;
@@ -17,65 +21,70 @@ import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
 
 public class Bootstrap {
-  private static Bootstrap instance;
-  private static int DefaultPort = 18080;
 
-  private final Server server;
-  private final World world;
+	  private static final Logger logger = Logger.basicLogger();
 
-  public Bootstrap(final int port) throws Exception {
-    world = World.startWithDefaults("portfolio");
-    // TODO flyway implimentieren
+	  private static final int DEFAULT_PORT = 18080;
+	  private static final String NAME = "portfolio";
 
-    final Stage stage =
-            world.stageNamed("portfolio", Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
+	  private static Bootstrap instance;
 
-    final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
-    final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
-    QueryModelStateStoreProvider.using(stage, statefulTypeRegistry);
-    CommandModelJournalProvider.using(stage, sourcedTypeRegistry, ProjectionDispatcherProvider.using(stage).storeDispatcher);
+	  private final Server server;
+	  private final World world;
 
-    final PortfolioResource portfolioResource = new PortfolioResource(stage);
+	  public Bootstrap(final int port) throws Exception {
+	    Flyway.configure().dataSource("jdbc:postgresql://[::1]:5432/", "vlingo_test", "vlingo123").load().migrate();
 
-    Resources allResources = Resources.are(
-        portfolioResource.routes()
-    );
+	    world = World.startWithDefaults(NAME);
 
-    server = Server.startWith(stage, allResources, port, Sizing.define(), Timing.define());
+	    final Stage stage =
+	            world.stageNamed(NAME, Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
 
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      if (instance != null) {
-        instance.server.stop();
+	    final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
+	    final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
+	    QueryModelStateStoreProvider.using(stage, statefulTypeRegistry);
+	    CommandModelJournalProvider.using(stage, sourcedTypeRegistry, ProjectionDispatcherProvider.using(stage).storeDispatcher);
 
-        System.out.println("\n");
-        System.out.println("=========================");
-        System.out.println("Stopping portfolio.");
-        System.out.println("=========================");
-      }
-    }));
-  }
+	    final PortfolioResource feedbackAggregateResource = new PortfolioResource(stage);
+	    Resources allResources = Resources.are(
+	        feedbackAggregateResource.routes()
+	    );
 
-  void stopServer() throws Exception {
-    if (instance == null) {
-      throw new IllegalStateException("Schemata server not running");
-    }
-    instance.server.stop();
-  }
+	    server = Server.startWith(stage, allResources, port, Sizing.define(), Timing.define());
 
-  public static void main(final String[] args) throws Exception {
-    System.out.println("=========================");
-    System.out.println("service: portfolio.");
-    System.out.println("=========================");
+	    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+	      if (instance != null) {
+	        instance.server.stop();
 
-    int port;
+	        logger.info("\n");
+	        logger.info("=========================");
+	        logger.info("Stopping feedback.");
+	        logger.info("=========================");
+	      }
+	    }));
+	  }
 
-    try {
-      port = Integer.parseInt(args[0]);
-    } catch (Exception e) {
-      port = DefaultPort;
-      System.out.println("portfolio: Command line does not provide a valid port; defaulting to: " + port);
-    }
+	  void stopServer() throws Exception {
+	    if (instance == null) {
+	      throw new IllegalStateException("Schemata server not running");
+	    }
+	    instance.server.stop();
+	  }
 
-    instance = new Bootstrap(port);
-  }
-}
+	  public static void main(final String[] args) throws Exception {
+	    logger.info("=========================");
+	    logger.info("service: feedback.");
+	    logger.info("=========================");
+
+	    int port;
+
+	    try {
+	      port = Integer.parseInt(args[0]);
+	    } catch (Exception e) {
+	      port = DEFAULT_PORT;
+	      logger.warn("feedback: Command line does not provide a valid port; defaulting to: {}", port);
+	    }
+
+	    instance = new Bootstrap(port);
+	  }
+	}

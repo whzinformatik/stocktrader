@@ -13,8 +13,6 @@ com\whz\portfolio\infrastructure\persistence\CommandModelJournalProvider$1.class
 com\whz\portfolio\infrastructure\persistence\ProjectionDispatcherProvider.class
 com\whz\portfolio\model\portfolio\PortfolioState.class
 com\whz\portfolio\infrastructure\persistence\PortfolioProjectionActor$1.class
-com\whz\portfolio\Bootstrap.class
 com\whz\portfolio\infrastructure\persistence\QueryModelStateStoreProvider$1.class
 com\whz\portfolio\model\portfolio\PortfolioOpened.class
 com\whz\portfolio\infrastructure\persistence\QueryModelStateStoreProvider.class
-com\whz\portfolio\XoomInitializer.class
