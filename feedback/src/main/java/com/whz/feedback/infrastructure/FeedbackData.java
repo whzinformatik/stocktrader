@@ -8,6 +8,7 @@ import java.util.List;
 public class FeedbackData {
 
     public final String id;
+
     public final String message;
 
     public static FeedbackData empty() {
