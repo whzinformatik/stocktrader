@@ -2,35 +2,36 @@ package com.whz.feedback.model.feedback;
 
 public final class FeedbackState {
 
-	public final String id;
-	public final String message;
+    public final String id;
 
-	public static FeedbackState identifiedBy(final String id) {
-		return new FeedbackState(id);
-	}
+    public final String message;
 
-	public boolean doesNotExist() {
-		return id == null;
-	}
+    public static FeedbackState identifiedBy(final String id) {
+        return new FeedbackState(id);
+    }
 
-	public boolean isIdentifiedOnly() {
-		return id != null && message == null;
-	}
+    public boolean doesNotExist() {
+        return id == null;
+    }
 
-	public FeedbackState withMessage(final String message) {
-		return new FeedbackState(this.id, message);
-	}
+    public boolean isIdentifiedOnly() {
+        return id != null && message == null;
+    }
 
-	private FeedbackState(final String id, final String message) {
-		this.id = id;
-		this.message = message;
-	}
+    public FeedbackState withMessage(final String message) {
+        return new FeedbackState(this.id, message);
+    }
 
-	private FeedbackState(final String id) {
-		this(id, null);
-	}
+    private FeedbackState(final String id, final String message) {
+        this.id = id;
+        this.message = message;
+    }
 
-	private FeedbackState() {
-		this(null, null);
-	}
+    private FeedbackState(final String id) {
+        this(id, null);
+    }
+
+    private FeedbackState() {
+        this(null, null);
+    }
 }
