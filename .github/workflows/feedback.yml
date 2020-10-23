@@ -23,6 +23,8 @@ jobs:
       - name: Spotless
         working-directory: feedback
         run: mvn spotless:check
+      - name: Build database
+        run: docker-compose up
       - name: Build with Maven
         working-directory: feedback
         run: mvn -B package --file pom.xml
