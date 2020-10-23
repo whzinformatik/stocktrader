@@ -24,6 +24,10 @@ public class CommandModelJournalProvider  {
     return instance;
   }
 
+  public static void reset() {
+    instance = null;
+  }
+
   public static CommandModelJournalProvider using(final Stage stage, final SourcedTypeRegistry registry) {
     final Dispatcher noop = new Dispatcher() {
       @Override

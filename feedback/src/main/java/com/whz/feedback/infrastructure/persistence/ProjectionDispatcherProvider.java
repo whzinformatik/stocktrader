@@ -14,36 +14,40 @@ import java.util.List;
 
 public class ProjectionDispatcherProvider {
 
-	private static ProjectionDispatcherProvider instance;
+    private static ProjectionDispatcherProvider instance;
 
-	public final ProjectionDispatcher projectionDispatcher;
-	public final Dispatcher storeDispatcher;
+    public final ProjectionDispatcher projectionDispatcher;
+    public final Dispatcher storeDispatcher;
 
-	public static ProjectionDispatcherProvider instance() {
-		return instance;
-	}
+    public static ProjectionDispatcherProvider instance() {
+        return instance;
+    }
 
-	public static ProjectionDispatcherProvider using(final Stage stage) {
-		if (instance != null)
-			return instance;
+    public static void reset() {
+        instance = null;
+    }
 
-		final List<ProjectToDescription> descriptions = Collections.singletonList(ProjectToDescription
-				.with(FeedbackProjectionActor.class, EventTypes.FeedbackSubmitted.name()));
+    public static ProjectionDispatcherProvider using(final Stage stage) {
+        if (instance != null)
+            return instance;
 
-		final Protocols dispatcherProtocols = stage.actorFor(
-				new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class },
-				Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
+        final List<ProjectToDescription> descriptions = Collections.singletonList(ProjectToDescription
+                .with(FeedbackProjectionActor.class, EventTypes.FeedbackSubmitted.name()));
 
-		final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
+        final Protocols dispatcherProtocols = stage.actorFor(
+                new Class<?>[]{Dispatcher.class, ProjectionDispatcher.class},
+                Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
 
-		instance = new ProjectionDispatcherProvider(dispatchers._1, dispatchers._2);
+        final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
 
-		return instance;
-	}
+        instance = new ProjectionDispatcherProvider(dispatchers._1, dispatchers._2);
 
-	private ProjectionDispatcherProvider(final Dispatcher storeDispatcher,
-			final ProjectionDispatcher projectionDispatcher) {
-		this.storeDispatcher = storeDispatcher;
-		this.projectionDispatcher = projectionDispatcher;
-	}
+        return instance;
+    }
+
+    private ProjectionDispatcherProvider(final Dispatcher storeDispatcher,
+                                         final ProjectionDispatcher projectionDispatcher) {
+        this.storeDispatcher = storeDispatcher;
+        this.projectionDispatcher = projectionDispatcher;
+    }
 }

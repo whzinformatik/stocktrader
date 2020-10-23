@@ -24,6 +24,7 @@
     <flyway.version>7.0.3</flyway.version>
 
     <junit.version>5.6.0</junit.version>
+    <restassured.version>4.3.1</restassured.version>
   </properties>
   
   <repositories>
@@ -85,6 +86,13 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${restassured.version}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
   
   <build>
