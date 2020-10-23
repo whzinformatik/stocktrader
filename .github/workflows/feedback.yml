@@ -23,8 +23,14 @@ jobs:
       - name: Spotless
         working-directory: feedback
         run: mvn spotless:check
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: java
       - name: Build database
         run: docker-compose up -d
       - name: Build with Maven
         working-directory: feedback
         run: mvn -B package --file pom.xml
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
