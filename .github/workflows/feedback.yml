@@ -24,7 +24,7 @@ jobs:
         working-directory: feedback
         run: mvn spotless:check
       - name: Build database
-        run: docker-compose up
+        run: docker-compose up -d
       - name: Build with Maven
         working-directory: feedback
         run: mvn -B package --file pom.xml
