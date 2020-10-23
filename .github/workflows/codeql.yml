@@ -30,8 +30,8 @@ jobs:
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
-         with:
-           languages: java
+        with:
+          languages: java
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v1
