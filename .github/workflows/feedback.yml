@@ -1,0 +1,30 @@
+name: feedback
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        java: [11]
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        working-directory: feedback
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Spotless
+        working-directory: feedback
+        run: mvn spotless:check
+      - name: Build with Maven
+        working-directory: feedback
+        run: mvn -B package --file pom.xml
