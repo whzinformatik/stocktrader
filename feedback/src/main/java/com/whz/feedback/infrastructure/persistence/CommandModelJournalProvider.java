@@ -14,8 +14,8 @@ import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 import io.vlingo.xoom.storage.Model;
 import io.vlingo.xoom.storage.StoreActorBuilder;
 
-public class CommandModelJournalProvider  {
-	
+public class CommandModelJournalProvider {
+
   private static CommandModelJournalProvider instance;
 
   public final Journal<String> journal;
@@ -28,18 +28,22 @@ public class CommandModelJournalProvider  {
     instance = null;
   }
 
-  public static CommandModelJournalProvider using(final Stage stage, final SourcedTypeRegistry registry) {
-    final Dispatcher noop = new Dispatcher() {
-      @Override
-      public void controlWith(final DispatcherControl control) { }
-      @Override
-      public void dispatch(Dispatchable d) { }
-    };
+  public static CommandModelJournalProvider using(
+      final Stage stage, final SourcedTypeRegistry registry) {
+    final Dispatcher noop =
+        new Dispatcher() {
+          @Override
+          public void controlWith(final DispatcherControl control) {}
+
+          @Override
+          public void dispatch(Dispatchable d) {}
+        };
 
     return using(stage, registry, noop);
- }
+  }
 
-  public static CommandModelJournalProvider using(final Stage stage, final SourcedTypeRegistry registry, final Dispatcher dispatcher) {
+  public static CommandModelJournalProvider using(
+      final Stage stage, final SourcedTypeRegistry registry, final Dispatcher dispatcher) {
     if (instance != null) {
       return instance;
     }
@@ -49,9 +53,12 @@ public class CommandModelJournalProvider  {
     entryAdapterProvider.registerAdapter(FeedbackSubmittedEvent.class, new EventAdapter<>());
 
     final Journal<String> journal =
-              StoreActorBuilder.from(stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
+        StoreActorBuilder.from(
+            stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
 
-    registry.register(new Info(journal, FeedbackSubmittedEvent.class, FeedbackSubmittedEvent.class.getSimpleName()));
+    registry.register(
+        new Info(
+            journal, FeedbackSubmittedEvent.class, FeedbackSubmittedEvent.class.getSimpleName()));
 
     instance = new CommandModelJournalProvider(journal);
 
