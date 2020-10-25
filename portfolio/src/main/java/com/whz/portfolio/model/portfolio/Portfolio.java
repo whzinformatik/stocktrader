@@ -7,12 +7,13 @@ import io.vlingo.common.Completes;
 
 public interface Portfolio {
 
-  static Completes<PortfolioState> definePlaceholder(final Stage stage, final String placeholderValue) {
-    final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
-    final Portfolio portfolio = stage.actorFor(Portfolio.class, Definition.has(PortfolioEntity.class, Definition.parameters(address.idString())), address);
-    return portfolio.portfolioOpened(placeholderValue);
-  }
+	static Completes<PortfolioState> defineWith(final Stage stage, final String owner) {
+		final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
+		final Portfolio portfolio = stage.actorFor(Portfolio.class,
+				Definition.has(PortfolioEntity.class, Definition.parameters(address.idString())), address);
+		return portfolio.portfolioOpened(owner);
+	}
 
-  Completes<PortfolioState> portfolioOpened(final String placeholderValue);
+	Completes<PortfolioState> portfolioOpened(final String placeholderValue);
 
 }

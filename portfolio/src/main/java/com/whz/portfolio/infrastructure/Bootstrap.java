@@ -24,7 +24,7 @@ public class Bootstrap {
 
 	  private static final Logger logger = Logger.basicLogger();
 
-	  private static final int DEFAULT_PORT = 18080;
+	  private static final int DEFAULT_PORT = 18082;
 	  private static final String NAME = "portfolio";
 
 	  private static Bootstrap instance;
@@ -58,7 +58,7 @@ public class Bootstrap {
 
 	        logger.info("\n");
 	        logger.info("=========================");
-	        logger.info("Stopping feedback.");
+	        logger.info("Stopping portfolio.");
 	        logger.info("=========================");
 	      }
 	    }));
@@ -73,7 +73,7 @@ public class Bootstrap {
 
 	  public static void main(final String[] args) throws Exception {
 	    logger.info("=========================");
-	    logger.info("service: feedback.");
+	    logger.info("service: portfolio.");
 	    logger.info("=========================");
 
 	    int port;
@@ -82,7 +82,7 @@ public class Bootstrap {
 	      port = Integer.parseInt(args[0]);
 	    } catch (Exception e) {
 	      port = DEFAULT_PORT;
-	      logger.warn("feedback: Command line does not provide a valid port; defaulting to: {}", port);
+	      logger.warn("portfolio: Command line does not provide a valid port; defaulting to: {}", port);
 	    }
 
 	    instance = new Bootstrap(port);

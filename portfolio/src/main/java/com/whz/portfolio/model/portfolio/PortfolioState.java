@@ -2,7 +2,7 @@ package com.whz.portfolio.model.portfolio;
 
 public final class PortfolioState {
   public final String id;
-  public final String placeholderValue;
+  public final String owner;
 
   public static PortfolioState identifiedBy(final String id) {
     return new PortfolioState(id);
@@ -13,7 +13,7 @@ public final class PortfolioState {
   }
 
   public boolean isIdentifiedOnly() {
-    return id != null && placeholderValue == null;
+    return id != null && owner == null;
   }
 
   public PortfolioState withPlaceholderValue(final String value) {
@@ -22,7 +22,7 @@ public final class PortfolioState {
 
   private PortfolioState(final String id, final String value) {
     this.id = id;
-    this.placeholderValue = value;
+    this.owner = value;
   }
 
   private PortfolioState(final String id) {
