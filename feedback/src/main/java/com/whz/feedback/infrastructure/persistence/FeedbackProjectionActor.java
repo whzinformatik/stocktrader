@@ -7,15 +7,15 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Entry;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackData> {
-	
+
   private static final FeedbackData Empty = FeedbackData.empty();
 
   private String dataId;
+
   private final List<IdentifiedDomainEvent> events;
 
   public FeedbackProjectionActor() {
@@ -49,9 +49,9 @@ public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackD
       switch (EventTypes.valueOf(event.typeName())) {
         case FeedbackSubmitted:
           return FeedbackData.from(previousData.id, currentData.message);
-      default:
-        logger().warn("Event of type " + event.typeName() + " was not matched.");
-        break;
+        default:
+          logger().warn("Event of type " + event.typeName() + " was not matched.");
+          break;
       }
     }
 

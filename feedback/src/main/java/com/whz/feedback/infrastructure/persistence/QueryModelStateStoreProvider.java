@@ -14,54 +14,55 @@ import io.vlingo.xoom.storage.StoreActorBuilder;
 
 public class QueryModelStateStoreProvider {
 
-    private static QueryModelStateStoreProvider instance;
+  private static QueryModelStateStoreProvider instance;
 
-    public final StateStore store;
+  public final StateStore store;
 
-    public final FeedbackQueries feedbackAggregateQueries;
+  public final FeedbackQueries feedbackAggregateQueries;
 
-    public static QueryModelStateStoreProvider instance() {
-        return instance;
-    }
+  public static QueryModelStateStoreProvider instance() {
+    return instance;
+  }
 
-    public static void reset() {
-        instance = null;
-    }
+  public static void reset() {
+    instance = null;
+  }
 
-    public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry) {
-        final Dispatcher noop = new Dispatcher() {
-            @Override
-            public void controlWith(final DispatcherControl control) {
-            }
+  public static QueryModelStateStoreProvider using(
+      final Stage stage, final StatefulTypeRegistry registry) {
+    final Dispatcher noop =
+        new Dispatcher() {
+          @Override
+          public void controlWith(final DispatcherControl control) {}
 
-            @Override
-            public void dispatch(Dispatchable d) {
-            }
+          @Override
+          public void dispatch(Dispatchable d) {}
         };
 
-        return using(stage, registry, noop);
+    return using(stage, registry, noop);
+  }
+
+  @SuppressWarnings("rawtypes")
+  public static QueryModelStateStoreProvider using(
+      final Stage stage, final StatefulTypeRegistry registry, final Dispatcher dispatcher) {
+    if (instance != null) {
+      return instance;
     }
 
-    @SuppressWarnings("rawtypes")
-    public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry,
-                                                     final Dispatcher dispatcher) {
-        if (instance != null) {
-            return instance;
-        }
+    new EntryAdapterProvider(stage.world()); // future use
 
-        new EntryAdapterProvider(stage.world()); // future use
+    final StateStore store =
+        StoreActorBuilder.from(
+            stage, Model.QUERY, dispatcher, StorageType.STATE_STORE, Settings.properties(), true);
 
-        final StateStore store = StoreActorBuilder.from(stage, Model.QUERY, dispatcher, StorageType.STATE_STORE,
-                Settings.properties(), true);
+    instance = new QueryModelStateStoreProvider(stage, store);
 
-        instance = new QueryModelStateStoreProvider(stage, store);
+    return instance;
+  }
 
-        return instance;
-    }
-
-    private QueryModelStateStoreProvider(final Stage stage, final StateStore store) {
-        this.store = store;
-        this.feedbackAggregateQueries = stage.actorFor(FeedbackQueries.class,
-                FeedbackQueriesActor.class, store);
-    }
+  private QueryModelStateStoreProvider(final Stage stage, final StateStore store) {
+    this.store = store;
+    this.feedbackAggregateQueries =
+        stage.actorFor(FeedbackQueries.class, FeedbackQueriesActor.class, store);
+  }
 }

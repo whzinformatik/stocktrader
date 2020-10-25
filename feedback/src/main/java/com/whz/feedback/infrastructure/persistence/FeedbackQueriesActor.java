@@ -4,7 +4,6 @@ import com.whz.feedback.infrastructure.FeedbackData;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.query.StateStoreQueryActor;
 import io.vlingo.symbio.store.state.StateStore;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
