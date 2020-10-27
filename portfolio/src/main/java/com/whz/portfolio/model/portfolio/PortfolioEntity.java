@@ -15,7 +15,7 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
   }
 
   public Completes<PortfolioState> portfolioOpened(final String value) {
-    return apply(new PortfolioOpened(state.id, value), () -> state);
+    return apply(new PortfolioCreated(state.id, value), () -> state);
   }
 
   //=====================================
@@ -23,10 +23,10 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
   //=====================================
 
   static {
-    EventSourced.registerConsumer(PortfolioEntity.class, PortfolioOpened.class, PortfolioEntity::applyPortfolioPlaceholderDefined);
+    EventSourced.registerConsumer(PortfolioEntity.class, PortfolioCreated.class, PortfolioEntity::applyPortfolioPlaceholderDefined);
   }
 
-  private void applyPortfolioPlaceholderDefined(final PortfolioOpened e) {
-    state = state.withPlaceholderValue(e.placeholderValue);
+  private void applyPortfolioPlaceholderDefined(final PortfolioCreated e) {
+    state = state.withPlaceholderValue(e.owner);
   }
 }

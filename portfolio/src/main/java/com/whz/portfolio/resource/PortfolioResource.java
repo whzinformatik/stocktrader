@@ -5,6 +5,7 @@ import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
+import io.vlingo.symbio.store.journal.Journal;
 
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.http.Response.Status.Created;
@@ -19,10 +20,12 @@ import static io.vlingo.http.resource.ResourceBuilder.post;
 import static io.vlingo.http.resource.ResourceBuilder.resource;
 
 import com.whz.portfolio.infrastructure.PortfolioData;
+import com.whz.portfolio.infrastructure.persistence.CommandModelJournalProvider;
 import com.whz.portfolio.infrastructure.persistence.PortfolioQueries;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.portfolio.model.portfolio.Portfolio;
 import com.whz.portfolio.model.portfolio.PortfolioEntity;
+import com.whz.portfolio.model.portfolio.PortfolioCreated;
 
 public class PortfolioResource extends ResourceHandler {
 
@@ -34,7 +37,7 @@ public class PortfolioResource extends ResourceHandler {
 		this.portfolioQueries = QueryModelStateStoreProvider.instance().portfolioQueries;
 	}
 
-	// curl -i -X POST -H "Content-Type: application/json" -d '{"id":"","owner":"Florian"}' http://localhost:18082/portfolio/create
+	// curl -i -X POST -H "Content-Type: application/json" -d '{"id":"","owner":"Florian" }' http://localhost:18082/portfolio/create
 	public Completes<Response> create(PortfolioData data) {
 		return Portfolio.defineWith(stage, data.owner)
 				.andThenTo(state -> Completes.withSuccess(Response.of(Created,

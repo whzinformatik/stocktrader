@@ -47,8 +47,8 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
 
     for (final DomainEvent event : events) {
       switch (EventTypes.valueOf(event.typeName())) {
-        case PortfolioPlaceholderDefined:
-          return PortfolioData.from(currentData.id, "Handle PortfolioPlaceholderDefined here");   // TODO: implement actual merge
+        case PortfolioCreated:
+          return PortfolioData.from(currentData.id, "TODO");   // TODO: implement actual merge
       default:
         logger().warn("Event of type " + event.typeName() + " was not matched.");
         break;
