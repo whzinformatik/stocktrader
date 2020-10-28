@@ -11,9 +11,9 @@ public interface Portfolio {
 		final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
 		final Portfolio portfolio = stage.actorFor(Portfolio.class,
 				Definition.has(PortfolioEntity.class, Definition.parameters(address.idString())), address);
-		return portfolio.portfolioOpened(owner);
+		return portfolio.portfolioCreated(owner);
 	}
 
-	Completes<PortfolioState> portfolioOpened(final String placeholderValue);
+	Completes<PortfolioState> portfolioCreated(final String placeholderValue);
 
 }

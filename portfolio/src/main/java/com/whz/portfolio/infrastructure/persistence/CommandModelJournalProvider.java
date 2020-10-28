@@ -3,6 +3,7 @@ package com.whz.portfolio.infrastructure.persistence;
 import java.util.List;
 
 import com.whz.portfolio.model.portfolio.PortfolioCreated;
+import com.whz.portfolio.model.portfolio.PortfolioEntity;
 
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
@@ -49,7 +50,7 @@ public class CommandModelJournalProvider  {
     final Journal<String> journal =
               StoreActorBuilder.from(stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
 
-    registry.register(new Info(journal, PortfolioCreated.class, PortfolioCreated.class.getSimpleName()));
+    registry.register(new Info(journal, PortfolioEntity.class, PortfolioEntity.class.getSimpleName()));
 
     instance = new CommandModelJournalProvider(journal);
 

@@ -6,6 +6,9 @@ import io.vlingo.common.Completes;
 import com.whz.portfolio.infrastructure.PortfolioData;
 
 public interface PortfolioQueries {
-  Completes<PortfolioData> portfolioOf(String id);
-  Completes<Collection<PortfolioData>> portfolios();
+
+	Completes<PortfolioData> portfolioOf(String id);
+
+	Completes<Collection<PortfolioData>> portfolios();
+
 }
