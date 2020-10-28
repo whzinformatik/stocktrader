@@ -6,28 +6,29 @@ import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.symbio.BaseEntry.TextEntry;
 import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
+import io.vlingo.symbio.Source;
 
-public final class PortfolioPlaceholderDefinedAdapter implements EntryAdapter<PortfolioCreated,TextEntry> {
+public final class EventAdapter<T extends Source<?>> implements EntryAdapter<T, TextEntry> {
   
   @Override
-  public PortfolioCreated fromEntry(final TextEntry entry) {
+  public T fromEntry(final TextEntry entry) {
     return JsonSerialization.deserialized(entry.entryData(), entry.typed());
   }
 
   @Override
-  public TextEntry toEntry(final PortfolioCreated source, final Metadata metadata) {
+  public TextEntry toEntry(final T source, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
     return new TextEntry(PortfolioCreated.class, 1, serialization, metadata);
   }
 
   @Override
-  public TextEntry toEntry(final PortfolioCreated source, final String id, final Metadata metadata) {
+  public TextEntry toEntry(final T source, final String id, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
     return new TextEntry(id, PortfolioCreated.class, 1, serialization, metadata);
   }
 
   @Override
-  public TextEntry toEntry(final PortfolioCreated source, final int version, final String id, final Metadata metadata) {
+  public TextEntry toEntry(final T source, final int version, final String id, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
     return new TextEntry(id, PortfolioCreated.class, 1, serialization, version, metadata);
   }

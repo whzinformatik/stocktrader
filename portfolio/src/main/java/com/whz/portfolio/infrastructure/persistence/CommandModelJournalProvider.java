@@ -45,7 +45,7 @@ public class CommandModelJournalProvider  {
 
     final EntryAdapterProvider entryAdapterProvider = EntryAdapterProvider.instance(stage.world());
 
-    entryAdapterProvider.registerAdapter(PortfolioCreated.class, new PortfolioPlaceholderDefinedAdapter());
+    entryAdapterProvider.registerAdapter(PortfolioCreated.class, new EventAdapter<>());
 
     final Journal<String> journal =
               StoreActorBuilder.from(stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
