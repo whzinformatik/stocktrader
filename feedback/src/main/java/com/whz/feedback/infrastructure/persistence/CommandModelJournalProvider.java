@@ -1,7 +1,9 @@
 package com.whz.feedback.infrastructure.persistence;
 
+import com.whz.feedback.model.feedback.FeedbackActor;
 import com.whz.feedback.model.feedback.FeedbackSubmittedEvent;
 import io.vlingo.actors.Stage;
+import io.vlingo.lattice.model.DomainEvent;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 import io.vlingo.symbio.EntryAdapterProvider;
@@ -58,7 +60,7 @@ public class CommandModelJournalProvider {
 
     registry.register(
         new Info(
-            journal, FeedbackSubmittedEvent.class, FeedbackSubmittedEvent.class.getSimpleName()));
+            journal, FeedbackActor.class, FeedbackActor.class.getSimpleName()));
 
     instance = new CommandModelJournalProvider(journal);
 
