@@ -1,6 +1,8 @@
 package com.whz.feedback.resource;
 
 import com.whz.feedback.infrastructure.FeedbackData;
+import com.whz.feedback.infrastructure.persistence.FeedbackQueries;
+import com.whz.feedback.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.feedback.model.feedback.Feedback;
 import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
@@ -17,11 +19,13 @@ import static io.vlingo.http.resource.ResourceBuilder.*;
 public class FeedbackResource extends ResourceHandler {
 
   private final Stage stage;
+  private final FeedbackQueries queries;
 
   private final Logger logger;
 
   public FeedbackResource(final Stage stage) {
     this.stage = stage;
+    this.queries = QueryModelStateStoreProvider.instance().feedbackQueries;
     this.logger = stage.world().defaultLogger();
   }
 
@@ -34,12 +38,25 @@ public class FeedbackResource extends ResourceHandler {
             .andThenTo(state -> Completes.withSuccess(Response.of(Created, headers(of(Location, location(state.id))).and(of(ContentType, "application/json")), serialized(FeedbackData.from(state)))));
   }
 
+  public Completes<Response> queryFeedback(String feedbackId) {
+    return queries.feedbackOf(feedbackId)
+            .andThenTo(FeedbackData.empty(), data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
+            .otherwise(noData -> Response.of(NotFound, location(feedbackId)));
+  }
+
+  public Completes<Response> queryFeedbacks() {
+    return queries.feedbacks()
+            .andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))));
+  }
+
   @Override
   public Resource<?> routes() {
     logger.info("calling ready...");
     return resource(getClass().getSimpleName(),
             get("/ready").handle(this::ready),
-            post("/").body(FeedbackData.class).handle(this::create));
+            post("/").body(FeedbackData.class).handle(this::create),
+            get("/{feedbackId}").param(String.class).handle(this::queryFeedback),
+            get("/").handle(this::queryFeedbacks));
   }
 
   private String location(String id){

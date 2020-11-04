@@ -7,6 +7,8 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Entry;
+import io.vlingo.symbio.Source;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,8 @@ public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackD
       final FeedbackData previousData,
       final int previousVersion,
       final FeedbackData currentData,
-      final int currentVersion) {
+      final int currentVersion,
+      final List<Source<?>> sources) {
 
     if (previousVersion == currentVersion) {
       return currentData;

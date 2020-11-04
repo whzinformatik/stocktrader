@@ -1,8 +1,10 @@
 package com.whz.feedback.infrastructure.persistence;
 
+import com.whz.feedback.infrastructure.FeedbackData;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.symbio.EntryAdapterProvider;
+import io.vlingo.symbio.StateAdapterProvider;
 import io.vlingo.symbio.store.dispatch.Dispatchable;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.DispatcherControl;
@@ -18,7 +20,7 @@ public class QueryModelStateStoreProvider {
 
   public final StateStore store;
 
-  public final FeedbackQueries feedbackAggregateQueries;
+  public final FeedbackQueries feedbackQueries;
 
   public static QueryModelStateStoreProvider instance() {
     return instance;
@@ -51,9 +53,14 @@ public class QueryModelStateStoreProvider {
 
     new EntryAdapterProvider(stage.world()); // future use
 
+    final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider((stage.world()));
+    stateAdapterProvider.registerAdapter(FeedbackData.class, new FeedbackDataStateAdapter());
+
     final StateStore store =
         StoreActorBuilder.from(
             stage, Model.QUERY, dispatcher, StorageType.STATE_STORE, Settings.properties(), true);
+
+    registry.register(new StatefulTypeRegistry.Info(store, FeedbackData.class, FeedbackData.class.getSimpleName()));
 
     instance = new QueryModelStateStoreProvider(stage, store);
 
@@ -62,7 +69,7 @@ public class QueryModelStateStoreProvider {
 
   private QueryModelStateStoreProvider(final Stage stage, final StateStore store) {
     this.store = store;
-    this.feedbackAggregateQueries =
+    this.feedbackQueries =
         stage.actorFor(FeedbackQueries.class, FeedbackQueriesActor.class, store);
   }
 }
