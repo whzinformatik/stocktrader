@@ -7,26 +7,27 @@ import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
 public final class PortfolioEntity extends EventSourced implements Portfolio {
-  private PortfolioState state;
+	private PortfolioState state;
 
-  public PortfolioEntity(final String id) {
-    super(id);
-    this.state = PortfolioState.identifiedBy(id);
-  }
+	public PortfolioEntity(final String id) {
+		super(id);
+		this.state = PortfolioState.identifiedBy(id);
+	}
 
-  public Completes<PortfolioState> portfolioCreated(final String value) {
-    return apply(new PortfolioCreated(state.id, value), () -> state);
-  }
+	public Completes<PortfolioState> portfolioCreated(final String value) {
+		return apply(new PortfolioCreated(state.id, value), () -> state);
+	}
 
-  //=====================================
-  // EventSourced
-  //=====================================
+	// =====================================
+	// EventSourced
+	// =====================================
 
-  static {
-    EventSourced.registerConsumer(PortfolioEntity.class, PortfolioCreated.class, PortfolioEntity::applyPortfolioCreated);
-  }
+	static {
+		EventSourced.registerConsumer(PortfolioEntity.class, PortfolioCreated.class,
+				PortfolioEntity::applyPortfolioCreated);
+	}
 
-  private void applyPortfolioCreated(final PortfolioCreated e) {
-    state = state.withPlaceholderValue(e.owner);
-  }
+	private void applyPortfolioCreated(final PortfolioCreated e) {
+		state = state.withPlaceholderValue(e.owner);
+	}
 }
