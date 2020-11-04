@@ -1,28 +1,12 @@
-CREATE TABLE vlingo_event_journal (
-  id                 UUID PRIMARY KEY,
-  event_timestamp    BIGINT       NOT NULL,
-  event_data         JSONB        NOT NULL,
-  event_metadata     JSONB        NOT NULL,
-  event_type         VARCHAR(256) NOT NULL,
-  event_type_version INTEGER      NOT NULL,
-  stream_name        VARCHAR(128) NOT NULL,
-  stream_version     INTEGER      NOT NULL
-);
-
-CREATE INDEX ON vlingo_event_journal (stream_name, stream_version);
-
-CREATE INDEX ON vlingo_event_journal (event_timestamp);
-
-CREATE TABLE vlingo_event_journal_snapshots (
-  stream_name           VARCHAR(128) PRIMARY KEY,
-  snapshot_type         VARCHAR(256) NOT NULL,
-  snapshot_type_version INTEGER      NOT NULL,
-  snapshot_data         JSONB        NOT NULL,
-  snapshot_data_version INTEGER      NOT NULL,
-  snapshot_metadata     JSONB        NOT NULL
-);
-
-CREATE TABLE vlingo_event_journal_offsets (
-  reader_name   VARCHAR(128) PRIMARY KEY,
-  reader_offset BIGINT NOT NULL
+CREATE TABLE tbl_feedbackdata (
+  id				        VARCHAR(128)	PRIMARY KEY,
+  message   		        VARCHAR(256),
+  s_type 			        VARCHAR(256),
+  s_type_version 		    VARCHAR(256),
+  s_data 			        VARCHAR(256),
+  s_data_version 		    VARCHAR(256),
+  s_metadata_value 		    VARCHAR(256),
+  s_metadata_value_version 	VARCHAR(256),
+  s_metadata_op 		    VARCHAR(256),
+  s_id 			        	VARCHAR(256)
 );
