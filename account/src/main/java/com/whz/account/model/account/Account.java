@@ -7,12 +7,13 @@ import io.vlingo.common.Completes;
 
 public interface Account {
 
-  static Completes<AccountState> definePlaceholder(final Stage stage, final String placeholderValue) {
-    final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
-    final Account account = stage.actorFor(Account.class, Definition.has(AccountEntity.class, Definition.parameters(address.idString())), address);
-    return account.definePlaceholder(placeholderValue);
-  }
+	static Completes<AccountState> defineWith(final Stage stage, final String placeholderValue) {
+		final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
+		final Account account = stage.actorFor(Account.class,
+				Definition.has(AccountEntity.class, Definition.parameters(address.idString())), address);
+		return account.accountCreated(placeholderValue);
+	}
 
-  Completes<AccountState> definePlaceholder(final String placeholderValue);
+	Completes<AccountState> accountCreated(final String placeholderValue);
 
 }

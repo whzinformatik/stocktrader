@@ -14,6 +14,7 @@
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
     <vlingo.xoom.version>1.3.4-SNAPSHOT</vlingo.xoom.version>
+    <flyway.version>7.0.3</flyway.version>
   </properties>
   <repositories>
     <repository>
@@ -56,6 +57,11 @@
       <artifactId>vlingo-xoom</artifactId>
       <version>${vlingo.xoom.version}</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>${flyway.version}</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
