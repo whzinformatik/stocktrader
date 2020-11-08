@@ -26,6 +26,11 @@ services:
       MYSQL_USER: vlingo_test
       MYSQL_PASSWORD: vlingo123
       MYSQL_DATABASE: vlingo_test
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
 
 volumes:
   vlingo_symbio_jdbc_postgres:
