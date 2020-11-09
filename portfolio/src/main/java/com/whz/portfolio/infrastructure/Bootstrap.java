@@ -3,6 +3,7 @@ package com.whz.portfolio.infrastructure;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import com.whz.portfolio.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.whz.portfolio.resource.PortfolioResource;
+import com.whz.portfolio.resource.QuotesCache;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 
@@ -34,7 +35,7 @@ public class Bootstrap {
 
 	  public Bootstrap(final int port) throws Exception {
 	    Flyway.configure().dataSource("jdbc:postgresql://[::1]:5432/", "vlingo_test", "vlingo123").load().migrate();
-
+	    QuotesCache.init();
 	    world = World.startWithDefaults(NAME);
 
 	    final Stage stage =
@@ -55,7 +56,7 @@ public class Bootstrap {
 	    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 	      if (instance != null) {
 	        instance.server.stop();
-
+	        QuotesCache.cleanUp();
 	        logger.info("\n");
 	        logger.info("=========================");
 	        logger.info("Stopping portfolio.");

@@ -2,7 +2,9 @@ package com.whz.portfolio.resource;
 
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
+import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.http.Response;
+import io.vlingo.http.Response.Status;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
 
@@ -32,6 +34,7 @@ public class PortfolioResource extends ResourceHandler {
 	private final PortfolioQueries portfolioQueries;
 
 	public PortfolioResource(final Stage stage) {
+		new QuotesCache();
 		this.stage = stage;
 		this.portfolioQueries = QueryModelStateStoreProvider.instance().portfolioQueries;
 	}
@@ -63,6 +66,17 @@ public class PortfolioResource extends ResourceHandler {
 		return Completes.withSuccess(Response.of(Ok, "Deleted"));
 	}
 
+	// STOCKS ALL
+	public Completes<Response> handleAllStocks() {
+		return Completes.withSuccess(Response.of(Ok,
+				headers(of(Location, "test")).and(of(ContentType, "application/json")), serialized(QuotesCache.get())));
+	}
+
+	// STOCKS PORTFOLIO
+	public Completes<Response> handleStocks(String id) {
+		return null;
+	}
+
 	@Override
 	public Resource<?> routes() {
 		return resource("Portfolio Resource", //
@@ -77,7 +91,12 @@ public class PortfolioResource extends ResourceHandler {
 						.handle(this::handlePut), //
 				delete("/portfolio/{id}") //
 						.param(String.class) //
-						.handle(this::handleDelete) //
+						.handle(this::handleDelete), //
+				get("/portfolio/stocks") //
+						.handle(this::handleAllStocks), //
+				get("/portfolio/stocks/{id}") //
+						.param(String.class) //
+						.handle(this::handleStocks) //
 		);
 	}
 

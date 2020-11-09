@@ -30,3 +30,4 @@ services:
 volumes:
   vlingo_symbio_jdbc_postgres:
   vlingo_symbio_jdbc_mysql:
+    
