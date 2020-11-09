@@ -34,5 +34,4 @@ public class FeedbackDataStateAdapter implements StateAdapter<FeedbackData, Text
     public <ST> ST fromRawState(TextState raw, Class<ST> stateType) {
         return JsonSerialization.deserialized(raw.data, stateType);
     }
-
 }

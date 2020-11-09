@@ -17,19 +17,19 @@ public final class EventAdapter<T extends Source<?>> implements EntryAdapter<T, 
   @Override
   public TextEntry toEntry(final T source, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
-    return new TextEntry(FeedbackSubmittedEvent.class, 1, serialization, metadata);
+    return new TextEntry(source.getClass(), 1, serialization, metadata);
   }
 
   @Override
   public TextEntry toEntry(final T source, final String id, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
-    return new TextEntry(id, FeedbackSubmittedEvent.class, 1, serialization, metadata);
+    return new TextEntry(id, source.getClass(), 1, serialization, metadata);
   }
 
   @Override
   public TextEntry toEntry(
       final T source, final int version, final String id, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
-    return new TextEntry(id, FeedbackSubmittedEvent.class, 1, serialization, version, metadata);
+    return new TextEntry(id, source.getClass(), 1, serialization, version, metadata);
   }
 }
