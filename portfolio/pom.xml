@@ -17,6 +17,9 @@
 		<maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
 		<vlingo.xoom.version>1.3.4-SNAPSHOT</vlingo.xoom.version>
 		<flyway.version>7.0.3</flyway.version>
+		<spotless.version>2.5.0</spotless.version>
+		<junit.version>5.6.0</junit.version>
+		<mockito.version>3.5.15</mockito.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -82,6 +85,24 @@
 			<groupId>com.rabbitmq</groupId>
 			<artifactId>amqp-client</artifactId>
 			<version>5.10.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
@@ -200,6 +221,21 @@
 							</configuration>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.diffplug.spotless</groupId>
+					<artifactId>spotless-maven-plugin</artifactId>
+					<version>${spotless.version}</version>
+					<configuration>
+						<java>
+							<removeUnusedImports />
+
+							<googleJavaFormat>
+								<version>1.8</version>
+								<style>GOOGLE</style>
+							</googleJavaFormat>
+						</java>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

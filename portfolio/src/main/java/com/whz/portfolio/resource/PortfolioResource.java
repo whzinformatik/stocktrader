@@ -34,7 +34,7 @@ public class PortfolioResource extends ResourceHandler {
 	private final PortfolioQueries portfolioQueries;
 
 	public PortfolioResource(final Stage stage) {
-		new QuotesCache();
+		QuotesCache test = QuotesCache.INSTANCE;
 		this.stage = stage;
 		this.portfolioQueries = QueryModelStateStoreProvider.instance().portfolioQueries;
 	}
@@ -68,8 +68,9 @@ public class PortfolioResource extends ResourceHandler {
 
 	// STOCKS ALL
 	public Completes<Response> handleAllStocks() {
-		return Completes.withSuccess(Response.of(Ok,
-				headers(of(Location, "test")).and(of(ContentType, "application/json")), serialized(QuotesCache.get())));
+		return Completes
+				.withSuccess(Response.of(Ok, headers(of(Location, "test")).and(of(ContentType, "application/json")),
+						serialized(QuotesCache.INSTANCE.get())));
 	}
 
 	// STOCKS PORTFOLIO
@@ -92,9 +93,9 @@ public class PortfolioResource extends ResourceHandler {
 				delete("/portfolio/{id}") //
 						.param(String.class) //
 						.handle(this::handleDelete), //
-				get("/portfolio/stocks") //
+				get("/stocks") //
 						.handle(this::handleAllStocks), //
-				get("/portfolio/stocks/{id}") //
+				get("/stocks/{id}") //
 						.param(String.class) //
 						.handle(this::handleStocks) //
 		);
