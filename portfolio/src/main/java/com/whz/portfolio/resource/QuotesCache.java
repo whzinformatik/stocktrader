@@ -16,52 +16,59 @@ import com.whz.portfolio.infrastructure.StockQuoteData;
 import io.vlingo.actors.Logger;
 import io.vlingo.common.serialization.JsonSerialization;
 
-public class QuotesCache {
+public enum QuotesCache {
 
-	private static final Logger logger = Logger.basicLogger();
-	private static final String EXCHANGE_NAME = "logs";
-	private static Map<String, StockQuoteData> stockQuotes = new HashMap<>();
-	private static Connection connection;
+	INSTANCE();
 
-	public static void init() throws IOException, TimeoutException {
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("localhost");
-		connection = factory.newConnection();
-		Channel channel = connection.createChannel();
+	private final Logger logger = Logger.basicLogger();
+	private final String EXCHANGE_NAME = "logs";
+	private Map<String, StockQuoteData> stockQuotes = new HashMap<>();
+	private Connection connection;
 
-		channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
-		String queueName = channel.queueDeclare().getQueue();
-		channel.queueBind(queueName, EXCHANGE_NAME, "");
+	private QuotesCache() {
+		try {
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setHost("localhost");
+			connection = factory.newConnection();
+			Channel channel = connection.createChannel();
 
-		logger.debug("Quotes cache is waiting for messages..");
+			channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+			String queueName = channel.queueDeclare().getQueue();
+			channel.queueBind(queueName, EXCHANGE_NAME, "");
 
-		DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-			String message = new String(delivery.getBody(), "UTF-8");
-			StockQuoteData stockQuoteData = deserialized(message);
-			stockQuotes.put(stockQuoteData.symbol, stockQuoteData);
-			logger.debug("Quotes cache received '" + stockQuoteData.symbol + "' with a length of: " + message.length());
-		};
-		channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
-		});
+			logger.debug("Quotes cache is waiting for messages..");
+
+			DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+				String message = new String(delivery.getBody(), "UTF-8");
+				StockQuoteData stockQuoteData = deserialized(message);
+				stockQuotes.put(stockQuoteData.symbol, stockQuoteData);
+				logger.debug(
+						"Quotes cache received '" + stockQuoteData.symbol + "' with a length of: " + message.length());
+			};
+			channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+			});
+		} catch (IOException | TimeoutException e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	private static StockQuoteData deserialized(String data) {
+	private StockQuoteData deserialized(String data) {
 		return JsonSerialization.deserialized(data, StockQuoteData.class);
 	}
 
-	public static Collection<StockQuoteData> get() {
+	public Collection<StockQuoteData> get() {
 		return stockQuotes.values();
 	}
 
-	public static StockQuoteData get(String id) {
+	public StockQuoteData get(String id) {
 		return stockQuotes.get(id);
 	}
 
-	public static ArrayList<StockQuoteData> get(Collection<String> ids) {
+	public ArrayList<StockQuoteData> get(Collection<String> ids) {
 		ArrayList<StockQuoteData> result = new ArrayList<>();
 		ids.forEach(id -> {
-			StockQuoteData data = QuotesCache.stockQuotes.get(id);
+			StockQuoteData data = stockQuotes.get(id);
 			if (data != null) {
 				result.add(data);
 			}
@@ -70,11 +77,11 @@ public class QuotesCache {
 	}
 
 	public static void main(String[] args) {
-		StockQuoteData data = deserialized("{'symbol':'INTC','displayName':'Intel'}");
+		StockQuoteData data = INSTANCE.deserialized("{'symbol':'INTC','displayName':'Intel'}");
 		System.out.println(data);
 	}
 
-	public static void cleanUp() {
+	public void cleanUp() {
 		try {
 			connection.close();
 		} catch (IOException e) {
