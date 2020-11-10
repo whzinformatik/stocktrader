@@ -19,6 +19,7 @@ import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.DispatcherControl;
 import io.vlingo.symbio.store.dispatch.Dispatchable;
 import io.vlingo.symbio.store.state.StateStore;
+import io.vlingo.symbio.store.state.StateTypeStateStoreMap;
 import io.vlingo.xoom.actors.Settings;
 import io.vlingo.xoom.storage.Model;
 import io.vlingo.xoom.storage.StoreActorBuilder;
@@ -54,6 +55,9 @@ public class QueryModelStateStoreProvider {
 		}
 
 		new EntryAdapterProvider(stage.world()); // future use
+
+		StateTypeStateStoreMap.stateTypeToStoreName(PortfolioData.class, PortfolioData.class.getSimpleName());
+
 		final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider(stage.world());
 		stateAdapterProvider.registerAdapter(PortfolioData.class, new PortfolioDataStateAdapter());
 
