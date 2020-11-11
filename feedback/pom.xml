@@ -21,7 +21,6 @@
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
 
     <vlingo.version>1.3.4-SNAPSHOT</vlingo.version>
-    <flyway.version>7.0.3</flyway.version>
 
     <spotless.version>2.5.0</spotless.version>
 
@@ -71,11 +70,6 @@
       <artifactId>vlingo-xoom</artifactId>
       <version>${vlingo.version}</version>
       <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-      <version>${flyway.version}</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
