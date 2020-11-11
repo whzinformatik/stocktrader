@@ -9,6 +9,7 @@ import io.vlingo.symbio.store.dispatch.Dispatchable;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.DispatcherControl;
 import io.vlingo.symbio.store.state.StateStore;
+import io.vlingo.symbio.store.state.StateTypeStateStoreMap;
 import io.vlingo.xoom.actors.Settings;
 import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 import io.vlingo.xoom.storage.Model;
@@ -55,6 +56,8 @@ public class QueryModelStateStoreProvider {
 
     final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider((stage.world()));
     stateAdapterProvider.registerAdapter(FeedbackData.class, new FeedbackDataStateAdapter());
+
+    StateTypeStateStoreMap.stateTypeToStoreName(FeedbackData.class, FeedbackData.class.getSimpleName());
 
     final StateStore store =
         StoreActorBuilder.from(
