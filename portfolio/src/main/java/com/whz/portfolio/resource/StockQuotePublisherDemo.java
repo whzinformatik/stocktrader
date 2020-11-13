@@ -8,8 +8,11 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
+import io.vlingo.actors.Logger;
+
 public class StockQuotePublisherDemo {
 
+	private static final Logger logger = Logger.basicLogger();
 	private static final String EXCHANGE_NAME = "logs";
 
 	public static void main(String[] args) throws Exception {
@@ -25,11 +28,11 @@ public class StockQuotePublisherDemo {
 			}
 
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			logger.debug(e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.debug(e.getMessage(), e);
 		} catch (TimeoutException e1) {
-			e1.printStackTrace();
+			logger.debug(e.getMessage(), e);
 		}
 	}
 

@@ -48,7 +48,7 @@ public enum QuotesCache {
 			channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
 			});
 		} catch (IOException | TimeoutException e) {
-			e.printStackTrace();
+			logger.debug(e.getMessage(), e);
 		}
 
 	}

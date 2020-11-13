@@ -80,25 +80,12 @@ public class PortfolioResource extends ResourceHandler {
 
 	@Override
 	public Resource<?> routes() {
-		return resource("Portfolio Resource", //
-				get("/portfolio/{id}") //
-						.param(String.class) //
-						.handle(this::handleGet), //
-				post("/portfolio") //
-						.body(PortfolioData.class) //
-						.handle(this::handlePost), //
-				put("/portfolio")//
-						.body(PortfolioData.class) //
-						.handle(this::handlePut), //
-				delete("/portfolio/{id}") //
-						.param(String.class) //
-						.handle(this::handleDelete), //
-				get("/stocks") //
-						.handle(this::handleAllStocks), //
-				get("/stocks/{id}") //
-						.param(String.class) //
-						.handle(this::handleStocks) //
-		);
+		return resource("Portfolio Resource", get("/portfolio/{id}").param(String.class).handle(this::handleGet),
+				post("/portfolio").body(PortfolioData.class).handle(this::handlePost),
+				put("/portfolio").body(PortfolioData.class).handle(this::handlePut),
+				delete("/portfolio/{id}").param(String.class).handle(this::handleDelete),
+				get("/stocks").handle(this::handleAllStocks),
+				get("/stocks/{id}").param(String.class).handle(this::handleStocks));
 	}
 
 	private String location(final String id) {

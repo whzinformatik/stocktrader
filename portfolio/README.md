@@ -15,18 +15,20 @@
 	    private int free;
 	    private String sentiment;
 	    private double nextCommission;
-	    private List<Stock> stockList;
+	    private List<String> stockIds;
     }
 
 
 ### Events
-* PortfolioCreated
 * PortfolioRetrieved
+* PortfolioCreated
 * PortfolioUpdated
 * PortfolioDeleted
 
 ### API
-* /portfolio/create		(POST)
-* /portfolio/retrieve	(GET)
-* /portfolio/update		(POST)
-* /portfolio/delete		(POST)
+* /portfolio/{id}	(GET)
+* /portfolio		(POST)
+* /portfolio		(PUT)
+* /portfolio/{id}	(DELETE)
+* /stocks			(GET)
+* /stocks{id}		(GET)

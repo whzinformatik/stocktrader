@@ -14,7 +14,7 @@
 *.iml
 
 # Maven files
-
+target/
 dependency-reduced-pom.xml
 
 # BlueJ files
@@ -39,4 +39,4 @@ hs_err_pid*
 .DS_STORE
 
 # docker
-
+.docker/
