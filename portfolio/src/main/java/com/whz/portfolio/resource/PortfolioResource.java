@@ -1,13 +1,5 @@
 package com.whz.portfolio.resource;
 
-import io.vlingo.actors.Stage;
-import io.vlingo.common.Completes;
-import io.vlingo.common.serialization.JsonSerialization;
-import io.vlingo.http.Response;
-import io.vlingo.http.Response.Status;
-import io.vlingo.http.resource.Resource;
-import io.vlingo.http.resource.ResourceHandler;
-
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.http.Response.Status.Created;
 import static io.vlingo.http.Response.Status.NotFound;
@@ -16,10 +8,10 @@ import static io.vlingo.http.ResponseHeader.ContentType;
 import static io.vlingo.http.ResponseHeader.Location;
 import static io.vlingo.http.ResponseHeader.headers;
 import static io.vlingo.http.ResponseHeader.of;
+import static io.vlingo.http.resource.ResourceBuilder.delete;
 import static io.vlingo.http.resource.ResourceBuilder.get;
 import static io.vlingo.http.resource.ResourceBuilder.post;
 import static io.vlingo.http.resource.ResourceBuilder.put;
-import static io.vlingo.http.resource.ResourceBuilder.delete;
 import static io.vlingo.http.resource.ResourceBuilder.resource;
 
 import com.whz.portfolio.infrastructure.PortfolioData;
@@ -27,6 +19,11 @@ import com.whz.portfolio.infrastructure.persistence.PortfolioQueries;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.portfolio.model.portfolio.Portfolio;
 import com.whz.portfolio.model.portfolio.PortfolioEntity;
+import io.vlingo.actors.Stage;
+import io.vlingo.common.Completes;
+import io.vlingo.http.Response;
+import io.vlingo.http.resource.Resource;
+import io.vlingo.http.resource.ResourceHandler;
 
 public class PortfolioResource extends ResourceHandler {
 

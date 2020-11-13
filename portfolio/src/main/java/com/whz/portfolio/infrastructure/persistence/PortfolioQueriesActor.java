@@ -1,13 +1,11 @@
 package com.whz.portfolio.infrastructure.persistence;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.whz.portfolio.infrastructure.PortfolioData;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.query.StateStoreQueryActor;
 import io.vlingo.symbio.store.state.StateStore;
-
-import com.whz.portfolio.infrastructure.PortfolioData;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class PortfolioQueriesActor extends StateStoreQueryActor implements PortfolioQueries {
 
@@ -24,5 +22,4 @@ public class PortfolioQueriesActor extends StateStoreQueryActor implements Portf
   public Completes<Collection<PortfolioData>> portfolios() {
     return streamAllOf(PortfolioData.class, new ArrayList<>());
   }
-
 }

@@ -18,24 +18,24 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
 	private PortfolioState state;
 	private int version = 0;
 
-	public PortfolioEntity(final String id) {
-		super(id);
-		this.state = PortfolioState.identifiedBy(id);
-	}
+  public PortfolioEntity(final String id) {
+    super(id);
+    this.state = PortfolioState.identifiedBy(id);
+  }
 
 	public Completes<PortfolioState> portfolioCreated(final String value) {
 		
 		return apply(new PortfolioCreated(state.id, value), () -> state);
 	}
 
-	// =====================================
-	// EventSourced
-	// =====================================
+  // =====================================
+  // EventSourced
+  // =====================================
 
-	static {
-		EventSourced.registerConsumer(PortfolioEntity.class, PortfolioCreated.class,
-				PortfolioEntity::applyPortfolioCreated);
-	}
+  static {
+    EventSourced.registerConsumer(
+        PortfolioEntity.class, PortfolioCreated.class, PortfolioEntity::applyPortfolioCreated);
+  }
 
 	private void applyPortfolioCreated(final PortfolioCreated e) {
 		CommandModelJournalProvider.instance().journal.append("PortfolioCreated", version++, e, new AppendResultInterest() {

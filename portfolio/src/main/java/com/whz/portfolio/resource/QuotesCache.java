@@ -1,20 +1,18 @@
 package com.whz.portfolio.resource;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DeliverCallback;
+import com.whz.portfolio.infrastructure.StockQuoteData;
+import io.vlingo.actors.Logger;
+import io.vlingo.common.serialization.JsonSerialization;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DeliverCallback;
-import com.whz.portfolio.infrastructure.StockQuoteData;
-
-import io.vlingo.actors.Logger;
-import io.vlingo.common.serialization.JsonSerialization;
 
 public enum QuotesCache {
 
