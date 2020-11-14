@@ -41,8 +41,8 @@ public class Bootstrap {
     CommandModelJournalProvider.using(
         stage, sourcedTypeRegistry, ProjectionDispatcherProvider.using(stage).storeDispatcher);
 
-    final PortfolioResource feedbackAggregateResource = new PortfolioResource(stage);
-    Resources allResources = Resources.are(feedbackAggregateResource.routes());
+    final PortfolioResource portfolioResource = new PortfolioResource(stage);
+    Resources allResources = Resources.are(portfolioResource.routes());
 
     server = Server.startWith(stage, allResources, port, Sizing.define(), Timing.define());
 
