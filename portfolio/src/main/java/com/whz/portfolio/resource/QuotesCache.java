@@ -8,6 +8,7 @@ import com.whz.portfolio.infrastructure.StockQuoteData;
 import io.vlingo.actors.Logger;
 import io.vlingo.common.serialization.JsonSerialization;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,11 +19,11 @@ public enum QuotesCache {
   INSTANCE();
 
   private final Logger logger = Logger.basicLogger();
-  private final String EXCHANGE_NAME = "logs";
-  private Map<String, StockQuoteData> stockQuotes = new HashMap<>();
+  private static final String EXCHANGE_NAME = "logs";
+  private final Map<String, StockQuoteData> stockQuotes = new HashMap<>();
   private Connection connection;
 
-  private QuotesCache() {
+  QuotesCache() {
     try {
       ConnectionFactory factory = new ConnectionFactory();
       factory.setHost("localhost");
@@ -37,7 +38,7 @@ public enum QuotesCache {
 
       DeliverCallback deliverCallback =
           (consumerTag, delivery) -> {
-            String message = new String(delivery.getBody(), "UTF-8");
+            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             StockQuoteData stockQuoteData = deserialized(message);
             stockQuotes.put(stockQuoteData.symbol, stockQuoteData);
             logger.debug(

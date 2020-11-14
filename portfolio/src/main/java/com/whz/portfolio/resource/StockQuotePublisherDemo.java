@@ -5,7 +5,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import io.vlingo.actors.Logger;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
 public class StockQuotePublisherDemo {
@@ -23,14 +23,10 @@ public class StockQuotePublisherDemo {
       for (int i = 0; i < 100; i++) {
         Thread.sleep((long) (Math.random() * 1000));
         String message = createSample("SomeStock" + i);
-        channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes("UTF-8"));
+        channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes(StandardCharsets.UTF_8));
       }
 
-    } catch (UnsupportedEncodingException e) {
-      logger.debug(e.getMessage(), e);
-    } catch (IOException e) {
-      logger.debug(e.getMessage(), e);
-    } catch (TimeoutException e1) {
+    } catch (IOException | TimeoutException e) {
       logger.debug(e.getMessage(), e);
     }
   }

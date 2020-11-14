@@ -64,7 +64,8 @@ public class PortfolioResource extends ResourceHandler {
 
   // PUT
   public Completes<Response> handlePut(PortfolioData data) {
-    return Completes.withSuccess(Response.of(Ok, "Updated"));
+    return Completes.withSuccess(
+        Response.of(Ok, headers(of(Location, location(data.id))), "Updated"));
   }
 
   // DELETE
@@ -77,7 +78,7 @@ public class PortfolioResource extends ResourceHandler {
     return Completes.withSuccess(
         Response.of(
             Ok,
-            headers(of(Location, "test")).and(of(ContentType, "application/json")),
+            headers(of(ContentType, "application/json")),
             serialized(QuotesCache.INSTANCE.get())));
   }
 
