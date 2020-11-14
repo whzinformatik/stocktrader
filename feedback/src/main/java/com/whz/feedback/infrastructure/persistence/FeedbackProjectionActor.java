@@ -8,7 +8,6 @@ import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.Source;
-
 import java.util.ArrayList;
 import java.util.List;
 

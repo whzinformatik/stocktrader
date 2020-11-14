@@ -3,7 +3,6 @@ package com.whz.feedback.infrastructure.persistence;
 import com.whz.feedback.model.feedback.FeedbackActor;
 import com.whz.feedback.model.feedback.FeedbackSubmittedEvent;
 import io.vlingo.actors.Stage;
-import io.vlingo.lattice.model.DomainEvent;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 import io.vlingo.symbio.EntryAdapterProvider;
@@ -58,9 +57,7 @@ public class CommandModelJournalProvider {
         StoreActorBuilder.from(
             stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
 
-    registry.register(
-        new Info(
-            journal, FeedbackActor.class, FeedbackActor.class.getSimpleName()));
+    registry.register(new Info(journal, FeedbackActor.class, FeedbackActor.class.getSimpleName()));
 
     instance = new CommandModelJournalProvider(journal);
 

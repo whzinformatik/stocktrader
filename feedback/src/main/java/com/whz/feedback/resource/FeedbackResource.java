@@ -1,5 +1,10 @@
 package com.whz.feedback.resource;
 
+import static io.vlingo.common.serialization.JsonSerialization.serialized;
+import static io.vlingo.http.Response.Status.*;
+import static io.vlingo.http.ResponseHeader.*;
+import static io.vlingo.http.resource.ResourceBuilder.*;
+
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.infrastructure.persistence.FeedbackQueries;
 import com.whz.feedback.infrastructure.persistence.QueryModelStateStoreProvider;
@@ -10,11 +15,6 @@ import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
-
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.*;
-import static io.vlingo.http.ResponseHeader.*;
-import static io.vlingo.http.resource.ResourceBuilder.*;
 
 public class FeedbackResource extends ResourceHandler {
 
@@ -33,33 +33,52 @@ public class FeedbackResource extends ResourceHandler {
     return Completes.withSuccess(Response.of(Response.Status.Ok));
   }
 
-  public Completes<Response> create(FeedbackData feedbackData){
+  public Completes<Response> create(FeedbackData feedbackData) {
     return Feedback.defineWith(stage, feedbackData.message)
-            .andThenTo(state -> Completes.withSuccess(Response.of(Created, headers(of(Location, location(state.id))).and(of(ContentType, "application/json")), serialized(FeedbackData.from(state)))));
+        .andThenTo(
+            state ->
+                Completes.withSuccess(
+                    Response.of(
+                        Created,
+                        headers(of(Location, location(state.id)))
+                            .and(of(ContentType, "application/json")),
+                        serialized(FeedbackData.from(state)))));
   }
 
   public Completes<Response> queryFeedback(String feedbackId) {
-    return queries.feedbackOf(feedbackId)
-            .andThenTo(FeedbackData.empty(), data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
-            .otherwise(noData -> Response.of(NotFound, location(feedbackId)));
+    return queries
+        .feedbackOf(feedbackId)
+        .andThenTo(
+            FeedbackData.empty(),
+            data ->
+                Completes.withSuccess(
+                    Response.of(
+                        Ok, headers(of(ContentType, "application/json")), serialized(data))))
+        .otherwise(noData -> Response.of(NotFound, location(feedbackId)));
   }
 
   public Completes<Response> queryFeedbacks() {
-    return queries.feedbacks()
-            .andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))));
+    return queries
+        .feedbacks()
+        .andThenTo(
+            data ->
+                Completes.withSuccess(
+                    Response.of(
+                        Ok, headers(of(ContentType, "application/json")), serialized(data))));
   }
 
   @Override
   public Resource<?> routes() {
     logger.info("calling ready...");
-    return resource(getClass().getSimpleName(),
-            get("/ready").handle(this::ready),
-            post("/").body(FeedbackData.class).handle(this::create),
-            get("/{feedbackId}").param(String.class).handle(this::queryFeedback),
-            get("/").handle(this::queryFeedbacks));
+    return resource(
+        getClass().getSimpleName(),
+        get("/ready").handle(this::ready),
+        post("/").body(FeedbackData.class).handle(this::create),
+        get("/{feedbackId}").param(String.class).handle(this::queryFeedback),
+        get("/").handle(this::queryFeedbacks));
   }
 
-  private String location(String id){
-  return "/" + id;
+  private String location(String id) {
+    return "/" + id;
   }
 }

@@ -57,13 +57,16 @@ public class QueryModelStateStoreProvider {
     final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider((stage.world()));
     stateAdapterProvider.registerAdapter(FeedbackData.class, new FeedbackDataStateAdapter());
 
-    StateTypeStateStoreMap.stateTypeToStoreName(FeedbackData.class, FeedbackData.class.getSimpleName());
+    StateTypeStateStoreMap.stateTypeToStoreName(
+        FeedbackData.class, FeedbackData.class.getSimpleName());
 
     final StateStore store =
         StoreActorBuilder.from(
             stage, Model.QUERY, dispatcher, StorageType.STATE_STORE, Settings.properties(), true);
 
-    registry.register(new StatefulTypeRegistry.Info(store, FeedbackData.class, FeedbackData.class.getSimpleName()));
+    registry.register(
+        new StatefulTypeRegistry.Info(
+            store, FeedbackData.class, FeedbackData.class.getSimpleName()));
 
     instance = new QueryModelStateStoreProvider(stage, store);
 
@@ -72,7 +75,6 @@ public class QueryModelStateStoreProvider {
 
   private QueryModelStateStoreProvider(final Stage stage, final StateStore store) {
     this.store = store;
-    this.feedbackQueries =
-        stage.actorFor(FeedbackQueries.class, FeedbackQueriesActor.class, store);
+    this.feedbackQueries = stage.actorFor(FeedbackQueries.class, FeedbackQueriesActor.class, store);
   }
 }
