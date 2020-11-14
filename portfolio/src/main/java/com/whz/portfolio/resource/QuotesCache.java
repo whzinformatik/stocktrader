@@ -78,14 +78,13 @@ public enum QuotesCache {
 
   public static void main(String[] args) {
     StockQuoteData data = INSTANCE.deserialized("{'symbol':'INTC','displayName':'Intel'}");
-    System.out.println(data);
   }
 
   public void cleanUp() {
     try {
       connection.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.debug(e.getMessage(), e);
     }
   }
 }
