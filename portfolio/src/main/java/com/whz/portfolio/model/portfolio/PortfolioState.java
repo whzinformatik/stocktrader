@@ -16,13 +16,13 @@ public final class PortfolioState {
     return id != null && owner == null;
   }
 
-  public PortfolioState withPlaceholderValue(final String value) {
-    return new PortfolioState(this.id, value);
+  public PortfolioState withOwner(final String owner) {
+    return new PortfolioState(this.id, owner);
   }
 
-  private PortfolioState(final String id, final String value) {
+  private PortfolioState(final String id, final String owner) {
     this.id = id;
-    this.owner = value;
+    this.owner = owner;
   }
 
   private PortfolioState(final String id) {

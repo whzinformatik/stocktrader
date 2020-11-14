@@ -82,6 +82,6 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
                   Object object) {}
             },
             this);
-    state = state.withPlaceholderValue(e.owner);
+    state = state.withOwner(e.owner);
   }
 }
