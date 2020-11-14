@@ -39,7 +39,6 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
       int previousVersion,
       PortfolioData currentData,
       int currentVersion) {
-    System.out.println("noo");
     return super.merge(previousData, previousVersion, currentData, currentVersion);
   }
 
@@ -58,7 +57,6 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
     for (final DomainEvent event : events) {
       switch (EventTypes.valueOf(event.typeName())) {
         case PortfolioCreated:
-          System.out.println(event);
           return PortfolioData.from(currentData.id, currentData.owner); // fixed and closed
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
