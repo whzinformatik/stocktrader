@@ -21,6 +21,7 @@
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
 
     <vlingo.version>1.3.4-SNAPSHOT</vlingo.version>
+    <rabbitmq.version>5.10.0</rabbitmq.version>
 
     <spotless.version>2.5.0</spotless.version>
 
@@ -71,6 +72,12 @@
       <version>${vlingo.version}</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>com.rabbitmq</groupId>
+      <artifactId>amqp-client</artifactId>
+      <version>${rabbitmq.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
