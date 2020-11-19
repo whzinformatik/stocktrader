@@ -19,7 +19,7 @@ public class CommentToneData {
     }
 
     public static CommentToneData from(final CommentToneState state) {
-        return new CommentToneData(state.id, state.placeholderValue);
+        return new CommentToneData(state.id, state.message);
     }
 
     public static List<CommentToneData> from(final List<CommentToneState> states) {
@@ -32,16 +32,16 @@ public class CommentToneData {
         return data;
     }
 
-    public static CommentToneData from(final String id, final String placeholderValue) {
-        return new CommentToneData(id, placeholderValue);
+    public static CommentToneData from(final String id, final String message) {
+        return new CommentToneData(id, message);
     }
 
-    public static CommentToneData just(final String placeholderValue) {
-        return new CommentToneData("", placeholderValue);
+    public static CommentToneData just(final String message) {
+        return new CommentToneData("", message);
     }
 
     @Override
     public String toString() {
-        return "CommentToneData [id=" + id + " placeholderValue=" + message + "]";
+        return "CommentToneData [id=" + id + " message=" + message + "]";
     }
 }

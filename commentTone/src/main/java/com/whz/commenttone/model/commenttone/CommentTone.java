@@ -7,12 +7,12 @@ import io.vlingo.common.Completes;
 
 public interface CommentTone {
 
-    static Completes<CommentToneState> definePlaceholder(final Stage stage, final String placeholderValue) {
+    static Completes<CommentToneState> defineWith(final Stage stage, final String message) {
         final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
-        final CommentTone commentTone = stage.actorFor(CommentTone.class, Definition.has(CommentToneEntity.class, Definition.parameters(address.idString())), address);
-        return commentTone.definePlaceholder(placeholderValue);
+        final CommentTone commentTone = stage.actorFor(CommentTone.class, Definition.has(CommentToneActor.class, Definition.parameters(address.idString())), address);
+        return commentTone.defineWith(message);
     }
 
-    Completes<CommentToneState> definePlaceholder(final String placeholderValue);
+    Completes<CommentToneState> defineWith(final String message);
 
 }
