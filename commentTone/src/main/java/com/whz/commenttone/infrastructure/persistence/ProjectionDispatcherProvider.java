@@ -32,7 +32,7 @@ public class ProjectionDispatcherProvider {
 
         final List<ProjectToDescription> descriptions =
                 Arrays.asList(
-                        ProjectToDescription.with(CommentToneProjectionActor.class, "CommentTonePlaceholderDefined")
+                        ProjectToDescription.with(CommentToneProjectionActor.class, "CommentTonePublished")
                 );
 
         final Protocols dispatcherProtocols =
