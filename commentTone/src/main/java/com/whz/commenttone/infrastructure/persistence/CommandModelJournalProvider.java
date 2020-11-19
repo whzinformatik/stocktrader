@@ -1,6 +1,6 @@
 package com.whz.commenttone.infrastructure.persistence;
 
-import com.whz.commenttone.model.commenttone.CommentTonePlaceholderDefined;
+import com.whz.commenttone.model.commenttone.CommentTonePublishedEvent;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
@@ -47,12 +47,12 @@ public class CommandModelJournalProvider {
 
         final EntryAdapterProvider entryAdapterProvider = EntryAdapterProvider.instance(stage.world());
 
-        entryAdapterProvider.registerAdapter(CommentTonePlaceholderDefined.class, new CommentTonePlaceholderDefinedAdapter());
+        entryAdapterProvider.registerAdapter(CommentTonePublishedEvent.class, new CommentToneAdapter());
 
         final Journal<String> journal =
                 StoreActorBuilder.from(stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
 
-        registry.register(new Info(journal, CommentTonePlaceholderDefined.class, CommentTonePlaceholderDefined.class.getSimpleName()));
+        registry.register(new Info(journal, CommentTonePublishedEvent.class, CommentTonePublishedEvent.class.getSimpleName()));
 
         instance = new CommandModelJournalProvider(journal);
 

@@ -45,8 +45,8 @@ public class CommentToneProjectionActor extends StateStoreProjectionActor<Commen
 
         for (final DomainEvent event : events) {
             switch (EventTypes.valueOf(event.typeName())) {
-                case CommentTonePlaceholderDefined:
-                    return CommentToneData.from(currentData.id, "Handle CommentTonePlaceholderDefined here");   // TODO: implement actual merge
+                case CommentTonePublished:
+                    return CommentToneData.from(currentData.id, "Handle CommentToneEvent here");   // TODO: implement actual merge
                 default:
                     logger().warn("Event of type " + event.typeName() + " was not matched.");
                     break;
