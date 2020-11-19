@@ -7,11 +7,11 @@ import java.util.List;
 
 public class CommentToneData {
     public final String id;
-    public final String placeholderValue;
+    public final String message;
 
-    private CommentToneData(final String id, final String placeholderValue) {
+    private CommentToneData(final String id, final String message) {
         this.id = id;
-        this.placeholderValue = placeholderValue;
+        this.message = message;
     }
 
     public static CommentToneData empty() {
@@ -42,6 +42,6 @@ public class CommentToneData {
 
     @Override
     public String toString() {
-        return "CommentToneData [id=" + id + " placeholderValue=" + placeholderValue + "]";
+        return "CommentToneData [id=" + id + " placeholderValue=" + message + "]";
     }
 }
