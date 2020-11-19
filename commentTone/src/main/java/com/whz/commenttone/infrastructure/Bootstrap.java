@@ -16,7 +16,7 @@ import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 
 public class Bootstrap {
-    private static final int DefaultPort = 18080;
+    private static final int DefaultPort = 18081;
     private static Bootstrap instance;
     private final Server server;
     private final World world;
