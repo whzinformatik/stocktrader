@@ -20,7 +20,7 @@
     <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
 
-    <vlingo.version>1.3.4-SNAPSHOT</vlingo.version>
+    <vlingo.version>1.4.1-SNAPSHOT</vlingo.version>
     <rabbitmq.version>5.10.0</rabbitmq.version>
 
     <spotless.version>2.5.0</spotless.version>
