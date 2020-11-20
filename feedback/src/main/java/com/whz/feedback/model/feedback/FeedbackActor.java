@@ -28,7 +28,7 @@ public final class FeedbackActor extends EventSourced implements Feedback {
 
   @Override
   public Completes<FeedbackState> defineWith(final String message) {
-    return apply(new FeedbackSubmittedEvent(state.id, message), () -> state);
+    return apply(new FeedbackSubmitted(state.id, message), () -> state);
   }
 
   // =====================================
@@ -37,10 +37,10 @@ public final class FeedbackActor extends EventSourced implements Feedback {
 
   static {
     EventSourced.registerConsumer(
-        FeedbackActor.class, FeedbackSubmittedEvent.class, FeedbackActor::applyFeedbackMessage);
+        FeedbackActor.class, FeedbackSubmitted.class, FeedbackActor::applyFeedbackMessage);
   }
 
-  private void applyFeedbackMessage(final FeedbackSubmittedEvent e) {
+  private void applyFeedbackMessage(final FeedbackSubmitted e) {
     state = state.withMessage(e.message);
 
     try {

@@ -1,6 +1,6 @@
 package com.whz.feedback.infrastructure.persistence;
 
-import com.whz.feedback.infrastructure.EventTypes;
+import com.whz.feedback.model.feedback.FeedbackSubmitted;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
@@ -33,7 +33,7 @@ public class ProjectionDispatcherProvider {
     final List<ProjectToDescription> descriptions =
         Collections.singletonList(
             ProjectToDescription.with(
-                FeedbackProjectionActor.class, EventTypes.FeedbackSubmitted.name()));
+                FeedbackProjectionActor.class, FeedbackSubmitted.class.getName()));
 
     final Protocols dispatcherProtocols =
         stage.actorFor(

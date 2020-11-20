@@ -1,7 +1,7 @@
 package com.whz.feedback.infrastructure.persistence;
 
 import com.whz.feedback.model.feedback.FeedbackActor;
-import com.whz.feedback.model.feedback.FeedbackSubmittedEvent;
+import com.whz.feedback.model.feedback.FeedbackSubmitted;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
@@ -51,7 +51,7 @@ public class CommandModelJournalProvider {
 
     final EntryAdapterProvider entryAdapterProvider = EntryAdapterProvider.instance(stage.world());
 
-    entryAdapterProvider.registerAdapter(FeedbackSubmittedEvent.class, new EventAdapter<>());
+    entryAdapterProvider.registerAdapter(FeedbackSubmitted.class, new EventAdapter<>());
 
     final Journal<String> journal =
         StoreActorBuilder.from(
