@@ -1,0 +1,33 @@
+name: portfolio
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+      paths:
+        - 'portfolio/**'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        java: [11]
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Spotless
+        working-directory: portfolio
+        run: mvn spotless:check
+      - name: Build database
+        run: docker-compose up -d
+      - name: Build with Maven
+        working-directory: portfolio
+        run: mvn -B package --file pom.xml
