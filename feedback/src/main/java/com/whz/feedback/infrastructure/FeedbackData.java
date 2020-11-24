@@ -1,10 +1,8 @@
 package com.whz.feedback.infrastructure;
 
 import com.whz.feedback.model.feedback.FeedbackState;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FeedbackData {
 
