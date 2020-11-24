@@ -3,6 +3,8 @@ package com.whz.feedback.infrastructure;
 import com.whz.feedback.model.feedback.FeedbackState;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FeedbackData {
 
@@ -19,13 +21,7 @@ public class FeedbackData {
   }
 
   public static List<FeedbackData> from(final List<FeedbackState> states) {
-    final List<FeedbackData> data = new ArrayList<>(states.size());
-
-    for (final FeedbackState state : states) {
-      data.add(FeedbackData.from(state));
-    }
-
-    return data;
+    return states.stream().map(FeedbackData::from).collect(Collectors.toList());
   }
 
   public static FeedbackData from(final String id, final String message) {
