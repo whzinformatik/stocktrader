@@ -12,22 +12,7 @@ services:
       POSTGRES_DB: vlingo_test
       POSTGRES_USER: vlingo_test
       POSTGRES_PASSWORD: vlingo123
-  mysql:
-    image: mysql:latest
-    volumes:
-       - vlingo_symbio_jdbc_mysql
-       - ./mysql_init.sql:/docker-entrypoint-initdb.d/mysql_init.sql
-    restart: always
-    command: mysqld --default-authentication-plugin=mysql_native_password
-    ports:
-      - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: vlingo123
-      MYSQL_USER: vlingo_test
-      MYSQL_PASSWORD: vlingo123
-      MYSQL_DATABASE: vlingo_test
 
 volumes:
   vlingo_symbio_jdbc_postgres:
-  vlingo_symbio_jdbc_mysql:
     

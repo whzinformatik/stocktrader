@@ -1,6 +1,7 @@
 package com.whz.account.infrastructure.persistence;
 
 import com.whz.account.model.account.AccountCreated;
+import com.whz.account.model.account.AccountEntity;
 
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
@@ -45,12 +46,12 @@ public class CommandModelJournalProvider {
 
 		final EntryAdapterProvider entryAdapterProvider = EntryAdapterProvider.instance(stage.world());
 
-		entryAdapterProvider.registerAdapter(AccountCreated.class, new AccountPlaceholderDefinedAdapter());
+		entryAdapterProvider.registerAdapter(AccountCreated.class, new EventAdapter<>());
 
 		final Journal<String> journal = StoreActorBuilder.from(stage, Model.COMMAND, dispatcher, StorageType.JOURNAL,
 				Settings.properties(), true);
 
-		registry.register(new Info(journal, AccountCreated.class, AccountCreated.class.getSimpleName()));
+		registry.register(new Info(journal, AccountEntity.class, AccountCreated.class.getSimpleName()));
 
 		instance = new CommandModelJournalProvider(journal);
 
