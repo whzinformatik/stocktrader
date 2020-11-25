@@ -13,15 +13,15 @@ services:
       POSTGRES_USER: vlingo_test
       POSTGRES_PASSWORD: vlingo123
   rabbitmq:
-      image: rabbitmq:3-management-alpine
-      container_name: rabbitmq
-      volumes:
-          - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
-          - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
-          - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
-      ports:
-          - 5672:5672
-          - 15672:15672
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    volumes:
+      - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
+      - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
+    ports:
+      - 5672:5672
+      - 15672:15672
 
 volumes:
   vlingo_symbio_jdbc_postgres:

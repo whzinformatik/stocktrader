@@ -15,7 +15,6 @@ import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
-import org.flywaydb.core.Flyway;
 
 public class Bootstrap {
 
@@ -32,11 +31,6 @@ public class Bootstrap {
   private final World world;
 
   public Bootstrap(final int port) throws Exception {
-    Flyway.configure()
-        .dataSource("jdbc:postgresql://[::1]:5432/", "vlingo_test", "vlingo123")
-        .load()
-        .migrate();
-
     world = World.startWithDefaults(NAME);
 
     final Stage stage =
@@ -48,8 +42,8 @@ public class Bootstrap {
     CommandModelJournalProvider.using(
         stage, sourcedTypeRegistry, ProjectionDispatcherProvider.using(stage).storeDispatcher);
 
-    final FeedbackResource feedbackAggregateResource = new FeedbackResource(stage);
-    Resources allResources = Resources.are(feedbackAggregateResource.routes());
+    final FeedbackResource feedbackResource = new FeedbackResource(stage);
+    Resources allResources = Resources.are(feedbackResource.routes());
 
     server = Server.startWith(stage, allResources, port, Sizing.define(), Timing.define());
 

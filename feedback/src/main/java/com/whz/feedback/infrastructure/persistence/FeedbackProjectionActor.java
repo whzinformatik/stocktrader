@@ -2,36 +2,22 @@ package com.whz.feedback.infrastructure.persistence;
 
 import com.whz.feedback.infrastructure.EventTypes;
 import com.whz.feedback.infrastructure.FeedbackData;
-import io.vlingo.lattice.model.DomainEvent;
-import io.vlingo.lattice.model.IdentifiedDomainEvent;
+import com.whz.feedback.model.feedback.FeedbackSubmitted;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
-import io.vlingo.symbio.Entry;
-import java.util.ArrayList;
-import java.util.List;
+import io.vlingo.symbio.Source;
 
 public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackData> {
 
   private static final FeedbackData Empty = FeedbackData.empty();
 
-  private String dataId;
-
-  private final List<IdentifiedDomainEvent> events;
-
   public FeedbackProjectionActor() {
     super(QueryModelStateStoreProvider.instance().store);
-    this.events = new ArrayList<>(2);
   }
 
   @Override
   protected FeedbackData currentDataFor(final Projectable projectable) {
     return Empty;
-  }
-
-  @Override
-  protected String dataIdFor(final Projectable projectable) {
-    dataId = events.get(0).identity();
-    return dataId;
   }
 
   @Override
@@ -41,29 +27,17 @@ public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackD
       final FeedbackData currentData,
       final int currentVersion) {
 
-    if (previousVersion == currentVersion) {
-      return currentData;
-    }
-
-    for (final DomainEvent event : events) {
+    for (final Source<?> event : sources()) {
       switch (EventTypes.valueOf(event.typeName())) {
         case FeedbackSubmitted:
-          return FeedbackData.from(previousData.id, currentData.message);
+          final FeedbackSubmitted feedbackSubmittedEvent = typed(event);
+          return FeedbackData.from(feedbackSubmittedEvent.id, feedbackSubmittedEvent.message);
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
-          break;
+          return Empty;
       }
     }
 
-    return previousData;
-  }
-
-  @Override
-  protected void prepareForMergeWith(final Projectable projectable) {
-    events.clear();
-
-    for (Entry<?> entry : projectable.entries()) {
-      events.add(entryAdapter().anyTypeFromEntry(entry));
-    }
+    return null;
   }
 }
