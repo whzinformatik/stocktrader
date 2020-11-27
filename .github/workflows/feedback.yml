@@ -28,7 +28,7 @@ jobs:
         run: mvn spotless:check
       - name: License Check
         working-directory: feedback
-        run: mvn license:check-file-header
+        run: mvn license:check
       - name: Build environment
         run: docker-compose up -d
       - name: Build with Maven
