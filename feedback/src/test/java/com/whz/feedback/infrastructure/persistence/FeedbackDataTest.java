@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 package com.whz.feedback.infrastructure.persistence;
-
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.whz.feedback.infrastructure.FeedbackData;
