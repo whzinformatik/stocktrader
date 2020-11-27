@@ -13,8 +13,8 @@
 
   <licenses>
     <license>
-      <name>MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <name>Mozilla Public License 2.0</name>
+      <url>https://opensource.org/licenses/MPL-2.0</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -42,8 +42,6 @@
     <junit.version>5.6.0</junit.version>
     <mockito.version>3.5.15</mockito.version>
     <restassured.version>4.3.1</restassured.version>
-
-    <license.licenseName>mit</license.licenseName>
   </properties>
   
   <repositories>
@@ -249,29 +247,26 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
+          <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>2.0.0</version>
           <configuration>
-            <verbose>false</verbose>
-            <failOnMissingHeader>true</failOnMissingHeader>
+            <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
+            <properties>
+              <owner>${project.organization.name}</owner>
+              <email>help.flaxel@gmail.com</email>
+              <license.years>2020</license.years>
+            </properties>
             <includes>
-              <include>**/*.java</include>
+              <include>src/*/java/**/*.java</include>
             </includes>
           </configuration>
           <executions>
             <execution>
-              <id>generate-file-header</id>
+              <id>first</id>
               <goals>
-                <goal>update-file-header</goal>
+                <goal>check</goal>
               </goals>
               <phase>process-sources</phase>
-              <configuration>
-                <roots>
-                  <root>src/main/java</root>
-                  <root>src/test/java</root>
-                </roots>
-              </configuration>
             </execution>
           </executions>
         </plugin>
