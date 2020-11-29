@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public enum QuotesCache {
-  INSTANCE();
+  INSTANCE;
 
   private final Logger logger = Logger.basicLogger();
   private static final String EXCHANGE_NAME = "logs";
