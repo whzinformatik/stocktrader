@@ -1,17 +1,29 @@
 package com.whz.portfolio.infrastructure;
 
+/**
+ * 
+ * @author Florian
+ * Used as a Java class representation of the stock data from the stock quote project
+ */
 public class StockQuoteData {
 
-  public final String symbol;
-  public final String displayName;
+	public final String symbol;
+	public final String longName;
+	public final String financialCurrency;
+	public final double regularMarketPrice;
+	public final long regularMarketTime;
 
-  private StockQuoteData(final String symbol, final String displayName) {
-    this.symbol = symbol;
-    this.displayName = displayName;
-  }
+	public StockQuoteData(String symbol, String longName, String financialCurrency, double regularMarketPrice,
+			long regularMarketTime) {
+		this.symbol = symbol;
+		this.longName = longName;
+		this.financialCurrency = financialCurrency;
+		this.regularMarketPrice = regularMarketPrice;
+		this.regularMarketTime = regularMarketTime;
+	}
 
-  @Override
-  public String toString() {
-    return "Stock quote - symbol '" + symbol + "'";
-  }
+	@Override
+	public String toString() {
+		return "Stock with symbol: '" + symbol + "'";
+	}
 }

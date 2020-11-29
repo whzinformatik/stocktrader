@@ -9,17 +9,18 @@ import java.util.Collection;
 
 public class PortfolioQueriesActor extends StateStoreQueryActor implements PortfolioQueries {
 
-  public PortfolioQueriesActor(StateStore store) {
-    super(store);
-  }
+	public PortfolioQueriesActor(StateStore store) {
+		super(store);
+	}
 
-  @Override
-  public Completes<PortfolioData> portfolioOf(String id) {
-    return queryStateFor(id, PortfolioData.class, PortfolioData.empty());
-  }
+	@Override
+	public Completes<PortfolioData> portfolioOf(String id) {
+		return queryStateFor(id, PortfolioData.class, PortfolioData.empty());
+	}
 
-  @Override
-  public Completes<Collection<PortfolioData>> portfolios() {
-    return streamAllOf(PortfolioData.class, new ArrayList<>());
-  }
+	@Override
+	public Completes<Collection<PortfolioData>> portfolios() {
+		return streamAllOf(PortfolioData.class, new ArrayList<>());
+	}
+
 }

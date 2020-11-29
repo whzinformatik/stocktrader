@@ -1,5 +1,5 @@
 package com.whz.portfolio.infrastructure;
 
 public enum EventTypes {
-  PortfolioCreated,
+	PortfolioCreated, StockAcquired
 }

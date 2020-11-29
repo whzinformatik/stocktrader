@@ -1,24 +1,18 @@
 package com.whz.portfolio.infrastructure;
 
 import com.whz.portfolio.model.portfolio.PortfolioState;
+import com.whz.portfolio.model.portfolio.Stock;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioData {
-  public final String id;
-  public final String owner;
-
-  // TODO
-  //  private String owner;
-  //  private double total;
-  //  private String loyalty;
-  //  private double balance;
-  //  private double commissions;
-  //  private int free;
-  //  private String sentiment;
-  //  private double nextCommission;
-
-  // private List<Stock> stockList = new ArrayList<Stock>();
+	// vlingo
+  public String id;
+  
+  public String owner;
+  public List<Stock> stockList = new ArrayList<>();
+  public double total; 
 
   public static PortfolioData empty() {
     return new PortfolioData("", "");
