@@ -32,8 +32,7 @@ public class Bootstrap {
   public Bootstrap(final int port) throws Exception {
     world = World.startWithDefaults(NAME);
 
-    final Stage stage =
-        world.stageNamed(NAME, Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
+    final Stage stage = world.stageNamed(NAME);
 
     final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
     final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
