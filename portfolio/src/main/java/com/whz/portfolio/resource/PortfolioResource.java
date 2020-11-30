@@ -17,6 +17,8 @@ import com.whz.portfolio.infrastructure.PortfolioData;
 import com.whz.portfolio.infrastructure.persistence.PortfolioQueries;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.portfolio.model.portfolio.Portfolio;
+import com.whz.portfolio.model.portfolio.PortfolioEntity;
+
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
@@ -58,10 +60,10 @@ public class PortfolioResource extends ResourceHandler {
 
 	// acquire stock
 	public Completes<Response> handleAcquireStock(String id, AcquireStockData data) {
-		return Portfolio.acquireStock(stage, id, data.symbol, data.amount)
-				.andThenTo(state -> Completes.withSuccess(Response.of(Ok,
-						headers(of(Location, location(state.id))).and(of(ContentType, "application/json")),
-						serialized(PortfolioData.from(state)))));
+		return resolve(id).andThenTo(portfolio -> portfolio.stockAcquired(data.symbol, data.amount))
+				.andThenTo(state -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")),
+						serialized(PortfolioData.from(state)))))
+				.otherwise(noGreeting -> Response.of(NotFound, location(id)));
 	}
 
 	// get all stocks
@@ -80,6 +82,10 @@ public class PortfolioResource extends ResourceHandler {
 
 	private String location(final String id) {
 		return "/portfolio/" + id;
+	}
+
+	private Completes<Portfolio> resolve(final String id) {
+		return stage.actorOf(Portfolio.class, stage.addressFactory().from(id), PortfolioEntity.class);
 	}
 
 }
