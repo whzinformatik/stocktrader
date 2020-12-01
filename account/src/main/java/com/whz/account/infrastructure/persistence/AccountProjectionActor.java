@@ -30,9 +30,9 @@ public class AccountProjectionActor extends StateStoreProjectionActor<AccountDat
 			switch (EventTypes.valueOf(event.typeName())) {
 			case AccountCreated:
 				final AccountCreated accountCreated = typed(event);
-				merged = AccountData.from(accountCreated.id, accountCreated.placeholderValue); // TODO: implement actual
-																								// merge and appropriate
-																								// attributes
+				merged = AccountData.from(accountCreated.id, accountCreated.balance, accountCreated.totalInvested,
+						accountCreated.loyalty, accountCreated.commissions, accountCreated.free,
+						accountCreated.sentiment);
 				break;
 			default:
 				merged = Empty;

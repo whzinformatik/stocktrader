@@ -1,35 +1,59 @@
 package com.whz.account.model.account;
 
 public final class AccountState {
-  public final String id;
-  public final String placeholderValue;
+	public final String id;
+	public double balance;
+	public double totalInvested;
+	public String loyalty;
+	public double commissions;
+	public int free;
+	public String sentiment;
 
-  public static AccountState identifiedBy(final String id) {
-    return new AccountState(id);
-  }
+	public static AccountState identifiedBy(final String id) {
+		return new AccountState(id);
+	}
 
-  public boolean doesNotExist() {
-    return id == null;
-  }
+	public boolean doesNotExist() {
+		return id == null;
+	}
 
-  public boolean isIdentifiedOnly() {
-    return id != null && placeholderValue == null;
-  }
+	public boolean isIdentifiedOnly() {
+		return id != null //
+				&& balance == 0.0//
+				&& totalInvested == 0.0//
+				&& loyalty == null//
+				&& commissions == 0.0//
+				&& free == 0//
+				&& sentiment == null;
+	}
 
-  public AccountState withPlaceholderValue(final String value) {
-    return new AccountState(this.id, value);
-  }
+	public AccountState withCreationValues(double balance) {
+		return new AccountState(id, balance);
+	}
 
-  private AccountState(final String id, final String value) {
-    this.id = id;
-    this.placeholderValue = value;
-  }
+	public AccountState(final String id, double balance) {
+		this.id = id;
+		this.balance = balance;
 
-  private AccountState(final String id) {
-    this(id, null);
-  }
+		initAccount();
+	}
 
-  private AccountState() {
-    this(null, null);
-  }
+	/**
+	 * Sets the initial variables when an Account is created.
+	 */
+	public void initAccount() {
+		this.totalInvested = 0.0;
+		this.loyalty = "Basic";
+		this.commissions = 8.99;
+		this.free = 0;
+		this.sentiment = "Neutral";
+	}
+
+	private AccountState(final String id) {
+		this(id, 0.0);
+	}
+
+	private AccountState() {
+		this(null, 0.0);
+	}
 }

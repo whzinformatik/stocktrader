@@ -11,8 +11,8 @@ public final class AccountEntity extends EventSourced implements Account {
 		this.state = AccountState.identifiedBy(id);
 	}
 
-	public Completes<AccountState> accountCreated(final String value) {
-		return apply(new AccountCreated(state.id, value), () -> state);
+	public Completes<AccountState> accountCreated(final double balance) {
+		return apply(new AccountCreated(state.id, balance), () -> state);
 	}
 
 	// =====================================
@@ -24,6 +24,6 @@ public final class AccountEntity extends EventSourced implements Account {
 	}
 
 	private void applyAccountCreated(final AccountCreated e) {
-		state = state.withPlaceholderValue(e.placeholderValue);
+		state = state.withCreationValues(e.balance);
 	}
 }

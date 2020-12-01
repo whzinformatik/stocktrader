@@ -47,7 +47,7 @@ public class AccountResource extends ResourceHandler {
 
 	// POST
 	public Completes<Response> handlePost(AccountData data) {
-		return Account.defineWith(stage, data.placeholderValue)
+		return Account.defineWith(stage, data.balance)
 				.andThenTo(state -> Completes.withSuccess(Response.of(Created,
 						headers(of(Location, location(state.id))).and(of(ContentType, "application/json")),
 						serialized(AccountData.from(state)))));
