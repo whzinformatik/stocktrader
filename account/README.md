@@ -33,5 +33,5 @@ The Account will keep all the information that is not of interest to the portfol
 * AccountRetrieved - Retrieves an Account based on its id
 
 ### API
-* /portfolio/{id}	(GET)
-* /portfolio		(POST)
+* /account/{id}  (GET)
+* /account       (POST)
