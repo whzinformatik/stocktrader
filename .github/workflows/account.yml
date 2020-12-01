@@ -19,14 +19,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: Spotless
+      - name: Spotless Check
         working-directory: account
         run: mvn spotless:check
-      - name: Build database
+      - name: License Check
+        working-directory: account
+        run: mvn license:check
+      - name: Build environment
         run: docker-compose up -d
       - name: Build with Maven
         working-directory: account
