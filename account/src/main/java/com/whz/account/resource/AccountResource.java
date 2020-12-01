@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <lationts@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.account.resource;
 
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
@@ -74,7 +81,7 @@ public class AccountResource extends ResourceHandler {
   @Override
   public Resource<?> routes() {
     return resource(
-        "AccountResource",
+        getClass().getSimpleName(),
         get("/account/{id}").param(String.class).handle(this::handleGet),
         post("/account").body(AccountData.class).handle(this::handlePost),
         put("/account").body(AccountData.class).handle(this::handlePut),

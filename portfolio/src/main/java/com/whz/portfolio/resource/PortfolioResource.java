@@ -90,7 +90,7 @@ public class PortfolioResource extends ResourceHandler {
   @Override
   public Resource<?> routes() {
     return resource(
-        "Portfolio Resource",
+        getClass().getSimpleName(),
         get("/portfolio/{id}").param(String.class).handle(this::handleGet),
         post("/portfolio").body(PortfolioData.class).handle(this::handlePost),
         put("/portfolio").body(PortfolioData.class).handle(this::handlePut),
