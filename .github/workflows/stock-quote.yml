@@ -24,7 +24,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
       - name: Spotless
-        working-directory: feedback
+        working-directory: stock-quote
         run: mvn spotless:check
       - name: Build docker setup
         run: docker-compose up -d --build
