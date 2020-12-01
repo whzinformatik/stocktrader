@@ -11,7 +11,7 @@ public class Main {
         String exchangeName = System.getenv("RABBITMQ_EXCHANGE");
         String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
 
-        List<String> symbols = Arrays.asList("TSLA", "INTC", "GOOG", "AAPL", "SAP", "ADS");
+        List<String> symbols = Arrays.asList("TSLA", "INTC", "GOOG", "MSFT", "AMZN", "NVDA", "NFLX", "SBUX", "SAP", "ADDYY", "POAHF", "SAP.DE");
 
         StockQuotePublisher stockQuotePublisher = new StockQuotePublisher(serviceName, exchangeName, exchangeType);
 
