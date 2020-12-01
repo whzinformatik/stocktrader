@@ -1,7 +1,7 @@
 package com.whz.account.model.account;
 
 public final class AccountState {
-	public final String id;
+	public String id;
 	public double balance;
 	public double totalInvested;
 	public String loyalty;
@@ -18,13 +18,8 @@ public final class AccountState {
 	}
 
 	public boolean isIdentifiedOnly() {
-		return id != null //
-				&& balance == 0.0//
-				&& totalInvested == 0.0//
-				&& loyalty == null//
-				&& commissions == 0.0//
-				&& free == 0//
-				&& sentiment == null;
+		return id != null && balance == 0.0 && totalInvested == 0.0 && loyalty == null && commissions == 0.0
+				&& free == 0 && sentiment == null;
 	}
 
 	public AccountState withCreationValues(double balance) {

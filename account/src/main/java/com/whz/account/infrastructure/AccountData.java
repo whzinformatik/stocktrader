@@ -6,7 +6,7 @@ import java.util.List;
 import com.whz.account.model.account.AccountState;
 
 public class AccountData {
-	public final String id;
+	public String id;
 	public double balance;
 	public double totalInvested;
 	public String loyalty;

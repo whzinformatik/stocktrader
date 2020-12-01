@@ -4,19 +4,44 @@
   <groupId>com.whz</groupId>
   <artifactId>account</artifactId>
   <version>1.0.0</version>
+  
+  <organization>
+    <name>Fachgruppe Informatik WHZ</name>
+    <url>https://www.fh-zwickau.de/pti/organisation/fachgruppe-informatik/homepage-der-fg-informatik/</url>
+  </organization>
+  <inceptionYear>2020</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>Mozilla Public License 2.0</name>
+      <url>https://opensource.org/licenses/MPL-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
   <properties>
     <jdk.version>11</jdk.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
+    
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    
     <exec.mainClass>com.whz.account.infrastructure.Bootstrap</exec.mainClass>
+    <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+    <maven-shade-plugin.version>3.1.0</maven-shade-plugin.version>
+    <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+    
     <vlingo.version>1.4.1-SNAPSHOT</vlingo.version>
     <rabbitmq.version>5.10.0</rabbitmq.version>
+    
+    <spotless.version>2.5.0</spotless.version>
+    
     <junit.version>5.6.0</junit.version>
-    <flyway.version>7.0.3</flyway.version>
+    <mockito.version>3.5.15</mockito.version>
+    <restassured.version>4.3.1</restassured.version>
   </properties>
   <repositories>
     <repository>
@@ -61,10 +86,10 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-      <version>${flyway.version}</version>
-    </dependency>
+		<groupId>com.rabbitmq</groupId>
+		<artifactId>amqp-client</artifactId>
+		<version>${rabbitmq.version}</version>
+	</dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -78,17 +103,24 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-		<groupId>com.rabbitmq</groupId>
-		<artifactId>amqp-client</artifactId>
-		<version>${rabbitmq.version}</version>
-	</dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+	<dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${restassured.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>${maven-shade-plugin.version}</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -118,7 +150,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
+        <version>{exec-maven-plugin.version}</version>
         <configuration>
           <executable>java</executable>
           <arguments>
@@ -161,7 +193,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.7.0</version>
+          <version>${maven-compiler-plugin.version}</version>
           <configuration>
             <compilerArgs>
               <arg>-parameters</arg>
@@ -170,7 +202,7 @@
               <path>
                 <groupId>io.vlingo</groupId>
                 <artifactId>vlingo-xoom</artifactId>
-                <version>${vlingo.xoom.version}</version>
+                <version>${vlingo.version}</version>
               </path>
             </annotationProcessorPaths>
           </configuration>
@@ -188,10 +220,49 @@
                   <path>
                     <groupId>io.vlingo</groupId>
                     <artifactId>vlingo-xoom</artifactId>
-                    <version>${vlingo.xoom.version}</version>
+                    <version>${vlingo.version}</version>
                   </path>
                 </annotationProcessorPaths>
               </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>${spotless.version}</version>
+          <configuration>
+            <java>
+              <removeUnusedImports/>
+
+              <googleJavaFormat>
+                <version>1.8</version>
+                <style>GOOGLE</style>
+              </googleJavaFormat>
+            </java>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <configuration>
+            <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
+            <properties>
+              <owner>${project.organization.name}</owner>
+              <email>lationts@gmail.com</email>
+              <license.years>2020</license.years>
+            </properties>
+            <includes>
+              <include>src/*/java/**/*.java</include>
+            </includes>
+          </configuration>
+          <executions>
+            <execution>
+              <id>first</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>process-sources</phase>
             </execution>
           </executions>
         </plugin>

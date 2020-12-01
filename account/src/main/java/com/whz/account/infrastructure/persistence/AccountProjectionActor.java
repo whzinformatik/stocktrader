@@ -23,25 +23,30 @@ public class AccountProjectionActor extends StateStoreProjectionActor<AccountDat
 	@Override
 	protected AccountData merge(final AccountData previousData, final int previousVersion,
 			final AccountData currentData, final int currentVersion) {
-
-		AccountData merged = null;
+		if (previousVersion == currentVersion) {
+			System.out.println(previousVersion);
+			return previousData;
+		}
 
 		for (final Source<?> event : sources()) {
 			switch (EventTypes.valueOf(event.typeName())) {
 			case AccountCreated:
 				final AccountCreated accountCreated = typed(event);
-				merged = AccountData.from(accountCreated.id, accountCreated.balance, accountCreated.totalInvested,
-						accountCreated.loyalty, accountCreated.commissions, accountCreated.free,
-						accountCreated.sentiment);
+				currentData.id = accountCreated.id;
+				currentData.balance = accountCreated.balance;
+				currentData.totalInvested = accountCreated.totalInvested;
+				currentData.loyalty = accountCreated.loyalty;
+				currentData.commissions = accountCreated.commissions;
+				currentData.free = accountCreated.free;
+				currentData.sentiment = accountCreated.sentiment;
 				break;
 			default:
-				merged = Empty;
 				logger().warn("Event of type " + event.typeName() + " was not matched.");
 				break;
 			}
 		}
 
-		return merged;
+		return currentData;
 	}
 
 }

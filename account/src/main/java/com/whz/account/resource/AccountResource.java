@@ -65,20 +65,10 @@ public class AccountResource extends ResourceHandler {
 
 	@Override
 	public Resource<?> routes() {
-		return resource("AccountResource", //
-				get("/account/{id}") //
-						.param(String.class) //
-						.handle(this::handleGet), //
-				post("/account") //
-						.body(AccountData.class) //
-						.handle(this::handlePost), //
-				put("/account")//
-						.body(AccountData.class) //
-						.handle(this::handlePut), //
-				delete("/account/{id}") //
-						.param(String.class) //
-						.handle(this::handleDelete) //
-		);
+		return resource("AccountResource", get("/account/{id}").param(String.class).handle(this::handleGet),
+				post("/account").body(AccountData.class).handle(this::handlePost),
+				put("/account").body(AccountData.class).handle(this::handlePut),
+				delete("/account/{id}").param(String.class).handle(this::handleDelete));
 	}
 
 	private String location(final String id) {

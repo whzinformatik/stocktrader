@@ -3,7 +3,7 @@ package com.whz.account.model.account;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 public final class AccountCreated extends IdentifiedDomainEvent {
-	public final String id;
+	public String id;
 	public double balance;
 	public double totalInvested; // sinnvoller als an "total" festzumachen
 	public String loyalty;
