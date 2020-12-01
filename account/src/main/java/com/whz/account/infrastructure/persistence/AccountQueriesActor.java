@@ -1,13 +1,11 @@
 package com.whz.account.infrastructure.persistence;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.whz.account.infrastructure.AccountData;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.query.StateStoreQueryActor;
 import io.vlingo.symbio.store.state.StateStore;
-
-import com.whz.account.infrastructure.AccountData;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class AccountQueriesActor extends StateStoreQueryActor implements AccountQueries {
 
@@ -24,5 +22,4 @@ public class AccountQueriesActor extends StateStoreQueryActor implements Account
   public Completes<Collection<AccountData>> accounts() {
     return streamAllOf(AccountData.class, new ArrayList<>());
   }
-
 }

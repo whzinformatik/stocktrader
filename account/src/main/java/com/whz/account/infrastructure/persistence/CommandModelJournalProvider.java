@@ -2,7 +2,6 @@ package com.whz.account.infrastructure.persistence;
 
 import com.whz.account.model.account.AccountCreated;
 import com.whz.account.model.account.AccountEntity;
-
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
@@ -17,49 +16,49 @@ import io.vlingo.xoom.storage.Model;
 import io.vlingo.xoom.storage.StoreActorBuilder;
 
 public class CommandModelJournalProvider {
-	private static CommandModelJournalProvider instance;
+  private static CommandModelJournalProvider instance;
 
-	public final Journal<String> journal;
+  public final Journal<String> journal;
 
-	public static CommandModelJournalProvider instance() {
-		return instance;
-	}
+  public static CommandModelJournalProvider instance() {
+    return instance;
+  }
 
-	public static CommandModelJournalProvider using(final Stage stage, final SourcedTypeRegistry registry) {
-		final Dispatcher noop = new Dispatcher() {
-			public void controlWith(final DispatcherControl control) {
-			}
+  public static CommandModelJournalProvider using(
+      final Stage stage, final SourcedTypeRegistry registry) {
+    final Dispatcher noop =
+        new Dispatcher() {
+          public void controlWith(final DispatcherControl control) {}
 
-			public void dispatch(Dispatchable d) {
-			}
-		};
+          public void dispatch(Dispatchable d) {}
+        };
 
-		return using(stage, registry, noop);
-	}
+    return using(stage, registry, noop);
+  }
 
-	@SuppressWarnings({ "unchecked", "unused" })
-	public static CommandModelJournalProvider using(final Stage stage, final SourcedTypeRegistry registry,
-			final Dispatcher dispatcher) {
-		if (instance != null) {
-			return instance;
-		}
+  @SuppressWarnings({"unchecked", "unused"})
+  public static CommandModelJournalProvider using(
+      final Stage stage, final SourcedTypeRegistry registry, final Dispatcher dispatcher) {
+    if (instance != null) {
+      return instance;
+    }
 
-		final EntryAdapterProvider entryAdapterProvider = EntryAdapterProvider.instance(stage.world());
+    final EntryAdapterProvider entryAdapterProvider = EntryAdapterProvider.instance(stage.world());
 
-		entryAdapterProvider.registerAdapter(AccountCreated.class, new EventAdapter<>());
+    entryAdapterProvider.registerAdapter(AccountCreated.class, new EventAdapter<>());
 
-		final Journal<String> journal = StoreActorBuilder.from(stage, Model.COMMAND, dispatcher, StorageType.JOURNAL,
-				Settings.properties(), true);
+    final Journal<String> journal =
+        StoreActorBuilder.from(
+            stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
 
-		registry.register(new Info(journal, AccountEntity.class, AccountCreated.class.getSimpleName()));
+    registry.register(new Info(journal, AccountEntity.class, AccountCreated.class.getSimpleName()));
 
-		instance = new CommandModelJournalProvider(journal);
+    instance = new CommandModelJournalProvider(journal);
 
-		return instance;
-	}
+    return instance;
+  }
 
-	private CommandModelJournalProvider(final Journal<String> journal) {
-		this.journal = journal;
-	}
-
+  private CommandModelJournalProvider(final Journal<String> journal) {
+    this.journal = journal;
+  }
 }
