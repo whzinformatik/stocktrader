@@ -1,8 +1,5 @@
 package com.whz.portfolio.model.portfolio;
 
-import com.whz.portfolio.infrastructure.StockQuoteData;
-import com.whz.portfolio.resource.QuotesCache;
-
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
@@ -20,8 +17,8 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
 	}
 
 	@Override
-	public Completes<PortfolioState> stockAcquired(final String symbol, final int amount) {
-		return apply(new StockAcquired(state.id, symbol, amount), () -> state);
+	public Completes<PortfolioState> stockAcquired(String symbol, long acquisitionMarketTime, int amount) {
+		return apply(new StockAcquired(state.id, symbol, acquisitionMarketTime, amount), () -> state);
 	}
 
 	// =====================================
@@ -39,9 +36,7 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
 	}
 
 	private void applyStockAcquired(final StockAcquired e) {
-		StockQuoteData sq = QuotesCache.INSTANCE.get(e.symbol);
-		Stock stock = new Stock(e.symbol, sq.longName, sq.regularMarketTime, e.amount, sq.regularMarketPrice,
-				sq.regularMarketPrice, sq.financialCurrency);
+		Stock stock = new Stock(e.symbol, e.acquisitionMarketTime, e.amount);
 		state = state.withAcquiredStock(stock);
 	}
 

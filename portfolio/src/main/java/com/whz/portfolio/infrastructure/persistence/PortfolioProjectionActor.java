@@ -29,7 +29,7 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
 
 	protected PortfolioData merge(final PortfolioData previousData, final int previousVersion,
 			final PortfolioData currentData, final int currentVersion) {
-		if(previousVersion == currentVersion) {
+		if (previousVersion == currentVersion) {
 			System.out.println(previousVersion);
 			return previousData;
 		}
@@ -42,11 +42,12 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
 				break;
 			case StockAcquired:
 				final StockAcquired stockAcquired = typed(event);
-				final Stock stock = new Stock(stockAcquired.symbol, "", 0L, stockAcquired.amount, 0.0, 0.0, "");
+				final Stock stock = new Stock(stockAcquired.symbol, stockAcquired.acquisitionMarketTime,
+						stockAcquired.amount);
 				currentData.id = previousData.id;
 				currentData.owner = previousData.owner;
-				currentData.stockList = previousData.stockList;
-				currentData.stockList.add(stock);
+				currentData.stocks = previousData.stocks;
+				currentData.stocks.add(stock);
 				break;
 			default:
 				logger().warn("Event of type " + event.typeName() + " was not matched.");

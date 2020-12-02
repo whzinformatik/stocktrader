@@ -8,45 +8,37 @@ import java.util.List;
 
 public class PortfolioData {
 	// vlingo
-  public String id;
-  
-  public String owner;
-  public List<Stock> stockList = new ArrayList<>();
-  public double total; 
+	public String id;
 
-  public static PortfolioData empty() {
-    return new PortfolioData("", "");
-  }
+	public String owner;
+	public List<Stock> stocks = new ArrayList<>();
 
-  public static PortfolioData from(final PortfolioState state) {
-    return new PortfolioData(state.id, state.owner);
-  }
+	public static PortfolioData empty() {
+		return new PortfolioData("", "", new ArrayList<>());
+	}
 
-  public static List<PortfolioData> from(final List<PortfolioState> states) {
-    final List<PortfolioData> data = new ArrayList<>(states.size());
+	public static PortfolioData from(final PortfolioState state) {
+		return new PortfolioData(state.id, state.owner, state.stocks);
+	}
 
-    for (final PortfolioState state : states) {
-      data.add(PortfolioData.from(state));
-    }
+	public static List<PortfolioData> from(final List<PortfolioState> states) {
+		final List<PortfolioData> data = new ArrayList<>(states.size());
 
-    return data;
-  }
+		for (final PortfolioState state : states) {
+			data.add(PortfolioData.from(state));
+		}
 
-  public static PortfolioData from(final String id, final String owner) {
-    return new PortfolioData(id, owner);
-  }
+		return data;
+	}
 
-  public static PortfolioData just(final String owner) {
-    return new PortfolioData("", owner);
-  }
+	@Override
+	public String toString() {
+		return "PortfolioData [id=" + id + ", owner=" + owner + ", stocks=" + stocks.size() + "]";
+	}
 
-  @Override
-  public String toString() {
-    return "PortfolioData [id=" + id + " owner=" + owner + "]";
-  }
-
-  private PortfolioData(final String id, final String owner) {
-    this.id = id;
-    this.owner = owner;
-  }
+	private PortfolioData(final String id, final String owner, final List<Stock> stocks) {
+		this.id = id;
+		this.owner = owner;
+		this.stocks = stocks;
+	}
 }

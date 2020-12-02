@@ -2,23 +2,29 @@ package com.whz.portfolio.infrastructure;
 
 /**
  * 
- * @author Florian
- * Used in the post request to add a new stock to the portfolio
+ * @author Florian Used in the post request to add a new stock to the portfolio
  */
 public class AcquireStockData {
 
 	public final String symbol;
+	public final long acquisitionMarketTime;
 	public final int amount;
 
-	public AcquireStockData(String symbol, String name, long acquisitionMarketTime, int amount,
-			double acquisitionPrice, double currentPrice, String currency) {
+	// String name
+	// double acquisitionPrice
+	// double currentPrice
+	// String currency
+
+	public AcquireStockData(String symbol, long acquisitionMarketTime, int amount) {
 		this.symbol = symbol;
+		this.acquisitionMarketTime = acquisitionMarketTime;
 		this.amount = amount;
 	}
 
 	@Override
 	public String toString() {
-		return "StockData [symbol=" + symbol + " amount=" + amount + "]";
+		return "AcquireStockData [symbol=" + symbol + ", acquisitionMarketTime=" + acquisitionMarketTime + ", amount="
+				+ amount + "]";
 	}
 
 }
