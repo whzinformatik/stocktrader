@@ -52,7 +52,7 @@ public class QueryModelStateStoreProvider {
         final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider(stage.world());
         stateAdapterProvider.registerAdapter(CommentToneData.class, new CommentToneDataStateAdapter());
 
-        StateTypeStateStoreMap.stateTypeToStoreName(CommentToneData.class, CommentToneData.class.getName());
+        StateTypeStateStoreMap.stateTypeToStoreName(CommentToneData.class, CommentToneData.class.getSimpleName());
 
         final StateStore store =
                 StoreActorBuilder.from(stage, Model.QUERY, dispatcher, StorageType.STATE_STORE, Settings.properties(), true);
