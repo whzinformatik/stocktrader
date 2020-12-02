@@ -8,18 +8,20 @@ import java.util.List;
 public class CommentToneData {
     public final String id;
     public final String message;
+    public final String sentiment;
 
-    private CommentToneData(final String id, final String message) {
+    private CommentToneData(final String id, final String message, final String sentiment) {
         this.id = id;
         this.message = message;
+        this.sentiment = sentiment;
     }
 
     public static CommentToneData empty() {
-        return new CommentToneData("", "");
+        return new CommentToneData("", "", "");
     }
 
     public static CommentToneData from(final CommentToneState state) {
-        return new CommentToneData(state.id, state.message);
+        return new CommentToneData(state.id, state.message, state.sentiment);
     }
 
     public static List<CommentToneData> from(final List<CommentToneState> states) {
@@ -32,12 +34,12 @@ public class CommentToneData {
         return data;
     }
 
-    public static CommentToneData from(final String id, final String message) {
-        return new CommentToneData(id, message);
+    public static CommentToneData from(final String id, final String message, final String sentiment) {
+        return new CommentToneData(id, message, sentiment);
     }
 
-    public static CommentToneData just(final String message) {
-        return new CommentToneData("", message);
+    public static CommentToneData just(final String message, final String sentiment) {
+        return new CommentToneData("", message, sentiment);
     }
 
     @Override

@@ -16,16 +16,18 @@ import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 
 public class Bootstrap {
+
     private static final int DefaultPort = 18081;
+    private static final String service_name = "commentTone";
     private static Bootstrap instance;
     private final Server server;
     private final World world;
 
-    public Bootstrap(final int port) throws Exception {
-        world = World.startWithDefaults("commentTone");
+    public Bootstrap(final int port) {
+        world = World.startWithDefaults(service_name);
 
         final Stage stage =
-                world.stageNamed("commentTone", Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
+                world.stageNamed(service_name, Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
 
         final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
         final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);

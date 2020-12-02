@@ -1,12 +1,18 @@
 package com.whz.commenttone.model.commenttone;
 
+import java.util.Random;
+
 public final class CommentToneState {
     public final String id;
     public final String message;
+    public String sentiment;
 
     private CommentToneState(final String id, final String value) {
         this.id = id;
         this.message = value;
+
+        int r = new Random().nextInt(11);
+        this.sentiment = r < 4 ? "negative" : r < 8 ? "neutral" : "positive";
     }
 
     private CommentToneState(final String id) {
