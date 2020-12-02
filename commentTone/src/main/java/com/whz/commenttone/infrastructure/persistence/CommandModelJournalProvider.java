@@ -1,5 +1,6 @@
 package com.whz.commenttone.infrastructure.persistence;
 
+import com.whz.commenttone.model.commenttone.CommentToneActor;
 import com.whz.commenttone.model.commenttone.CommentTonePublishedEvent;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
@@ -47,12 +48,12 @@ public class CommandModelJournalProvider {
 
         final EntryAdapterProvider entryAdapterProvider = EntryAdapterProvider.instance(stage.world());
 
-        entryAdapterProvider.registerAdapter(CommentTonePublishedEvent.class, new CommentToneAdapter());
+        entryAdapterProvider.registerAdapter(CommentTonePublishedEvent.class, new EventAdapter());
 
         final Journal<String> journal =
                 StoreActorBuilder.from(stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
 
-        registry.register(new Info(journal, CommentTonePublishedEvent.class, CommentTonePublishedEvent.class.getSimpleName()));
+        registry.register(new Info(journal, CommentToneActor.class, CommentToneActor.class.getSimpleName()));
 
         instance = new CommandModelJournalProvider(journal);
 

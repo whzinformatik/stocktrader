@@ -1,5 +1,6 @@
 package com.whz.commenttone.infrastructure.persistence;
 
+import com.whz.commenttone.model.commenttone.CommentTonePublishedEvent;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
@@ -8,7 +9,7 @@ import io.vlingo.lattice.model.projection.ProjectionDispatcher.ProjectToDescript
 import io.vlingo.lattice.model.projection.TextProjectionDispatcherActor;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("rawtypes")
@@ -18,21 +19,20 @@ public class ProjectionDispatcherProvider {
     public final ProjectionDispatcher projectionDispatcher;
     public final Dispatcher storeDispatcher;
 
-    private ProjectionDispatcherProvider(final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
-        this.storeDispatcher = storeDispatcher;
-        this.projectionDispatcher = projectionDispatcher;
-    }
-
     public static ProjectionDispatcherProvider instance() {
         return instance;
+    }
+
+    public static void reset() {
+        instance = null;
     }
 
     public static ProjectionDispatcherProvider using(final Stage stage) {
         if (instance != null) return instance;
 
         final List<ProjectToDescription> descriptions =
-                Arrays.asList(
-                        ProjectToDescription.with(CommentToneProjectionActor.class, "CommentTonePublished")
+                Collections.singletonList(
+                        ProjectToDescription.with(CommentToneProjectionActor.class, CommentTonePublishedEvent.class.getName())
                 );
 
         final Protocols dispatcherProtocols =
@@ -45,5 +45,10 @@ public class ProjectionDispatcherProvider {
         instance = new ProjectionDispatcherProvider(dispatchers._1, dispatchers._2);
 
         return instance;
+    }
+
+    private ProjectionDispatcherProvider(final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
+        this.storeDispatcher = storeDispatcher;
+        this.projectionDispatcher = projectionDispatcher;
     }
 }
