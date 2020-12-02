@@ -47,7 +47,7 @@ public class StockQuotePublisher {
             exchangeName, "", null, answerJsonString.getBytes(StandardCharsets.UTF_8));
       }
     } catch (TimeoutException e) {
-      e.printStackTrace();
+      LOGGER.severe(e.toString());
     }
   }
 
