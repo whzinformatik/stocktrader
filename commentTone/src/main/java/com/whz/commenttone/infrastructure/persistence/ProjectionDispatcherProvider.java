@@ -32,7 +32,7 @@ public class ProjectionDispatcherProvider {
 
         final List<ProjectToDescription> descriptions =
                 Collections.singletonList(
-                        ProjectToDescription.with(CommentToneProjectionActor.class, CommentTonePublishedEvent.class.getName())
+                        ProjectToDescription.with(CommentToneProjectionActor.class, CommentTonePublishedEvent.class.getSimpleName())
                 );
 
         final Protocols dispatcherProtocols =
