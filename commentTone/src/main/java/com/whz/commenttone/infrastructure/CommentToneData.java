@@ -44,6 +44,10 @@ public class CommentToneData {
 
     @Override
     public String toString() {
-        return "CommentToneData [id=" + id + " message=" + message + "]";
+        return "CommentToneData{" +
+                "id='" + id + '\'' +
+                ", message='" + message + '\'' +
+                ", sentiment='" + sentiment + '\'' +
+                '}';
     }
 }
