@@ -2,7 +2,7 @@ package com.whz.commenttone.infrastructure.persistence;
 
 import com.whz.commenttone.infrastructure.CommentToneData;
 import com.whz.commenttone.infrastructure.EventTypes;
-import com.whz.commenttone.model.commenttone.CommentTonePublishedEvent;
+import io.vlingo.actors.Logger;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
@@ -10,6 +10,8 @@ import io.vlingo.symbio.Source;
 public class CommentToneProjectionActor extends StateStoreProjectionActor<CommentToneData> {
 
     private static final CommentToneData Empty = CommentToneData.empty();
+
+    Logger logger = Logger.basicLogger();
 
     public CommentToneProjectionActor() {
         super(QueryModelStateStoreProvider.instance().store);
@@ -27,17 +29,21 @@ public class CommentToneProjectionActor extends StateStoreProjectionActor<Commen
             final CommentToneData currentData,
             final int currentVersion) {
 
+        CommentToneData merged = null;
+
         for (final Source<?> event : sources()) {
             switch (EventTypes.valueOf(event.typeName())) {
                 case CommentTonePublished:
-                    final CommentTonePublishedEvent commentTonePublishedEvent = typed(event);
-                    return CommentToneData.from(commentTonePublishedEvent.id, commentTonePublishedEvent.message, commentTonePublishedEvent.sentiment);
+                    final CommentToneData commentTonePublished = typed(event);
+                    merged = CommentToneData.from(commentTonePublished.id, commentTonePublished.message, currentData.sentiment);
+                    break;
                 default:
+                    merged = Empty;
                     logger().warn("Event of type " + event.typeName() + " was not matched.");
                     break;
             }
         }
 
-        return previousData;
+        return merged;
     }
 }

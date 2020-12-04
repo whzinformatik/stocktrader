@@ -57,7 +57,7 @@ public class QueryModelStateStoreProvider {
         final StateStore store =
                 StoreActorBuilder.from(stage, Model.QUERY, dispatcher, StorageType.STATE_STORE, Settings.properties(), true);
 
-        registry.register(new StatefulTypeRegistry.Info<>(store, CommentToneData.class, CommentToneData.class.getName()));
+        registry.register(new StatefulTypeRegistry.Info<>(store, CommentToneData.class, CommentToneData.class.getSimpleName()));
 
         instance = new QueryModelStateStoreProvider(stage, store);
 
