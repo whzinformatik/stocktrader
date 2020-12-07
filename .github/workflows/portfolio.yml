@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+<<<<<<< HEAD
       - name: Spotless Check
         working-directory: portfolio
         run: mvn spotless:check
@@ -30,6 +31,12 @@ jobs:
         working-directory: portfolio
         run: mvn license:check
       - name: Build environment
+=======
+      - name: Spotless
+        working-directory: portfolio
+        run: mvn spotless:check
+      - name: Build database
+>>>>>>> 3030e763c856d71221fb61eec4786b0dcf1e6a51
         run: docker-compose up -d
       - name: Build with Maven
         working-directory: portfolio

@@ -19,7 +19,6 @@ import com.whz.portfolio.infrastructure.persistence.PortfolioQueries;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.portfolio.model.portfolio.Portfolio;
 import com.whz.portfolio.model.portfolio.PortfolioEntity;
-
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;

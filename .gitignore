@@ -38,5 +38,9 @@ hs_err_pid*
 # Mac files
 .DS_STORE
 
+<<<<<<< HEAD
 # docker
+=======
+# Docker
+>>>>>>> 3030e763c856d71221fb61eec4786b0dcf1e6a51
 .docker/

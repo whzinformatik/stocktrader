@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:latest
     volumes:
-       - vlingo_symbio_jdbc_postgres
+      - vlingo_symbio_jdbc_postgres
     restart: always
     ports:
       - '5432:5432'
@@ -22,7 +22,21 @@ services:
       ports:
           - 5672:5672
           - 15672:15672
+<<<<<<< HEAD
 
 volumes:
   vlingo_symbio_jdbc_postgres:
     
+=======
+  stock-quote-publisher:
+    build: ./stock-quote/
+    restart: on-failure
+    environment:
+      RABBITMQ_SERVICE: "rabbitmq"
+      RABBITMQ_EXCHANGE: "stocks"
+      RABBITMQ_EXCHANGE_TYPE: "fanout"
+      SET_RANDOM_PUBLISH_INTERVAL: "true"
+
+volumes:
+  vlingo_symbio_jdbc_postgres:
+>>>>>>> 3030e763c856d71221fb61eec4786b0dcf1e6a51
