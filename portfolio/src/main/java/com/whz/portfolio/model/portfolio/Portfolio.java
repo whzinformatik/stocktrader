@@ -16,6 +16,6 @@ public interface Portfolio {
 
 	Completes<PortfolioState> portfolioCreated(final String owner);
 
-	Completes<PortfolioState> stockAcquired(String symbol, long acquisitionMarketTime, int amount);
+	Completes<PortfolioState> stockAcquired(String symbol, long acquisitionMarketTime, int amount, double acquisitionMarketPrice);
 
 }

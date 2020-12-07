@@ -34,10 +34,6 @@ public class Bootstrap {
 	public Bootstrap(final int port) throws Exception {
 		world = World.startWithDefaults(NAME);
 
-		// access attempt to initialize the singletons
-		StockQuoteSubscriber sub = StockQuoteSubscriber.INSTANCE;
-		StockAcquiredPublisher pub = StockAcquiredPublisher.INSTANCE;
-
 		final Stage stage = world.stageNamed(NAME);
 
 		final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);

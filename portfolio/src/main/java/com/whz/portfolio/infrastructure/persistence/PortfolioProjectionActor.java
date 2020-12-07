@@ -43,7 +43,7 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
 			case StockAcquired:
 				final StockAcquired stockAcquired = typed(event);
 				final Stock stock = new Stock(stockAcquired.symbol, stockAcquired.acquisitionMarketTime,
-						stockAcquired.amount);
+						stockAcquired.amount, stockAcquired.acquisitionMarketPrice);
 				currentData.id = previousData.id;
 				currentData.owner = previousData.owner;
 				currentData.stocks = previousData.stocks;

@@ -31,12 +31,17 @@ public class PortfolioResource extends ResourceHandler {
 	private final PortfolioQueries portfolioQueries;
 
 	public PortfolioResource(final Stage stage) {
+		// access attempt to initialize the singletons
+		StockQuoteSubscriber sub = StockQuoteSubscriber.INSTANCE;
+		StockAcquiredPublisher pub = StockAcquiredPublisher.INSTANCE;
+		
 		this.stage = stage;
 		portfolioQueries = QueryModelStateStoreProvider.instance().portfolioQueries;
 	}
 
 	/**
 	 * Retrieve an exiting portfolio.
+	 * 
 	 * @param id
 	 * @return A JSON representation of PortfolioData
 	 */
@@ -50,8 +55,9 @@ public class PortfolioResource extends ResourceHandler {
 
 	/**
 	 * Create a new portfolio.
+	 * 
 	 * @param owner
-	 * @return JSON representation of the created PortfolioData 
+	 * @return JSON representation of the created PortfolioData
 	 */
 	public Completes<Response> handleCreatePortfolio(String owner) {
 		return Portfolio.defineWith(stage, owner)
@@ -62,23 +68,27 @@ public class PortfolioResource extends ResourceHandler {
 
 	/**
 	 * Add a stock to an existing portfolio.
+	 * 
 	 * @param id
 	 * @param data
-	 * @return JSON representation of the associated PortfolioData 
+	 * @return JSON representation of the associated PortfolioData
 	 */
 	public Completes<Response> handleAcquireStock(String id, AcquireStockData data) {
-		return resolve(id)
-				.andThenTo(portfolio -> portfolio.stockAcquired(data.symbol, data.acquisitionMarketTime, data.amount))
-				.andThenTo(state -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")),
-						serialized(PortfolioData.from(state)))))
+		return resolve(id).andThenTo(portfolio -> {
+			StockQuoteData stockQuoteData = QuotesCache.INSTANCE.get(data.symbol);
+			return portfolio.stockAcquired(data.symbol, stockQuoteData.regularMarketTime, data.amount,
+					stockQuoteData.regularMarketPrice);
+		}).andThenTo(state -> Completes.withSuccess(
+				Response.of(Ok, headers(of(ContentType, "application/json")), serialized(PortfolioData.from(state)))))
 				.otherwise(noData -> Response.of(NotFound, "/portfolio/" + id));
 	}
 
 	/**
 	 * Retrieve a specific stock.
+	 * 
 	 * @param symbol
 	 * @param time
-	 * @return JSON representation of StockQuoteData 
+	 * @return JSON representation of StockQuoteData
 	 */
 	public Completes<Response> handleGetStock(String symbol, long time) {
 		StockQuoteData result = StockQuoteSubscriber.INSTANCE.get(symbol, time);
@@ -88,8 +98,9 @@ public class PortfolioResource extends ResourceHandler {
 		return Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(result)));
 	}
 
-	/** 
+	/**
 	 * Retrieve all stocks from the cache
+	 * 
 	 * @return JSON representation of multiple StockQuoteData
 	 */
 	public Completes<Response> handleGetStocks() {

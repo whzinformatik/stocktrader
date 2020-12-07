@@ -17,8 +17,8 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
 	}
 
 	@Override
-	public Completes<PortfolioState> stockAcquired(String symbol, long acquisitionMarketTime, int amount) {
-		return apply(new StockAcquired(state.id, symbol, acquisitionMarketTime, amount), () -> state);
+	public Completes<PortfolioState> stockAcquired(String symbol, long acquisitionMarketTime, int amount, double acquisitionMarketPrice) {
+		return apply(new StockAcquired(state.id, symbol, acquisitionMarketTime, amount, acquisitionMarketPrice), () -> state);
 	}
 
 	// =====================================
@@ -36,7 +36,7 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
 	}
 
 	private void applyStockAcquired(final StockAcquired e) {
-		Stock stock = new Stock(e.symbol, e.acquisitionMarketTime, e.amount);
+		Stock stock = new Stock(e.symbol, e.acquisitionMarketTime, e.amount, e.acquisitionMarketPrice);
 		state = state.withAcquiredStock(stock);
 	}
 
