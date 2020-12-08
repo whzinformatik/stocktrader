@@ -11,11 +11,9 @@ import com.whz.feedback.infrastructure.persistence.CommandModelJournalProvider;
 import com.whz.feedback.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.whz.feedback.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.feedback.resource.FeedbackResource;
-import io.vlingo.actors.GridAddressFactory;
 import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
-import io.vlingo.common.identity.IdentityGeneratorType;
 import io.vlingo.http.resource.Configuration.Sizing;
 import io.vlingo.http.resource.Configuration.Timing;
 import io.vlingo.http.resource.Resources;
@@ -40,8 +38,7 @@ public class Bootstrap {
   public Bootstrap(final int port) throws Exception {
     world = World.startWithDefaults(NAME);
 
-    final Stage stage =
-        world.stageNamed(NAME, Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
+    final Stage stage = world.stageNamed(NAME);
 
     final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
     final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
