@@ -1,4 +1,4 @@
-name: feedback
+name: account
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
       paths:
-        - 'feedback/**'
+        - 'account/**'
 
 jobs:
   build:
@@ -24,13 +24,13 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
       - name: Spotless Check
-        working-directory: feedback
+        working-directory: account
         run: mvn spotless:check
       - name: License Check
-        working-directory: feedback
+        working-directory: account
         run: mvn license:check
       - name: Build environment
         run: docker-compose up -d
       - name: Build with Maven
-        working-directory: feedback
+        working-directory: account
         run: mvn -B package --file pom.xml
