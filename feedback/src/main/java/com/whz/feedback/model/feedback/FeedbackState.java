@@ -9,24 +9,28 @@ package com.whz.feedback.model.feedback;
 
 /**
  * This class is used to save the current state of a feedback message.
+ *
  * @since 1.0.0
  */
 public final class FeedbackState {
 
   /**
    * identifier of the feedback message
+   *
    * @since 1.0.0
    */
   public final String id;
 
   /**
    * content of the feedback message
+   *
    * @since 1.0.0
    */
   public final String message;
 
   /**
    * Create a feedback state with an identifier of the feedback message.
+   *
    * @param id identifier of the feedback message
    * @return new feedback state
    * @since 1.0.0
@@ -37,6 +41,7 @@ public final class FeedbackState {
 
   /**
    * Check if the feedback state does exist.
+   *
    * @return true if the identifier is not set, otherwise false
    * @since 1.0.0
    */
@@ -46,6 +51,7 @@ public final class FeedbackState {
 
   /**
    * Check if the feedback state can only identified.
+   *
    * @return true if the identifier is set and all other variables are not set, otherwise false
    * @since 1.0.0
    */
@@ -55,6 +61,7 @@ public final class FeedbackState {
 
   /**
    * Add content to the feedback message.
+   *
    * @param message feedback content of the user
    * @return updated feedback state
    * @since 1.0.0
@@ -65,6 +72,7 @@ public final class FeedbackState {
 
   /**
    * Create a feedback state with identifier and message.
+   *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
    * @since 1.0.0
@@ -76,6 +84,7 @@ public final class FeedbackState {
 
   /**
    * Create a feedback state with identifier.
+   *
    * @param id identifier of the feedback message
    * @since 1.0.0
    */
@@ -85,6 +94,7 @@ public final class FeedbackState {
 
   /**
    * Create a feedback state.
+   *
    * @since 1.0.0
    */
   private FeedbackState() {

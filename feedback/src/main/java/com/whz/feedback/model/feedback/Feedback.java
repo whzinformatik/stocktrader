@@ -14,12 +14,14 @@ import io.vlingo.common.Completes;
 
 /**
  * This interface is used to declare all methods for a feedback message.
+ *
  * @since 1.0.0
  */
 public interface Feedback {
 
   /**
    * Create a new {@link FeedbackActor} with an identifier and a message.
+   *
    * @param stage stage of the current world
    * @param message content of the feedback message
    * @return response for an asynchronous call with a potential result
@@ -37,6 +39,7 @@ public interface Feedback {
 
   /**
    * Add content for the current state of the feedback message.
+   *
    * @param message content of the feedback message
    * @return response for an asynchronous call with potential result
    * @since 1.0.0

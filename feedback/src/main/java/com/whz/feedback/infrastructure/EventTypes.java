@@ -9,6 +9,7 @@ package com.whz.feedback.infrastructure;
 
 /**
  * This enum represents all possible event types.
+ *
  * @since 1.0.0
  */
 public enum EventTypes {

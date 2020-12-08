@@ -13,24 +13,28 @@ import java.util.stream.Collectors;
 
 /**
  * This class represents a DTO for a feedback message.
+ *
  * @since 1.0.0
  */
 public class FeedbackData {
 
   /**
    * identifier of the feedback message
+   *
    * @since 1.0.0
    */
   public final String id;
 
   /**
    * content of the feedback message
+   *
    * @since 1.0.0
    */
   public final String message;
 
   /**
    * Create an empty DTO for a feedback message.
+   *
    * @return empty feedback DTO
    * @since 1.0.0
    */
@@ -40,6 +44,7 @@ public class FeedbackData {
 
   /**
    * Create a new feedback DTO with the state of another feedback DTO.
+   *
    * @param state other feedback DTO
    * @return feedback DTO with identifier and message
    * @since 1.0.0
@@ -50,6 +55,7 @@ public class FeedbackData {
 
   /**
    * Create many feedback DTOs from many other feedback DTOs.
+   *
    * @param states other feedback DTOs
    * @return feedback DTOs with identifier and message
    * @since 1.0.0
@@ -60,6 +66,7 @@ public class FeedbackData {
 
   /**
    * Create a new DTO for a feedback message.
+   *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
    * @return feedback DTO with identifier and message
@@ -71,6 +78,7 @@ public class FeedbackData {
 
   /**
    * Create a new DTO for a feedback message.
+   *
    * @param message content of the feedback message
    * @return feedback DTO with message and without an identifier
    * @since 1.0.0
@@ -81,6 +89,7 @@ public class FeedbackData {
 
   /**
    * Create a new feedback DTO.
+   *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
    * @since 1.0.0

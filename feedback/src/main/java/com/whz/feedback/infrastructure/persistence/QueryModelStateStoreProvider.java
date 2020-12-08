@@ -24,6 +24,7 @@ import io.vlingo.xoom.storage.StoreActorBuilder;
 
 /**
  * This class is used as a provider for all query model state stores.
+ *
  * @since 1.0.0
  */
 public class QueryModelStateStoreProvider {
@@ -36,6 +37,7 @@ public class QueryModelStateStoreProvider {
 
   /**
    * Get the singleton instance of the provider.
+   *
    * @return instance of the provider
    * @since 1.0.0
    */
@@ -45,6 +47,7 @@ public class QueryModelStateStoreProvider {
 
   /**
    * Reset the provider.
+   *
    * @since 1.0.0
    */
   public static void reset() {
@@ -53,6 +56,7 @@ public class QueryModelStateStoreProvider {
 
   /**
    * Initialize the query model state store with all necessary DTOs.
+   *
    * @param stage stage of the current world
    * @param registry registry for StatefulEntity type
    * @return initialized provider
@@ -74,6 +78,7 @@ public class QueryModelStateStoreProvider {
 
   /**
    * Initialize the query model state store with all necessary DTOs.
+   *
    * @param stage stage of the current world
    * @param registry registry for StatefulEntity type
    * @param dispatcher data holder for identity and state that has been successfully stored
@@ -110,6 +115,7 @@ public class QueryModelStateStoreProvider {
 
   /**
    * Create a provider for the query model state store.
+   *
    * @param stage stage of the current world
    * @param store instance of basic state store
    * @since 1.0.0

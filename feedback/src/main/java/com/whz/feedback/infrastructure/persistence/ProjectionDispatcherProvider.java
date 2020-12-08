@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * This class is used as a provider for a projection dispatcher.
+ *
  * @since 1.0.0
  */
 public class ProjectionDispatcherProvider {
@@ -32,6 +33,7 @@ public class ProjectionDispatcherProvider {
 
   /**
    * Get the singleton instance of the provider.
+   *
    * @return instance of the provider
    * @since 1.0.0
    */
@@ -41,6 +43,7 @@ public class ProjectionDispatcherProvider {
 
   /**
    * Reset the provider.
+   *
    * @since 1.0.0
    */
   public static void reset() {
@@ -49,6 +52,7 @@ public class ProjectionDispatcherProvider {
 
   /**
    * Initialize the projection dispatcher with all necessary events.
+   *
    * @param stage stage of the current world
    * @return initialized provider
    * @since 1.0.0
@@ -77,8 +81,10 @@ public class ProjectionDispatcherProvider {
 
   /**
    * Create a provider for the projection dispatcher.
+   *
    * @param storeDispatcher data holder for identity and state that has been successfully stored
-   * @param projectionDispatcher defines the means of dispatching Projectable instances to Projections based on matching the Projections that handle descriptive causes
+   * @param projectionDispatcher defines the means of dispatching Projectable instances to
+   *     Projections based on matching the Projections that handle descriptive causes
    * @since 1.0.0
    */
   private ProjectionDispatcherProvider(

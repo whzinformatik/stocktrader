@@ -25,6 +25,7 @@ import io.vlingo.http.resource.ResourceHandler;
 
 /**
  * This class is used as the rest resource for all feedback messages.
+ *
  * @since 1.0.0
  */
 public class FeedbackResource extends ResourceHandler {
@@ -37,6 +38,7 @@ public class FeedbackResource extends ResourceHandler {
 
   /**
    * Create an instance of the rest resource.
+   *
    * @param stage stage of the current world
    * @since 1.0.0
    */
@@ -48,6 +50,7 @@ public class FeedbackResource extends ResourceHandler {
 
   /**
    * GET-Request to test if the service is ready to do something.
+   *
    * @return response for an asynchronous call with a potential result
    * @since 1.0.0
    */
@@ -57,6 +60,7 @@ public class FeedbackResource extends ResourceHandler {
 
   /**
    * POST-request to create a new feedback message.
+   *
    * @param feedbackData feedback message of the user
    * @return response for an asynchronous call with a potential result
    * @since 1.0.0
@@ -75,6 +79,7 @@ public class FeedbackResource extends ResourceHandler {
 
   /**
    * GET-Request to get the details about a specific feedback message.
+   *
    * @param feedbackId id of the feedback message sent
    * @return response for an asynchronous call with a potential result
    * @since 1.0.0
@@ -93,6 +98,7 @@ public class FeedbackResource extends ResourceHandler {
 
   /**
    * GET-Request to get the details about all feedback messages.
+   *
    * @return response for an asynchronous call with a potential result
    * @since 1.0.0
    */
@@ -119,6 +125,7 @@ public class FeedbackResource extends ResourceHandler {
 
   /**
    * Create the reponse header location for the specific request.
+   *
    * @param id identifier of the feedback message
    * @return path for the header location
    * @since 1.0.0

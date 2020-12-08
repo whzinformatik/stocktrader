@@ -14,7 +14,9 @@ import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.StateAdapter;
 
 /**
- * Adapts the {@link FeedbackData} to the {@link TextState}, and the {@link TextState} to the {@link FeedbackData}.
+ * Adapts the {@link FeedbackData} to the {@link TextState}, and the {@link TextState} to the {@link
+ * FeedbackData}.
+ *
  * @since 1.0.0
  */
 public class FeedbackDataStateAdapter implements StateAdapter<FeedbackData, TextState> {

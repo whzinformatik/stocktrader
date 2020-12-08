@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * This class represents an actor that queries asynchronously for a state of a feedback message by id.
+ * This class represents an actor that queries asynchronously for a state of a feedback message by
+ * id.
+ *
  * @since 1.0.0
  */
 public class FeedbackQueriesActor extends StateStoreQueryActor implements FeedbackQueries {

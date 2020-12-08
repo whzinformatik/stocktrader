@@ -24,6 +24,7 @@ import io.vlingo.xoom.storage.StoreActorBuilder;
 
 /**
  * This class is used as a provider for all command models.
+ *
  * @since 1.0.0
  */
 public class CommandModelJournalProvider {
@@ -34,6 +35,7 @@ public class CommandModelJournalProvider {
 
   /**
    * Get the singleton instance of the provider.
+   *
    * @return instance of the provider
    * @since 1.0.0
    */
@@ -43,6 +45,7 @@ public class CommandModelJournalProvider {
 
   /**
    * Reset the provider.
+   *
    * @since 1.0.0
    */
   public static void reset() {
@@ -51,6 +54,7 @@ public class CommandModelJournalProvider {
 
   /**
    * Initialize the command model with all necessary actors.
+   *
    * @param stage stage of the current world
    * @param registry registry for {@link io.vlingo.lattice.model.sourcing.Sourced} types
    * @return initialized provider
@@ -72,6 +76,7 @@ public class CommandModelJournalProvider {
 
   /**
    * Initialize the command model with all necessary actors.
+   *
    * @param stage stage of the current world
    * @param registry registry for {@link io.vlingo.lattice.model.sourcing.Sourced} types
    * @param dispatcher data holder for identity and state that has been successfully stored
@@ -101,6 +106,7 @@ public class CommandModelJournalProvider {
 
   /**
    * Create a provider for the command model.
+   *
    * @param journal journal to store all actors
    * @since 1.0.0
    */

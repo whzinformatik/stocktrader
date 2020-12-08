@@ -16,6 +16,7 @@ import io.vlingo.symbio.Source;
 
 /**
  * This actor class is used to save an instance of {@link FeedbackData} into the StateStore.
+ *
  * @since 1.0.0
  */
 public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackData> {

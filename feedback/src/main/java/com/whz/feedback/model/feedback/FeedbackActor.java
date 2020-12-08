@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to handle all actions for a feedback message.
+ *
  * @since 1.0.0
  */
 public final class FeedbackActor extends EventSourced implements Feedback {
@@ -30,6 +31,7 @@ public final class FeedbackActor extends EventSourced implements Feedback {
 
   /**
    * Create a new actor to handle all feedback actions.
+   *
    * @param id identifier of the feedback message
    * @since 1.0.0
    */
@@ -57,7 +59,9 @@ public final class FeedbackActor extends EventSourced implements Feedback {
   }
 
   /**
-   * Handle the {@link FeedbackSubmitted} event to change the state and send the feedback to rabbitmq.
+   * Handle the {@link FeedbackSubmitted} event to change the state and send the feedback to
+   * rabbitmq.
+   *
    * @param e created feedback submitted event
    * @since 1.0.0
    */
