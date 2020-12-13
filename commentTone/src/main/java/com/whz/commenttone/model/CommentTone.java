@@ -1,8 +1,10 @@
 package com.whz.commenttone.model;
 
+import io.vlingo.lattice.model.IdentifiedDomainEvent;
+
 import java.util.Random;
 
-public class CommentTone {
+public final class CommentTonePublishedEvent extends IdentifiedDomainEvent {
     public final String id;
     public final String message;
     public final String sentiment;
@@ -10,9 +12,7 @@ public class CommentTone {
     public CommentTone(String id, String message) {
         this.id = id;
         this.message = message;
-
-        int r = new Random().nextInt(11);
-        this.sentiment = r < 4 ? "negative" : r < 8 ? "neutral" : "positive";
+        this.sentiment = sentiment;
     }
 
     @Override
@@ -22,5 +22,10 @@ public class CommentTone {
                 ", message='" + message + '\'' +
                 ", sentiment='" + sentiment + '\'' +
                 '}';
+    }
+
+    @Override
+    public String identity() {
+        return id;
     }
 }
