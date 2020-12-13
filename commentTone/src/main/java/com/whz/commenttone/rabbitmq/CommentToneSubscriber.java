@@ -48,7 +48,10 @@ public class CommentToneSubscriber {
             Feedback feedback =
                 new GsonBuilder().create().fromJson(feedbackMessage, Feedback.class);
 
-            CommentTone comment = new CommentTone(feedback.id, feedback.message);
+            int r = new Random().nextInt(11);
+            String sentiment = r < 4 ? "negative" : r < 8 ? "neutral" : "positive";
+
+            CommentTone comment = new CommentTone(feedback.id, feedback.message, sentiment);
 
             System.out.println("feedbacks : " + feedbackMessage);
 
