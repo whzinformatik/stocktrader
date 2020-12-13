@@ -13,11 +13,10 @@ import com.rabbitmq.client.*;
 import com.whz.commenttone.model.CommentTone;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CommentToneSubscriber {
@@ -33,11 +32,15 @@ public class CommentToneSubscriber {
 
   private final ConnectionFactory connectionFactory;
 
+  private final CommentTonePublisher<CommentTone> publisher;
+
   private final Logger logger = Logger.getLogger(CommentToneSubscriber.class.getSimpleName());
 
   public CommentToneSubscriber() {
     this.connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
+
+    publisher = new CommentTonePublisher<>(serviceName);
   }
 
   public void consume() {
@@ -67,14 +70,14 @@ public class CommentToneSubscriber {
 
             comment.setSentiment(sentiment);
 
-            CommentTonePublisher publisher =
-                new CommentTonePublisher(publishExchangeName, serviceName);
-            publisher.publish(comment, exchangeType);
+              try {
+                  publisher.publish(publishExchangeName, exchangeType, comment);
+              } catch (TimeoutException e) {
+                  e.printStackTrace();
+              }
           });
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
-    } catch (IOException | TimeoutException exception) {
-      logger.log(Level.SEVERE, Arrays.toString(exception.getStackTrace()));
     }
   }
 }
