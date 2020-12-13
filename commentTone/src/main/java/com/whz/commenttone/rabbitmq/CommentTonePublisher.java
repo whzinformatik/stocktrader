@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CommentTonePublisher {
@@ -45,7 +46,7 @@ public class CommentTonePublisher {
           null,
           new GsonBuilder().create().toJson(message).getBytes(StandardCharsets.UTF_8));
     } catch (IOException | TimeoutException e) {
-      logger.warning(Arrays.toString(e.getStackTrace()));
+      logger.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
     }
   }
 }
