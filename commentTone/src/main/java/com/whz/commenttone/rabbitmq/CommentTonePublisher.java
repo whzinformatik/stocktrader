@@ -9,7 +9,6 @@
 package com.whz.commenttone.rabbitmq;
 
 import com.google.gson.GsonBuilder;
-import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;

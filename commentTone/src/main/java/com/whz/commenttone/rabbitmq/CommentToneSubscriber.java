@@ -11,17 +11,14 @@ package com.whz.commenttone.rabbitmq;
 import com.google.gson.GsonBuilder;
 import com.rabbitmq.client.*;
 import com.whz.commenttone.model.CommentTone;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import java.util.Optional;
-
-import java.util.Random;
 
 public class CommentToneSubscriber {
 
@@ -31,8 +28,8 @@ public class CommentToneSubscriber {
       Optional.ofNullable(System.getenv("RABBITMQ_PUBLISH_EXCHANGE")).orElse("commentTone");
   private final String consumeExchangeName =
       Optional.ofNullable(System.getenv("RABBITMQ_CONSUME_EXCHANGE")).orElse("feedback");
-    private final String exchangeType =
-            Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
+  private final String exchangeType =
+      Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
 
   private final ConnectionFactory connectionFactory;
 
@@ -41,7 +38,7 @@ public class CommentToneSubscriber {
   public CommentToneSubscriber() {
     this.connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
-}
+  }
 
   public void consume() {
     try (final Connection connection = connectionFactory.newConnection();
@@ -65,7 +62,8 @@ public class CommentToneSubscriber {
                 new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
 
             int randomNumber = new Random().nextInt(11);
-            String sentiment = randomNumber < 4 ? "negative" : randomNumber < 8 ? "neutral" : "positive";
+            String sentiment =
+                randomNumber < 4 ? "negative" : randomNumber < 8 ? "neutral" : "positive";
 
             comment.setSentiment(sentiment);
 

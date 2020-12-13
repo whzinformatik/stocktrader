@@ -25,10 +25,16 @@ public final class CommentTone {
 
   @Override
   public String toString() {
-    return "CommentTone{" +
-            "id='" + id + '\'' +
-            ", message='" + message + '\'' +
-            ", sentiment='" + sentiment + '\'' +
-            '}';
+    return "CommentTone{"
+        + "id='"
+        + id
+        + '\''
+        + ", message='"
+        + message
+        + '\''
+        + ", sentiment='"
+        + sentiment
+        + '\''
+        + '}';
   }
 }
