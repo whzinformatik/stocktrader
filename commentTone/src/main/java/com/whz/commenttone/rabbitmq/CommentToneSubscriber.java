@@ -7,7 +7,9 @@ import com.whz.commenttone.model.Feedback;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.util.Optional;
@@ -27,7 +29,7 @@ public class CommentToneSubscriber {
 
   private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
-  private static final Logger logger = Logger.getLogger(CommentToneSubscriber.class.getSimpleName());
+  private final Logger logger = Logger.getLogger(CommentToneSubscriber.class.getSimpleName());
 
   public static void main(String[] args) {
 
@@ -68,7 +70,7 @@ public class CommentToneSubscriber {
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
     } catch (IOException | TimeoutException exception) {
-      exception.printStackTrace();
+      logger.log(Level.SEVERE, Arrays.toString(exception.getStackTrace()));
     }
   }
 }
