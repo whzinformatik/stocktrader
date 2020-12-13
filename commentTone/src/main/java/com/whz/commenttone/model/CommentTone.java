@@ -1,21 +1,23 @@
-package com.whz.commenttone.model.commenttone;
+package com.whz.commenttone.model;
 
-import io.vlingo.lattice.model.DomainEvent;
+import java.util.Random;
 
-public final class CommentTonePublishedEvent extends DomainEvent {
+public class CommentTone {
     public final String id;
     public final String message;
     public final String sentiment;
 
-    public CommentTonePublishedEvent(final String id, final String message, String sentiment) {
+    public CommentTone(String id, String message) {
         this.id = id;
         this.message = message;
-        this.sentiment = sentiment;
+
+        int r = new Random().nextInt(11);
+        this.sentiment = r < 4 ? "negative" : r < 8 ? "neutral" : "positive";
     }
 
     @Override
     public String toString() {
-        return "CommentTonePublishedEvent{" +
+        return "CommentTone{" +
                 "id='" + id + '\'' +
                 ", message='" + message + '\'' +
                 ", sentiment='" + sentiment + '\'' +
