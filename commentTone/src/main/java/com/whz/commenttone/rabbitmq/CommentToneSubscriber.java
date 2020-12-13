@@ -3,7 +3,6 @@ package com.whz.commenttone.rabbitmq;
 import com.google.gson.GsonBuilder;
 import com.rabbitmq.client.*;
 import com.whz.commenttone.model.CommentTone;
-import com.whz.commenttone.model.Feedback;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -27,15 +26,16 @@ public class CommentToneSubscriber {
     private final String exchangeType =
             Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
 
-  private static final ConnectionFactory connectionFactory = new ConnectionFactory();
+  private final ConnectionFactory connectionFactory;
 
   private final Logger logger = Logger.getLogger(CommentToneSubscriber.class.getSimpleName());
 
-  public static void main(String[] args) {
-
+  public CommentToneSubscriber() {
+    this.connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
 }
 
+  public void consume() {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
 
@@ -53,15 +53,13 @@ public class CommentToneSubscriber {
 
             logger.info("Received feedback: " + feedbackMessage);
 
-            Feedback feedback =
-                new GsonBuilder().create().fromJson(feedbackMessage, Feedback.class);
+            CommentTone comment =
+                new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
 
-            int r = new Random().nextInt(11);
-            String sentiment = r < 4 ? "negative" : r < 8 ? "neutral" : "positive";
+            int randomNumber = new Random().nextInt(11);
+            String sentiment = randomNumber < 4 ? "negative" : randomNumber < 8 ? "neutral" : "positive";
 
-            CommentTone comment = new CommentTone(feedback.id, feedback.message, sentiment);
-
-            System.out.println("feedbacks : " + feedbackMessage);
+            comment.setSentiment(sentiment);
 
             CommentTonePublisher publisher =
                 new CommentTonePublisher(publishExchangeName, serviceName);
