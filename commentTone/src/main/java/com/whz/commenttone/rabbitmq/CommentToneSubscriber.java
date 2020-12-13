@@ -1,16 +1,16 @@
-package com.whz.commenttone;
+package com.whz.commenttone.rabbitmq;
 
 import com.google.gson.GsonBuilder;
 import com.rabbitmq.client.*;
 import com.whz.commenttone.model.CommentTone;
 import com.whz.commenttone.model.Feedback;
-import com.whz.commenttone.rabbitmq.CommentTonePublisher;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-public class Main {
+public class CommentToneSubscriber {
 
   private static final String serviceName = "localhost";
   private static final String publishExchangeName = "commentTone";
@@ -18,7 +18,7 @@ public class Main {
 
   private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
-  private static final Logger logger = Logger.getLogger(Main.class.getSimpleName());
+  private static final Logger logger = Logger.getLogger(CommentToneSubscriber.class.getSimpleName());
 
   public static void main(String[] args) {
 
