@@ -10,9 +10,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+import java.util.Optional;
+
+import java.util.Random;
+
 public class CommentToneSubscriber {
 
-  private static final String serviceName = "localhost";
+  private static final String serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
   private static final String publishExchangeName = "commentTone";
   private static final String consumeExchangeName = "feedback";
 
