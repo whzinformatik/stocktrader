@@ -27,7 +27,7 @@ public class CommentTonePublisher {
     connectionFactory.setHost(serviceName);
   }
 
-  public void publish(CommentTone message) {
+  public void publish(CommentTone message, String exchangeType) {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
       logger.info(
@@ -37,7 +37,7 @@ public class CommentTonePublisher {
               + exchangeName
               + " exchange");
 
-      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.FANOUT);
+      channel.exchangeDeclare(exchangeName, exchangeType);
 
       channel.basicPublish(
           exchangeName,
