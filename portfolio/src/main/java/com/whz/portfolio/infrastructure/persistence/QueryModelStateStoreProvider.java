@@ -47,8 +47,7 @@ public class QueryModelStateStoreProvider {
 
     new EntryAdapterProvider(stage.world()); // future use
 
-    StateTypeStateStoreMap.stateTypeToStoreName(
-        PortfolioData.class, PortfolioData.class.getSimpleName());
+    StateTypeStateStoreMap.stateTypeToStoreName(PortfolioData.class, PortfolioData.class.getSimpleName());
 
     final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider(stage.world());
     stateAdapterProvider.registerAdapter(PortfolioData.class, new PortfolioDataStateAdapter());
