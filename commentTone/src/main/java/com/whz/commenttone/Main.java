@@ -36,8 +36,6 @@ public class Main {
 
             logger.info("Receiving feedback");
 
-            Thread.sleep(10000);
-
             DeliverCallback deliverCallback = ((consumerTag, delivery) -> {
                 String feedbackMessage = new String(delivery.getBody(), StandardCharsets.UTF_8);
 
@@ -54,7 +52,7 @@ public class Main {
             });
 
             channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
-        } catch (IOException | TimeoutException | InterruptedException exception) {
+        } catch (IOException | TimeoutException exception) {
             exception.printStackTrace();
         }
     }
