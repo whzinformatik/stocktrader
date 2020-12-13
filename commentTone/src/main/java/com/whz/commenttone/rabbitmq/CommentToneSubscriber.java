@@ -16,9 +16,14 @@ import java.util.Random;
 
 public class CommentToneSubscriber {
 
-  private static final String serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
-  private static final String publishExchangeName = "commentTone";
-  private static final String consumeExchangeName = "feedback";
+  private final String serviceName =
+      Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
+  private final String publishExchangeName =
+      Optional.ofNullable(System.getenv("RABBITMQ_PUBLISH_EXCHANGE")).orElse("commentTone");
+  private final String consumeExchangeName =
+      Optional.ofNullable(System.getenv("RABBITMQ_CONSUME_EXCHANGE")).orElse("feedback");
+    private final String exchangeType =
+            Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
 
   private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
@@ -27,11 +32,12 @@ public class CommentToneSubscriber {
   public static void main(String[] args) {
 
     connectionFactory.setHost(serviceName);
+}
 
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
 
-      channel.exchangeDeclare(consumeExchangeName, BuiltinExchangeType.FANOUT);
+      channel.exchangeDeclare(consumeExchangeName, exchangeType);
 
       String queueName = channel.queueDeclare().getQueue();
 
@@ -57,7 +63,7 @@ public class CommentToneSubscriber {
 
             CommentTonePublisher publisher =
                 new CommentTonePublisher(publishExchangeName, serviceName);
-            publisher.publish(comment);
+            publisher.publish(comment, exchangeType);
           });
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
