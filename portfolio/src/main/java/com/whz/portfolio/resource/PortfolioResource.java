@@ -110,14 +110,13 @@ public class PortfolioResource extends ResourceHandler {
 
 	@Override
 	public Resource<?> routes() {
-		return resource("Portfolio Resource",
+		return resource(getClass().getSimpleName(),
 				get("/portfolio/{id}").param(String.class).handle(this::handleGetPortfolio),
 				post("/portfolio").body(String.class).handle(this::handleCreatePortfolio),
 				post("/portfolio/{id}").param(String.class).body(AcquireStockData.class)
 						.handle(this::handleAcquireStock),
 				get("/stocks/{symbol}/{time}").param(String.class).param(Long.class).handle(this::handleGetStock),
 				get("/stocks").handle(this::handleGetStocks));
-
 	}
 
 	private Completes<Portfolio> resolve(final String id) {
