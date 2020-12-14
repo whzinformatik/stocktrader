@@ -67,7 +67,7 @@ public class PortfolioResource extends ResourceHandler {
 	}
 
 	/**
-	 * Add a stock to an existing portfolio.
+	 * Add a stock to an existing portfolio. The value of the purchase gets published to the account.
 	 * 
 	 * @param id
 	 * @param data
@@ -76,6 +76,7 @@ public class PortfolioResource extends ResourceHandler {
 	public Completes<Response> handleAcquireStock(String id, AcquireStockData data) {
 		return resolve(id).andThenTo(portfolio -> {
 			StockQuoteData stockQuoteData = QuotesCache.INSTANCE.get(data.symbol);
+			StockAcquiredPublisher.INSTANCE.send(data.amount * stockQuoteData.regularMarketPrice);
 			return portfolio.stockAcquired(data.symbol, stockQuoteData.regularMarketTime, data.amount,
 					stockQuoteData.regularMarketPrice);
 		}).andThenTo(state -> Completes.withSuccess(

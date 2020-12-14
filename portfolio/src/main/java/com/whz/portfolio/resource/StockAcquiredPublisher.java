@@ -11,6 +11,7 @@ import io.vlingo.common.serialization.JsonSerialization;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.util.concurrent.TimeoutException;
@@ -34,6 +35,20 @@ public enum StockAcquiredPublisher {
 			channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 			byte[] body = JsonSerialization.serialized(data).getBytes(StandardCharsets.UTF_8);
 			channel.basicPublish(EXCHANGE_NAME, "", null, body);
+		}
+	}
+	
+	public <T> void send(double amount) {
+		try (final Connection connection = connectionFactory.newConnection();
+				final Channel channel = connection.createChannel()) {
+			channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
+			byte[] body = new byte[8];
+			ByteBuffer.wrap(body).putDouble(amount);
+			channel.basicPublish(EXCHANGE_NAME, "", null, body);
+		} catch (IOException e) {
+			logger.debug(e.getMessage());
+		} catch (TimeoutException e) {
+			logger.debug(e.getMessage());
 		}
 	}
 
