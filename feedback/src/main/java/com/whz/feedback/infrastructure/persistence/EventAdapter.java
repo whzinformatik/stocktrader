@@ -1,6 +1,12 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.feedback.infrastructure.persistence;
 
-import com.whz.feedback.model.feedback.FeedbackSubmittedEvent;
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.symbio.BaseEntry.TextEntry;
 import io.vlingo.symbio.EntryAdapter;
@@ -17,19 +23,19 @@ public final class EventAdapter<T extends Source<?>> implements EntryAdapter<T, 
   @Override
   public TextEntry toEntry(final T source, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
-    return new TextEntry(FeedbackSubmittedEvent.class, 1, serialization, metadata);
+    return new TextEntry(source.getClass(), 1, serialization, metadata);
   }
 
   @Override
   public TextEntry toEntry(final T source, final String id, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
-    return new TextEntry(id, FeedbackSubmittedEvent.class, 1, serialization, metadata);
+    return new TextEntry(id, source.getClass(), 1, serialization, metadata);
   }
 
   @Override
   public TextEntry toEntry(
       final T source, final int version, final String id, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
-    return new TextEntry(id, FeedbackSubmittedEvent.class, 1, serialization, version, metadata);
+    return new TextEntry(id, source.getClass(), 1, serialization, version, metadata);
   }
 }
