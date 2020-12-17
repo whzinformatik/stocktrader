@@ -9,7 +9,6 @@
 package com.whz.commenttone;
 
 import com.whz.commenttone.rabbitmq.CommentToneSubscriber;
-
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 

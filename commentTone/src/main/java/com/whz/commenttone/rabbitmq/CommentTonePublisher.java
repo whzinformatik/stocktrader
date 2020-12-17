@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-
 /**
  * This class can be used to publish any object as json message to rabbitmq.
  *
@@ -51,7 +50,8 @@ public class CommentTonePublisher<T> {
    * @throws TimeoutException if a blocking operation times out
    * @since 1.0.0
    */
-  public void publish(String exchangeName, String exchangeType, T message) throws IOException, TimeoutException {
+  public void publish(String exchangeName, String exchangeType, T message)
+      throws IOException, TimeoutException {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
       logger.info(

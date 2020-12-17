@@ -13,7 +13,6 @@ import com.rabbitmq.client.*;
 import com.whz.commenttone.model.CommentTone;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
@@ -26,13 +25,14 @@ import java.util.logging.Logger;
  */
 public class CommentToneSubscriber {
 
-    /**
-     * Variables, that uses environment variables so it is possible to change them more easily
-     *
-     * @since 1.0.0
-      */
+  /**
+   * Variables, that uses environment variables so it is possible to change them more easily
+   *
+   * @since 1.0.0
+   */
   private final String serviceName =
       Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
+
   private final String publishExchangeName =
       Optional.ofNullable(System.getenv("RABBITMQ_PUBLISH_EXCHANGE")).orElse("commentTone");
   private final String consumeExchangeName =
@@ -46,11 +46,11 @@ public class CommentToneSubscriber {
 
   private final Logger logger = Logger.getLogger(CommentToneSubscriber.class.getSimpleName());
 
-    /**
-     * Create a subscriber which is connected to a specific rabbitmq instance.
-     *
-     * @since 1.0.0
-     */
+  /**
+   * Create a subscriber which is connected to a specific rabbitmq instance.
+   *
+   * @since 1.0.0
+   */
   public CommentToneSubscriber() {
     this.connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
@@ -58,13 +58,13 @@ public class CommentToneSubscriber {
     publisher = new CommentTonePublisher<>(serviceName);
   }
 
-    /**
-     * Consume a new message from the rabbitmq instance.
-     *
-     * @throws IOException if an error is encountered
-     * @throws TimeoutException if a blocking operation times out
-     * @since 1.0.0
-     */
+  /**
+   * Consume a new message from the rabbitmq instance.
+   *
+   * @throws IOException if an error is encountered
+   * @throws TimeoutException if a blocking operation times out
+   * @since 1.0.0
+   */
   public void consume() throws IOException, TimeoutException {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
@@ -104,11 +104,11 @@ public class CommentToneSubscriber {
 
             comment.setSentiment(sentiment);
 
-              try {
-                  publisher.publish(publishExchangeName, exchangeType, comment);
-              } catch (TimeoutException e) {
-                  e.printStackTrace();
-              }
+            try {
+              publisher.publish(publishExchangeName, exchangeType, comment);
+            } catch (TimeoutException e) {
+              e.printStackTrace();
+            }
           });
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});

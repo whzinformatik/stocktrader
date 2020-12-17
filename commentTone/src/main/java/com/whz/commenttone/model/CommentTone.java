@@ -42,7 +42,6 @@ public final class CommentTone {
    * @param id identifier of the comment
    * @param message content of the comment
    * @param sentiment assessment of the comment
-   *
    * @since 1.0.0
    */
   public CommentTone(String id, String message, String sentiment) {
@@ -53,8 +52,8 @@ public final class CommentTone {
 
   /**
    * set the assessment for comment
-    * @param sentiment assessment of the comment
    *
+   * @param sentiment assessment of the comment
    * @since 1.0.0
    */
   public void setSentiment(String sentiment) {

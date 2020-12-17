@@ -22,7 +22,14 @@ services:
       ports:
           - 5672:5672
           - 15672:15672
+  comment-tone:
+    build: ./commentTone/
+    restart: on-failure
+    environment:
+      RABBITMQ_SERVICE: "rabbitmq"
+      RABBITMQ_PUBLISH_EXCHANGE: "commentTone"
+      RABBITMQ_CONSUME_EXCHANGE: "feedback"
+      RABBITMQ_EXCHANGE_TYPE: "fanout"
 
 volumes:
   vlingo_symbio_jdbc_postgres:
-    
