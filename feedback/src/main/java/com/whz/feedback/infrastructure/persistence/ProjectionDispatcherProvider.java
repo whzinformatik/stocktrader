@@ -1,6 +1,13 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.feedback.infrastructure.persistence;
 
-import com.whz.feedback.infrastructure.EventTypes;
+import com.whz.feedback.model.feedback.FeedbackSubmitted;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
@@ -33,7 +40,7 @@ public class ProjectionDispatcherProvider {
     final List<ProjectToDescription> descriptions =
         Collections.singletonList(
             ProjectToDescription.with(
-                FeedbackProjectionActor.class, EventTypes.FeedbackSubmitted.name()));
+                FeedbackProjectionActor.class, FeedbackSubmitted.class.getName()));
 
     final Protocols dispatcherProtocols =
         stage.actorFor(

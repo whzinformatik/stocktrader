@@ -1,0 +1,36 @@
+name: account
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+      paths:
+        - 'account/**'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        java: [11]
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Spotless Check
+        working-directory: account
+        run: mvn spotless:check
+      - name: License Check
+        working-directory: account
+        run: mvn license:check
+      - name: Build environment
+        run: docker-compose up -d
+      - name: Build with Maven
+        working-directory: account
+        run: mvn -B package --file pom.xml

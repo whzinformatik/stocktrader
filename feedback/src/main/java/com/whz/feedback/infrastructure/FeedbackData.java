@@ -1,8 +1,15 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.feedback.infrastructure;
 
 import com.whz.feedback.model.feedback.FeedbackState;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FeedbackData {
 
@@ -19,13 +26,7 @@ public class FeedbackData {
   }
 
   public static List<FeedbackData> from(final List<FeedbackState> states) {
-    final List<FeedbackData> data = new ArrayList<>(states.size());
-
-    for (final FeedbackState state : states) {
-      data.add(FeedbackData.from(state));
-    }
-
-    return data;
+    return states.stream().map(FeedbackData::from).collect(Collectors.toList());
   }
 
   public static FeedbackData from(final String id, final String message) {
