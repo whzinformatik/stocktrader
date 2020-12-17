@@ -8,17 +8,55 @@
 
 package com.whz.commenttone.model;
 
+/**
+ * This class represents a DTO for a comment message
+ *
+ * @since 1.0.0
+ */
 public final class CommentTone {
+
+  /**
+   * identifier of the comment
+   *
+   * @since 1.0.0
+   */
   public final String id;
+
+  /**
+   * content of the comment
+   *
+   * @since 1.0.0
+   */
   public final String message;
+
+  /**
+   * assessment of the comment
+   *
+   * @since 1.0.0
+   */
   public String sentiment;
 
+  /**
+   * Create a new comment DTO.
+   *
+   * @param id identifier of the comment
+   * @param message content of the comment
+   * @param sentiment assessment of the comment
+   *
+   * @since 1.0.0
+   */
   public CommentTone(String id, String message, String sentiment) {
     this.id = id;
     this.message = message;
     this.sentiment = sentiment;
   }
 
+  /**
+   * set the assessment for comment
+    * @param sentiment assessment of the comment
+   *
+   * @since 1.0.0
+   */
   public void setSentiment(String sentiment) {
     this.sentiment = sentiment;
   }

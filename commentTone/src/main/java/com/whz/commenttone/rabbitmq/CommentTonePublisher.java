@@ -17,17 +17,40 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+
+/**
+ * This class can be used to publish any object as json message to rabbitmq.
+ *
+ * @param <T> object type for the serialization
+ * @since 1.0.0
+ */
 public class CommentTonePublisher<T> {
 
   private final ConnectionFactory connectionFactory;
 
   private final Logger logger = Logger.getLogger(CommentTonePublisher.class.getName());
 
+  /**
+   * Create a publisher which is connected to a specific rabbitmq instance.
+   *
+   * @param serviceName address of the rabbitmq instance
+   * @since 1.0.0
+   */
   public CommentTonePublisher(String serviceName) {
     this.connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
   }
-  
+
+  /**
+   * Publish a new message to the rabbitmq instance.
+   *
+   * @param exchangeName name of the exchange
+   * @param exchangeType type of exchange
+   * @param message object for the serialization
+   * @throws IOException if an error is encountered
+   * @throws TimeoutException if a blocking operation times out
+   * @since 1.0.0
+   */
   public void publish(String exchangeName, String exchangeType, T message) throws IOException, TimeoutException {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
