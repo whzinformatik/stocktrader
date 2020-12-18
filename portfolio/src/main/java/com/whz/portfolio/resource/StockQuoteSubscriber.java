@@ -19,29 +19,28 @@ public enum StockQuoteSubscriber {
 	INSTANCE;
 
 	private final Logger logger = Logger.basicLogger();
-	private static final String EXCHANGE_NAME = "logs";
 	private final Map<String, StockQuoteData> stockQuotes = new HashMap<>();
 	private Connection connection;
 
 	StockQuoteSubscriber() {
+		String serviceName = System.getenv("RABBITMQ_SERVICE");
+	    String exchangeName = System.getenv("RABBITMQ_EXCHANGE");
+	    String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost("localhost");
+			factory.setHost(serviceName);
 			connection = factory.newConnection();
 			Channel channel = connection.createChannel();
-
-			channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+			channel.exchangeDeclare(exchangeName, exchangeType);
 			String queueName = channel.queueDeclare().getQueue();
-			channel.queueBind(queueName, EXCHANGE_NAME, "");
-
-			logger.debug("Quotes cache is waiting for messages..");
-
+			channel.queueBind(queueName, exchangeName, "");
+			logger.debug("Started stock quote subscriber");
 			DeliverCallback deliverCallback = (consumerTag, delivery) -> {
 				String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
 				StockQuoteData stockQuoteData = deserialized(message);
 				stockQuotes.put(stockQuoteData.symbol, stockQuoteData);
 				logger.debug(
-						"Quotes cache received '" + stockQuoteData.symbol + "' with a length of: " + message.length());
+						"Stock quote subscriber received '" + stockQuoteData.symbol + "' with a length of: " + message.length());
 			};
 			channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
 			});
@@ -54,18 +53,33 @@ public enum StockQuoteSubscriber {
 		return JsonSerialization.deserialized(data, StockQuoteData.class);
 	}
 
+	/**
+	 * 
+	 * @return All StockQuoteData objects from the cache
+	 */
 	public Collection<StockQuoteData> get() {
 		return stockQuotes.values();
 	}
 
-	public StockQuoteData get(String symbol, long time) {
+	/**
+	 * 
+	 * @param symbol
+	 * @param time
+	 * @return The StockQuoteData object with the matching symbol
+	 */
+	public StockQuoteData get(String symbol) {
 		return stockQuotes.get(symbol);
 	}
 
-	public ArrayList<StockQuoteData> get(Collection<String> ids) {
+	/**
+	 * 
+	 * @param symbols
+	 * @return All StockQuoteData objects with matching symbols
+	 */
+	public ArrayList<StockQuoteData> get(Collection<String> symbols) {
 		ArrayList<StockQuoteData> result = new ArrayList<>();
-		ids.forEach(id -> {
-			StockQuoteData data = stockQuotes.get(id);
+		symbols.forEach(symbol -> {
+			StockQuoteData data = stockQuotes.get(symbol);
 			if (data != null) {
 				result.add(data);
 			}

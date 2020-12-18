@@ -88,11 +88,10 @@ public class PortfolioResource extends ResourceHandler {
 	 * Retrieve a specific stock.
 	 * 
 	 * @param symbol
-	 * @param time
 	 * @return JSON representation of StockQuoteData
 	 */
-	public Completes<Response> handleGetStock(String symbol, long time) {
-		StockQuoteData result = StockQuoteSubscriber.INSTANCE.get(symbol, time);
+	public Completes<Response> handleGetStock(String symbol) {
+		StockQuoteData result = StockQuoteSubscriber.INSTANCE.get(symbol);
 		if (result == null) {
 			Response.of(NotFound, "/stocks/" + symbol);
 		}
@@ -116,7 +115,7 @@ public class PortfolioResource extends ResourceHandler {
 				post("/portfolio").body(String.class).handle(this::handleCreatePortfolio),
 				post("/portfolio/{id}").param(String.class).body(AcquireStockData.class)
 						.handle(this::handleAcquireStock),
-				get("/stocks/{symbol}/{time}").param(String.class).param(Long.class).handle(this::handleGetStock),
+				get("/stocks/{symbol}/{time}").param(String.class).handle(this::handleGetStock),
 				get("/stocks").handle(this::handleGetStocks));
 	}
 

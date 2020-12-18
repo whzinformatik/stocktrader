@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioData {
-	// vlingo
-	public String id;
 
+	public String id;
 	public String owner;
-	public List<Stock> stocks = new ArrayList<>();
+	public List<Stock> stocks;
 
 	public static PortfolioData empty() {
 		return new PortfolioData("", "", new ArrayList<>());
