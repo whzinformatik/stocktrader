@@ -20,6 +20,9 @@ public enum StockAcquiredPublisher {
 		String serviceName = System.getenv("RABBITMQ_SERVICE");
 		exchangeName = System.getenv("RABBITMQ_EXCHANGE");
 		exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
+		if (serviceName == null || exchangeName == null || exchangeType == null) {
+			throw new RuntimeException("Please set env variables for RabbitMQ!");
+		}
 		connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(serviceName);
 		logger.debug("Started stock acquired publisher");

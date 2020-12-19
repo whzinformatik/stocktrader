@@ -93,7 +93,7 @@ public class PortfolioResource extends ResourceHandler {
 	public Completes<Response> handleGetStock(String symbol) {
 		StockQuoteData result = StockQuoteSubscriber.INSTANCE.get(symbol);
 		if (result == null) {
-			Response.of(NotFound, "/stocks/" + symbol);
+			return Completes.withFailure(Response.of(NotFound, "/stocks/" + symbol));
 		}
 		return Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(result)));
 	}

@@ -26,6 +26,9 @@ public enum StockQuoteSubscriber {
 		String serviceName = System.getenv("RABBITMQ_SERVICE");
 	    String exchangeName = System.getenv("RABBITMQ_EXCHANGE");
 	    String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
+	    if(serviceName == null || exchangeName == null ||exchangeType == null) {
+	    	throw new RuntimeException("Please set env variables for RabbitMQ!");
+	    }
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(serviceName);
