@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.portfolio.resource;
 
 import com.rabbitmq.client.Channel;
@@ -16,14 +23,16 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public enum QuotesCache {
-  INSTANCE();
+  INSTANCE;
 
   private final Logger logger = Logger.basicLogger();
   private static final String EXCHANGE_NAME = "logs";
-  private final Map<String, StockQuoteData> stockQuotes = new HashMap<>();
+  private final Map<String, StockQuoteData> stockQuotes;
   private Connection connection;
 
   QuotesCache() {
+    stockQuotes = new HashMap<>();
+
     try {
       ConnectionFactory factory = new ConnectionFactory();
       factory.setHost("localhost");
@@ -75,10 +84,6 @@ public enum QuotesCache {
           }
         });
     return result;
-  }
-
-  public static void main(String[] args) {
-    StockQuoteData data = INSTANCE.deserialized("{'symbol':'INTC','displayName':'Intel'}");
   }
 
   public void cleanUp() {

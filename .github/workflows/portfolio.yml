@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     paths:
-      - "portfolio/**"
+      - 'portfolio/**'
 
 jobs:
   build:
@@ -26,6 +26,9 @@ jobs:
       - name: Spotless Check
         working-directory: portfolio
         run: mvn spotless:check
+      - name: License Check
+        working-directory: portfolio
+        run: mvn license:check
       - name: Build environment
         run: docker-compose up -d
       - name: Build with Maven
