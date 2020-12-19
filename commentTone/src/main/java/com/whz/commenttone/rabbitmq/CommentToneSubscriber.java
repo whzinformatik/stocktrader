@@ -16,7 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class can be used to receive a json message from rabbitmq.
@@ -25,11 +26,6 @@ import java.util.logging.Logger;
  */
 public class CommentToneSubscriber {
 
-  /**
-   * Variables, that uses environment variables so it is possible to change them more easily
-   *
-   * @since 1.0.0
-   */
   private final String serviceName =
       Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
 
@@ -44,7 +40,7 @@ public class CommentToneSubscriber {
 
   private final CommentTonePublisher<CommentTone> publisher;
 
-  private final Logger logger = Logger.getLogger(CommentToneSubscriber.class.getSimpleName());
+  private final Logger logger = LoggerFactory.getLogger(CommentToneSubscriber.class);
 
   /**
    * Create a subscriber which is connected to a specific rabbitmq instance.
@@ -69,19 +65,13 @@ public class CommentToneSubscriber {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
 
-      /*
-       * Create exchange with given exchange type to consume comment-tone message
-       */
+      // Create exchange with given exchange type to consume comment-tone message
       channel.exchangeDeclare(consumeExchangeName, exchangeType);
 
-      /*
-       * Create a non-durable, exclusive, auto-delete queue with a generated name
-       */
+      // Create a non-durable, exclusive, auto-delete queue with a generated name
       String queueName = channel.queueDeclare().getQueue();
 
-      /*
-       * Append messages from named exchange to named queue
-       */
+      // Append messages from named exchange to named queue
       channel.queueBind(queueName, consumeExchangeName, "");
 
       logger.info("Receiving feedback");
@@ -90,14 +80,12 @@ public class CommentToneSubscriber {
           ((consumerTag, delivery) -> {
             String feedbackMessage = new String(delivery.getBody(), StandardCharsets.UTF_8);
 
-            logger.info("Received feedback: " + feedbackMessage);
+            logger.info("Received feedback: {}", feedbackMessage);
 
             CommentTone comment =
                 new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
 
-            /*
-             * Add randomly generated sentiment to comment-tone
-             */
+            // Add randomly generated sentiment to comment-tone
             int randomNumber = new Random().nextInt(11);
             String sentiment =
                 randomNumber < 4 ? "negative" : randomNumber < 8 ? "neutral" : "positive";
@@ -107,7 +95,7 @@ public class CommentToneSubscriber {
             try {
               publisher.publish(publishExchangeName, exchangeType, comment);
             } catch (TimeoutException e) {
-              e.printStackTrace();
+              logger.error("message cannot be published", e);
             }
           });
 

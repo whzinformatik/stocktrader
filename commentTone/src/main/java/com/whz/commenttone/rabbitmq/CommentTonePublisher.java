@@ -15,7 +15,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class can be used to publish any object as json message to rabbitmq.
@@ -27,7 +28,7 @@ public class CommentTonePublisher<T> {
 
   private final ConnectionFactory connectionFactory;
 
-  private final Logger logger = Logger.getLogger(CommentTonePublisher.class.getName());
+  private final Logger logger = LoggerFactory.getLogger(CommentTonePublisher.class);
 
   /**
    * Create a publisher which is connected to a specific rabbitmq instance.
@@ -55,11 +56,9 @@ public class CommentTonePublisher<T> {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
       logger.info(
-          "Publishing comment "
-              + new GsonBuilder().create().toJson(message)
-              + " in "
-              + exchangeName
-              + " exchange");
+          "Publishing comment {} in {} exchange",
+          new GsonBuilder().create().toJson(message),
+          exchangeName);
 
       channel.exchangeDeclare(exchangeName, exchangeType);
 
