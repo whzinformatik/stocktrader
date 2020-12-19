@@ -9,5 +9,4 @@ public interface PortfolioQueries {
   Completes<PortfolioData> portfolioOf(String id);
 
   Completes<Collection<PortfolioData>> portfolios();
-  
 }
