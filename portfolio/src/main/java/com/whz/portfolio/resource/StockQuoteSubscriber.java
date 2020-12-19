@@ -20,7 +20,6 @@ import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 public enum StockQuoteSubscriber {
-
   INSTANCE;
 
   private final Logger logger = Logger.basicLogger();

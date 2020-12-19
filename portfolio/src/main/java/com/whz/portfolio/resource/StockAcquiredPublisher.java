@@ -16,7 +16,6 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.TimeoutException;
 
 public enum StockAcquiredPublisher {
-
   INSTANCE;
 
   private final Logger logger = Logger.basicLogger();

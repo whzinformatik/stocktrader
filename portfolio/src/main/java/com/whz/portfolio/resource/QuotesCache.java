@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public enum QuotesCache {
-
   INSTANCE;
 
   private final Logger logger = Logger.basicLogger();
