@@ -1,25 +1,26 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.portfolio.infrastructure.persistence;
 
 import com.whz.portfolio.infrastructure.EventTypes;
 import com.whz.portfolio.infrastructure.PortfolioData;
-import io.vlingo.lattice.model.DomainEvent;
-import io.vlingo.lattice.model.IdentifiedDomainEvent;
+import com.whz.portfolio.model.portfolio.PortfolioCreated;
+import com.whz.portfolio.model.portfolio.Stock;
+import com.whz.portfolio.model.portfolio.StockAcquired;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
-import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.Source;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PortfolioProjectionActor extends StateStoreProjectionActor<PortfolioData> {
   private static final PortfolioData Empty = PortfolioData.empty();
 
-  private String dataId;
-  private final List<IdentifiedDomainEvent> events;
-
   public PortfolioProjectionActor() {
     super(QueryModelStateStoreProvider.instance().store);
-    this.events = new ArrayList<>(2);
   }
 
   @Override
@@ -27,52 +28,42 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
     return Empty;
   }
 
-  @Override
-  protected String dataIdFor(final Projectable projectable) {
-    dataId = events.get(0).identity();
-    return dataId;
-  }
-
-  @Override
-  protected PortfolioData merge(
-      PortfolioData previousData,
-      int previousVersion,
-      PortfolioData currentData,
-      int currentVersion) {
-    return super.merge(previousData, previousVersion, currentData, currentVersion);
-  }
-
-  @Override
   protected PortfolioData merge(
       final PortfolioData previousData,
       final int previousVersion,
       final PortfolioData currentData,
-      final int currentVersion,
-      final List<Source<?>> sources) {
+      final int currentVersion) {
 
     if (previousVersion == currentVersion) {
-      return currentData;
+      System.out.println(previousVersion);
+      return previousData;
     }
 
-    for (final DomainEvent event : events) {
+    for (final Source<?> event : sources()) {
       switch (EventTypes.valueOf(event.typeName())) {
         case PortfolioCreated:
-          return PortfolioData.from(currentData.id, currentData.owner); // fixed and closed
+          final PortfolioCreated portfolioCreated = typed(event);
+          currentData.id = portfolioCreated.id;
+          currentData.owner = portfolioCreated.owner;
+          break;
+        case StockAcquired:
+          final StockAcquired stockAcquired = typed(event);
+          final Stock stock =
+              new Stock(
+                  stockAcquired.symbol,
+                  stockAcquired.acquisitionMarketTime,
+                  stockAcquired.amount,
+                  stockAcquired.acquisitionMarketPrice);
+          currentData.id = previousData.id;
+          currentData.owner = previousData.owner;
+          currentData.stocks = previousData.stocks;
+          currentData.stocks.add(stock);
+          break;
         default:
-          logger().warn("Event of type " + event.typeName() + " was not matched.");
+          logger().warn("Event of type {} was not matched.", event.typeName());
           break;
       }
     }
-
-    return previousData;
-  }
-
-  @Override
-  protected void prepareForMergeWith(final Projectable projectable) {
-    events.clear();
-
-    for (Entry<?> entry : projectable.entries()) {
-      events.add(entryAdapter().anyTypeFromEntry(entry));
-    }
+    return currentData;
   }
 }

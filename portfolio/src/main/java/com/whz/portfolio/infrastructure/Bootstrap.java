@@ -1,15 +1,19 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.portfolio.infrastructure;
 
 import com.whz.portfolio.infrastructure.persistence.CommandModelJournalProvider;
 import com.whz.portfolio.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.portfolio.resource.PortfolioResource;
-import com.whz.portfolio.resource.QuotesCache;
-import io.vlingo.actors.GridAddressFactory;
 import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
-import io.vlingo.common.identity.IdentityGeneratorType;
 import io.vlingo.http.resource.Configuration.Sizing;
 import io.vlingo.http.resource.Configuration.Timing;
 import io.vlingo.http.resource.Resources;
@@ -32,8 +36,7 @@ public class Bootstrap {
   public Bootstrap(final int port) throws Exception {
     world = World.startWithDefaults(NAME);
 
-    final Stage stage =
-        world.stageNamed(NAME, Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
+    final Stage stage = world.stageNamed(NAME);
 
     final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
     final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
@@ -52,7 +55,6 @@ public class Bootstrap {
                 () -> {
                   if (instance != null) {
                     instance.server.stop();
-                    QuotesCache.INSTANCE.cleanUp();
                     logger.info("\n");
                     logger.info("=========================");
                     logger.info("Stopping portfolio.");

@@ -5,8 +5,8 @@ on:
     branches:
       - main
   pull_request:
-      paths:
-        - 'portfolio/**'
+    paths:
+      - 'portfolio/**'
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         java: [11]
-    
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -26,6 +26,9 @@ jobs:
       - name: Spotless Check
         working-directory: portfolio
         run: mvn spotless:check
+      - name: License Check
+        working-directory: portfolio
+        run: mvn license:check
       - name: Build environment
         run: docker-compose up -d
       - name: Build with Maven
