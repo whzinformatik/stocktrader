@@ -107,7 +107,7 @@ public class PortfolioResource extends ResourceHandler {
     return resolve(id)
         .andThenTo(
             portfolio -> {
-              StockQuoteData stockQuoteData = QuotesCache.INSTANCE.get(data.symbol);
+              StockQuoteData stockQuoteData = StockQuoteSubscriber.INSTANCE.get(data.symbol);
               StockAcquiredPublisher.INSTANCE.send(data.amount * stockQuoteData.regularMarketPrice);
               return portfolio.stockAcquired(
                   data.symbol,

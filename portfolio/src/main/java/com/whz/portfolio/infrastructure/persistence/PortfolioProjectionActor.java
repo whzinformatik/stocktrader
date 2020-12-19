@@ -60,7 +60,7 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
           currentData.stocks.add(stock);
           break;
         default:
-          logger().warn("Event of type " + event.typeName() + " was not matched.");
+          logger().warn("Event of type {} was not matched.", event.typeName());
           break;
       }
     }
