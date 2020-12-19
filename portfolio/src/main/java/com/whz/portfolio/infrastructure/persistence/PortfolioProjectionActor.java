@@ -26,10 +26,12 @@ public class PortfolioProjectionActor extends StateStoreProjectionActor<Portfoli
       final int previousVersion,
       final PortfolioData currentData,
       final int currentVersion) {
+
     if (previousVersion == currentVersion) {
       System.out.println(previousVersion);
       return previousData;
     }
+
     for (final Source<?> event : sources()) {
       switch (EventTypes.valueOf(event.typeName())) {
         case PortfolioCreated:

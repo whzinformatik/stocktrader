@@ -40,9 +40,9 @@ public class PortfolioResource extends ResourceHandler {
   }
 
   /**
-   * Retrieve an exiting portfolio.
+   * Retrieve an existing portfolio.
    *
-   * @param id
+   * @param id identifier for portfolio
    * @return A JSON representation of PortfolioData
    */
   public Completes<Response> handleGetPortfolio(String id) {
@@ -60,7 +60,7 @@ public class PortfolioResource extends ResourceHandler {
   /**
    * Create a new portfolio.
    *
-   * @param owner
+   * @param owner owner of the portfolio
    * @return JSON representation of the created PortfolioData
    */
   public Completes<Response> handleCreatePortfolio(String owner) {
@@ -78,8 +78,8 @@ public class PortfolioResource extends ResourceHandler {
   /**
    * Add a stock to an existing portfolio. The value of the purchase gets published to the account.
    *
-   * @param id
-   * @param data
+   * @param id identifier for portfolio
+   * @param data complete data about the stock which is acquired
    * @return JSON representation of the associated PortfolioData
    */
   public Completes<Response> handleAcquireStock(String id, AcquireStockData data) {
@@ -107,7 +107,7 @@ public class PortfolioResource extends ResourceHandler {
   /**
    * Retrieve a specific stock.
    *
-   * @param symbol
+   * @param symbol abbreviation symbol of the stock
    * @return JSON representation of StockQuoteData
    */
   public Completes<Response> handleGetStock(String symbol) {

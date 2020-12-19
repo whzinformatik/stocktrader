@@ -1,8 +1,7 @@
 package com.whz.portfolio.infrastructure;
 
 /**
- * @author Florian Used as a Java class representation of the stock data from the stock quote
- *     project
+ * Used as a Java class representation of the stock data from the stock quote project
  */
 public class StockQuoteData {
 

@@ -16,14 +16,17 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public enum QuotesCache {
-  INSTANCE();
+
+  INSTANCE;
 
   private final Logger logger = Logger.basicLogger();
   private static final String EXCHANGE_NAME = "logs";
-  private final Map<String, StockQuoteData> stockQuotes = new HashMap<>();
+  private final Map<String, StockQuoteData> stockQuotes;
   private Connection connection;
 
   QuotesCache() {
+    stockQuotes = new HashMap<>();
+
     try {
       ConnectionFactory factory = new ConnectionFactory();
       factory.setHost("localhost");
@@ -75,10 +78,6 @@ public enum QuotesCache {
           }
         });
     return result;
-  }
-
-  public static void main(String[] args) {
-    StockQuoteData data = INSTANCE.deserialized("{'symbol':'INTC','displayName':'Intel'}");
   }
 
   public void cleanUp() {
