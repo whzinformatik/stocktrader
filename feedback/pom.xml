@@ -39,6 +39,7 @@
         <rabbitmq.version>5.10.0</rabbitmq.version>
 
         <spotless.version>2.5.0</spotless.version>
+        <license.version>4.0.rc2</license.version>
 
         <junit.version>5.6.0</junit.version>
         <mockito.version>3.5.15</mockito.version>
@@ -255,6 +256,7 @@
                 <plugin>
                     <groupId>com.mycila</groupId>
                     <artifactId>license-maven-plugin</artifactId>
+                    <version>${license.version}</version>
                     <configuration>
                         <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
                         <properties>
