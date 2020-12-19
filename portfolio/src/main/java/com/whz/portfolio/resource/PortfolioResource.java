@@ -82,20 +82,21 @@ public class PortfolioResource extends ResourceHandler {
                         serialized(PortfolioData.from(state)))));
   }
 
-	/**
-	 * Retrieve a specific stock.
-	 * 
-	 * @param symbol
-	 * @return JSON representation of StockQuoteData
-	 */
-	public Completes<Response> handleGetStock(String symbol) {
-		StockQuoteData result = StockQuoteSubscriber.INSTANCE.get(symbol);
-		if (result == null) {
-			return Completes.withFailure(Response.of(NotFound, "/stocks/" + symbol));
-		}
-		return Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(result)));
+  /**
+   * Retrieve a specific stock.
+   *
+   * @param symbol
+   * @return JSON representation of StockQuoteData
+   */
+  public Completes<Response> handleGetStock(String symbol) {
+    StockQuoteData result = StockQuoteSubscriber.INSTANCE.get(symbol);
+    if (result == null) {
+      return Completes.withFailure(Response.of(NotFound, "/stocks/" + symbol));
+    }
+    return Completes.withSuccess(
+        Response.of(Ok, headers(of(ContentType, "application/json")), serialized(result)));
   }
-  
+
   /**
    * Add a stock to an existing portfolio. The value of the purchase gets published to the account.
    *
