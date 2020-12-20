@@ -28,7 +28,7 @@ public class Publisher<T> {
   public void send(String exchangeName, T message) throws IOException, TimeoutException {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
-      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.TOPIC);
+      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.FANOUT);
 
       channel.basicPublish(
           exchangeName,
