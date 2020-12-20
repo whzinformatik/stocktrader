@@ -50,7 +50,7 @@ public final class FeedbackState {
   }
 
   /**
-   * Check if the feedback state can only identified.
+   * Check if the feedback state can only be identified.
    *
    * @return true if the identifier is set and all other variables are not set, otherwise false
    * @since 1.0.0
