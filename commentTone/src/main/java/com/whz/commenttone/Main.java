@@ -9,18 +9,12 @@
 package com.whz.commenttone;
 
 import com.whz.commenttone.rabbitmq.CommentToneSubscriber;
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 public class Main {
 
   public static void main(String[] args) {
     CommentToneSubscriber subscriber = new CommentToneSubscriber();
 
-    try {
-      subscriber.consume();
-    } catch (IOException | TimeoutException ioException) {
-      ioException.printStackTrace();
-    }
+    subscriber.consume();
   }
 }

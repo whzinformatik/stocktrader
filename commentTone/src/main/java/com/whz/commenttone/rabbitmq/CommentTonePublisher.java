@@ -12,10 +12,12 @@ import com.google.gson.GsonBuilder;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
 
 /**
  * This class can be used to publish any object as json message to rabbitmq.
@@ -27,7 +29,7 @@ public class CommentTonePublisher<T> {
 
   private final ConnectionFactory connectionFactory;
 
-  private final Logger logger = Logger.getLogger(CommentTonePublisher.class.getName());
+  private final Logger logger = LoggerFactory.getLogger(CommentTonePublisher.class.getName());
 
   /**
    * Create a publisher which is connected to a specific rabbitmq instance.
@@ -46,12 +48,9 @@ public class CommentTonePublisher<T> {
    * @param exchangeName name of the exchange
    * @param exchangeType type of exchange
    * @param message object for the serialization
-   * @throws IOException if an error is encountered
-   * @throws TimeoutException if a blocking operation times out
    * @since 1.0.0
    */
-  public void publish(String exchangeName, String exchangeType, T message)
-      throws IOException, TimeoutException {
+  public void publish(String exchangeName, String exchangeType, T message) {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
       logger.info(
@@ -68,6 +67,8 @@ public class CommentTonePublisher<T> {
           "",
           null,
           new GsonBuilder().create().toJson(message).getBytes(StandardCharsets.UTF_8));
+    } catch (IOException | TimeoutException exception) {
+      logger.debug(exception.getMessage(), exception);
     }
   }
 }

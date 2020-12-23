@@ -11,12 +11,14 @@ package com.whz.commenttone.rabbitmq;
 import com.google.gson.GsonBuilder;
 import com.rabbitmq.client.*;
 import com.whz.commenttone.model.CommentTone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
 
 /**
  * This class can be used to receive a json message from rabbitmq.
@@ -44,7 +46,7 @@ public class CommentToneSubscriber {
 
   private final CommentTonePublisher<CommentTone> publisher;
 
-  private final Logger logger = Logger.getLogger(CommentToneSubscriber.class.getSimpleName());
+  private final Logger logger = LoggerFactory.getLogger(CommentToneSubscriber.class.getSimpleName());
 
   /**
    * Create a subscriber which is connected to a specific rabbitmq instance.
@@ -61,11 +63,9 @@ public class CommentToneSubscriber {
   /**
    * Consume a new message from the rabbitmq instance.
    *
-   * @throws IOException if an error is encountered
-   * @throws TimeoutException if a blocking operation times out
    * @since 1.0.0
    */
-  public void consume() throws IOException, TimeoutException {
+  public void consume() {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
 
@@ -83,8 +83,6 @@ public class CommentToneSubscriber {
        * Append messages from named exchange to named queue
        */
       channel.queueBind(queueName, consumeExchangeName, "");
-
-      logger.info("Receiving feedback");
 
       DeliverCallback deliverCallback =
           ((consumerTag, delivery) -> {
@@ -104,14 +102,12 @@ public class CommentToneSubscriber {
 
             comment.setSentiment(sentiment);
 
-            try {
               publisher.publish(publishExchangeName, exchangeType, comment);
-            } catch (TimeoutException e) {
-              e.printStackTrace();
-            }
           });
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
+    } catch (TimeoutException | IOException exception) {
+        logger.debug(exception.getMessage(), exception);
     }
   }
 }
