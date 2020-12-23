@@ -18,9 +18,7 @@ services:
     hostname: stocktrader
     container_name: rabbitmq
     volumes:
-      - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
-      - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
-      - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia/
     ports:
       - 5672:5672
       - 15672:15672
@@ -45,3 +43,4 @@ services:
 
 volumes:
   vlingo_symbio_jdbc_postgres:
+  rabbitmq_data:
