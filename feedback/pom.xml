@@ -203,9 +203,6 @@
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
                         <detail>true</detail>
-                        <includes>
-                            <include>%regex[.*]</include>
-                        </includes>
                     </configuration>
                 </plugin>
                 <plugin>
