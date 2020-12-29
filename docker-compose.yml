@@ -13,6 +13,11 @@ services:
       POSTGRES_DB: vlingo_test
       POSTGRES_USER: vlingo_test
       POSTGRES_PASSWORD: vlingo123
+    healthcheck:
+      test: [ "CMD", "psql -h localhost -p 5432 -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: stocktrader
