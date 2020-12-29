@@ -16,15 +16,36 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * This class can be used to publish any object as json message to rabbitmq.
+ *
+ * @param <T> object type for the serialization
+ * @since 1.0.0
+ */
 public class Publisher<T> {
 
   private final ConnectionFactory connectionFactory;
 
+  /**
+   * Create a publisher which is connected to a specific rabbitmq instance.
+   *
+   * @param host address of the rabbitmq instance
+   * @since 1.0.0
+   */
   public Publisher(String host) {
     this.connectionFactory = new ConnectionFactory();
     this.connectionFactory.setHost(host);
   }
 
+  /**
+   * Publish a new message to the rabbitmq instance.
+   *
+   * @param exchangeName name of the exchange
+   * @param message object for the serialization
+   * @throws IOException if an error is encountered
+   * @throws TimeoutException if a blocking operation times out
+   * @since 1.0.0
+   */
   public void send(String exchangeName, T message) throws IOException, TimeoutException {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {

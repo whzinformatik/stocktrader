@@ -14,6 +14,11 @@ import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
 
+/**
+ * This actor class is used to save an instance of {@link FeedbackData} into the StateStore.
+ *
+ * @since 1.0.0
+ */
 public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackData> {
 
   private static final FeedbackData Empty = FeedbackData.empty();
@@ -40,7 +45,7 @@ public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackD
           final FeedbackSubmitted feedbackSubmittedEvent = typed(event);
           return FeedbackData.from(feedbackSubmittedEvent.id, feedbackSubmittedEvent.message);
         default:
-          logger().warn("Event of type " + event.typeName() + " was not matched.");
+          logger().warn("Event of type {} was not matched.", event.typeName());
           return Empty;
       }
     }
