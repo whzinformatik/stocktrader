@@ -27,24 +27,6 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-  stock-quote-publisher:
-    build: ./stock-quote/
-    restart: on-failure
-    environment:
-      RABBITMQ_SERVICE: "rabbitmq"
-      RABBITMQ_EXCHANGE: "stocks"
-      RABBITMQ_EXCHANGE_TYPE: "fanout"
-      SET_RANDOM_PUBLISH_INTERVAL: "true"
-  feedback:
-    build: ./feedback/
-    restart: on-failure
-    depends_on:
-      - postgres
-      - rabbitmq
-    environment:
-      RABBITMQ_SERVICE: "rabbitmq"
-    ports:
-      - 18080:18080
 
 volumes:
   vlingo_symbio_jdbc_postgres:
