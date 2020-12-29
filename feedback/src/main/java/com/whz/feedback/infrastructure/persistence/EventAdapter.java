@@ -13,6 +13,13 @@ import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.Source;
 
+/**
+ * Adapts the native Source state to the {@link TextEntry}, and the {@link TextEntry} to the native
+ * Source.
+ *
+ * @param <T> type of the source
+ * @since 1.0.0
+ */
 public final class EventAdapter<T extends Source<?>> implements EntryAdapter<T, TextEntry> {
 
   @Override

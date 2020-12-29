@@ -14,6 +14,11 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class is used to handle all actions for a feedback message.
+ *
+ * @since 1.0.0
+ */
 public final class FeedbackActor extends EventSourced implements Feedback {
 
   private final Logger logger = LoggerFactory.getLogger(FeedbackActor.class);
@@ -24,6 +29,12 @@ public final class FeedbackActor extends EventSourced implements Feedback {
 
   private FeedbackState state;
 
+  /**
+   * Create a new actor to handle all feedback actions.
+   *
+   * @param id identifier of the feedback message
+   * @since 1.0.0
+   */
   public FeedbackActor(final String id) {
     super(id);
     this.state = FeedbackState.identifiedBy(id);
@@ -47,6 +58,13 @@ public final class FeedbackActor extends EventSourced implements Feedback {
         FeedbackActor.class, FeedbackSubmitted.class, FeedbackActor::applyFeedbackMessage);
   }
 
+  /**
+   * Handle the {@link FeedbackSubmitted} event to change the state and send the feedback to
+   * rabbitmq.
+   *
+   * @param e created feedback submitted event
+   * @since 1.0.0
+   */
   private void applyFeedbackMessage(final FeedbackSubmitted e) {
     state = state.withMessage(e.message);
 

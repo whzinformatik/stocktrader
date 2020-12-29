@@ -23,23 +23,48 @@ import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
 
+/**
+ * This class is used as the rest resource for all feedback messages.
+ *
+ * @since 1.0.0
+ */
 public class FeedbackResource extends ResourceHandler {
 
   private final Stage stage;
+
   private final FeedbackQueries queries;
 
   private final Logger logger;
 
+  /**
+   * Create an instance of the rest resource.
+   *
+   * @param stage stage of the current world
+   * @since 1.0.0
+   */
   public FeedbackResource(final Stage stage) {
     this.stage = stage;
     this.queries = QueryModelStateStoreProvider.instance().feedbackQueries;
     this.logger = stage.world().defaultLogger();
   }
 
+  /**
+   * GET-Request to test if the service is ready to do something.
+   *
+   * @return response for an asynchronous call with a potential result
+   * @since 1.0.0
+   */
   public Completes<Response> ready() {
     return Completes.withSuccess(Response.of(Response.Status.Ok));
   }
 
+  /**
+   * POST-request to create a new feedback message.
+   *
+   * @param feedbackData feedback message of the user
+   * @return response for an asynchronous call with a potential result
+   * @since 1.0.0
+   */
   public Completes<Response> create(FeedbackData feedbackData) {
     return Feedback.defineWith(stage, feedbackData.message)
         .andThenTo(
@@ -52,6 +77,13 @@ public class FeedbackResource extends ResourceHandler {
                         serialized(FeedbackData.from(state)))));
   }
 
+  /**
+   * GET-Request to get the details about a specific feedback message.
+   *
+   * @param feedbackId id of the feedback message sent
+   * @return response for an asynchronous call with a potential result
+   * @since 1.0.0
+   */
   public Completes<Response> queryFeedback(String feedbackId) {
     return queries
         .feedbackOf(feedbackId)
@@ -64,6 +96,12 @@ public class FeedbackResource extends ResourceHandler {
         .otherwise(noData -> Response.of(NotFound, location(feedbackId)));
   }
 
+  /**
+   * GET-Request to get the details about all feedback messages.
+   *
+   * @return response for an asynchronous call with a potential result
+   * @since 1.0.0
+   */
   public Completes<Response> queryFeedbacks() {
     return queries
         .feedbacks()
@@ -85,6 +123,13 @@ public class FeedbackResource extends ResourceHandler {
         get("/").handle(this::queryFeedbacks));
   }
 
+  /**
+   * Create the reponse header location for the specific request.
+   *
+   * @param id identifier of the feedback message
+   * @return path for the header location
+   * @since 1.0.0
+   */
   private String location(String id) {
     return "/" + id;
   }
