@@ -13,7 +13,7 @@ import com.whz.feedback.infrastructure.FeedbackData;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
-public class FeedbackResourceTest extends ResourceTestCase {
+public class FeedbackResourceIT extends ResourceTestCase {
 
   @Test
   public void testReady() {
