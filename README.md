@@ -28,7 +28,7 @@ The project is created with the build tool [Maven][maven], [Docker][docker] and 
 If you want to run services locally, please follow the instructions in the respective projects. You can set up all other important services with Docker:
 
 ```bash
-docker-compose up -d TODO
+docker-compose up -d --build
 ```
 
 See deployment for notes on how to deploy the project on a live system.
@@ -60,7 +60,7 @@ A small documentation on the tools used can be found in the [`doc`][documentatio
 If you want to deploy the complete project, you can use Docker to set up the entire environment. All you need to do is run the following command:
 
 ```bash
-docker-compose up -d TODO
+docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build
 ```
 
 ## Contributing
