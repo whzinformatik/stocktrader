@@ -37,7 +37,7 @@ curl --location --request POST 'localhost:18080/' \
 You can run all the automated tests of the project with the following command:
 
 ```bash
-mvn test
+mvn verify
 ```
 
 ## Documentation
