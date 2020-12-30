@@ -43,7 +43,7 @@ public class FeedbackData {
   }
 
   /**
-   * Create a new feedback DTO with the state of another feedback DTO.
+   * Create a new feedback DTO with the state of another feedback.
    *
    * @param state other feedback state
    * @return feedback DTO with identifier and message
@@ -54,7 +54,7 @@ public class FeedbackData {
   }
 
   /**
-   * Create many feedback DTOs from many other feedback DTOs.
+   * Create many feedback DTOs from many other feedback states.
    *
    * @param states other feedback states
    * @return feedback DTOs with identifier and message

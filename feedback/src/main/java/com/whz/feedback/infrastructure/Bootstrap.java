@@ -29,10 +29,18 @@ import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
  */
 public class Bootstrap {
 
-  /** standard port for the application */
+  /**
+   * standard port for the application
+   *
+   * @since 1.0.0
+   */
   private static final int DEFAULT_PORT = 18080;
 
-  /** name of the application */
+  /**
+   * name of the application
+   *
+   * @since 1.0.0
+   */
   private static final String NAME = "feedback";
 
   private static final Logger logger = Logger.basicLogger();

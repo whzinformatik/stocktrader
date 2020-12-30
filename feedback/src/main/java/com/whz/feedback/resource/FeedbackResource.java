@@ -124,7 +124,7 @@ public class FeedbackResource extends ResourceHandler {
   }
 
   /**
-   * Create the reponse header location for the specific request.
+   * Create the response header location for the specific request.
    *
    * @param id identifier of the feedback message
    * @return path for the header location
