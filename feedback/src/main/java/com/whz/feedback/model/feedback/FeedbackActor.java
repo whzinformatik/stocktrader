@@ -21,9 +21,14 @@ import org.slf4j.LoggerFactory;
  */
 public final class FeedbackActor extends EventSourced implements Feedback {
 
-  private final Logger logger = LoggerFactory.getLogger(FeedbackActor.class);
-
+  /**
+   * name of the feedback exchange
+   *
+   * @since 1.0.0
+   */
   private static final String EXCHANGE_NAME = "feedback";
+
+  private final Logger logger = LoggerFactory.getLogger(FeedbackActor.class);
 
   private final Publisher<FeedbackState> publisher;
 
