@@ -34,10 +34,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
 
   @Test
   public void testPost() throws IOException, TimeoutException {
-    ConnectionFactory connectionFactory = new ConnectionFactory();
-    connectionFactory.setHost(EnvUtils.RABBITMQ_SERVICE.get());
-    TestSubscriber<FeedbackState> subscriber = new TestSubscriber<>(connectionFactory);
-
+    TestSubscriber<FeedbackState> subscriber = new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
     subscriber.receive(FeedbackActor.EXCHANGE_NAME, FeedbackState.class);
 
     String message = "message";

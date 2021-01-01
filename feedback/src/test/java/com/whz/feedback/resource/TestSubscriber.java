@@ -14,6 +14,8 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+import com.whz.feedback.model.feedback.FeedbackState;
+import com.whz.feedback.utils.EnvUtils;
 import io.vlingo.common.serialization.JsonSerialization;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -26,6 +28,13 @@ class TestSubscriber<T> {
   private final Connection connection;
 
   private final List<T> messages;
+
+  public TestSubscriber(String host) throws IOException, TimeoutException {
+    ConnectionFactory connectionFactory = new ConnectionFactory();
+    connectionFactory.setHost(host);
+    this.connection = connectionFactory.newConnection();
+    this.messages = new ArrayList<>();
+  }
 
   public TestSubscriber(ConnectionFactory connectionFactory) throws IOException, TimeoutException {
     this.connection = connectionFactory.newConnection();
