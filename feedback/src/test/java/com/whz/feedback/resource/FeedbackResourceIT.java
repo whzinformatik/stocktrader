@@ -13,7 +13,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-import com.rabbitmq.client.ConnectionFactory;
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.model.feedback.FeedbackActor;
 import com.whz.feedback.model.feedback.FeedbackState;
@@ -34,7 +33,8 @@ public class FeedbackResourceIT extends ResourceTestCase {
 
   @Test
   public void testPost() throws IOException, TimeoutException {
-    TestSubscriber<FeedbackState> subscriber = new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
+    TestSubscriber<FeedbackState> subscriber =
+        new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
     subscriber.receive(FeedbackActor.EXCHANGE_NAME, FeedbackState.class);
 
     String message = "message";

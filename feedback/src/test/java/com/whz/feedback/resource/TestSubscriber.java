@@ -14,8 +14,6 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
-import com.whz.feedback.model.feedback.FeedbackState;
-import com.whz.feedback.utils.EnvUtils;
 import io.vlingo.common.serialization.JsonSerialization;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
