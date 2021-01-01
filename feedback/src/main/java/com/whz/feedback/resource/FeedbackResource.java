@@ -37,6 +37,8 @@ import io.vlingo.http.resource.ResourceHandler;
  */
 public class FeedbackResource extends ResourceHandler {
 
+  private static final String APPLICATION_JSON = "application/json";
+
   private final Stage stage;
 
   private final FeedbackQueries queries;
@@ -80,7 +82,7 @@ public class FeedbackResource extends ResourceHandler {
                     Response.of(
                         Created,
                         headers(of(Location, location(state.id)))
-                            .and(of(ContentType, "application/json")),
+                            .and(of(ContentType, APPLICATION_JSON)),
                         serialized(FeedbackData.from(state)))));
   }
 
@@ -99,7 +101,7 @@ public class FeedbackResource extends ResourceHandler {
             data ->
                 Completes.withSuccess(
                     Response.of(
-                        Ok, headers(of(ContentType, "application/json")), serialized(data))))
+                        Ok, headers(of(ContentType, APPLICATION_JSON)), serialized(data))))
         .otherwise(noData -> Response.of(NotFound, location(feedbackId)));
   }
 
@@ -116,7 +118,7 @@ public class FeedbackResource extends ResourceHandler {
             data ->
                 Completes.withSuccess(
                     Response.of(
-                        Ok, headers(of(ContentType, "application/json")), serialized(data))));
+                        Ok, headers(of(ContentType, APPLICATION_JSON)), serialized(data))));
   }
 
   @Override
