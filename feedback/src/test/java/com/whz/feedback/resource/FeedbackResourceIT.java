@@ -13,13 +13,13 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-import io.vlingo.http.Response.Status;
 import com.rabbitmq.client.ConnectionFactory;
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.model.feedback.FeedbackActor;
 import com.whz.feedback.model.feedback.FeedbackState;
 import com.whz.feedback.utils.EnvUtils;
 import io.restassured.response.Response;
+import io.vlingo.http.Response.Status;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
