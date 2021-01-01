@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FeedbackResourceIT extends ResourceTestCase {
 
   @Test
