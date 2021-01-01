@@ -7,7 +7,8 @@
  */
 package com.whz.feedback.infrastructure.persistence;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.model.feedback.FeedbackState;
@@ -22,8 +23,8 @@ public class FeedbackDataTest {
   @Test
   public void testEmpty() {
     FeedbackData feedbackData = FeedbackData.empty();
-    assertTrue(feedbackData.id.isEmpty());
-    assertTrue(feedbackData.message.isEmpty());
+    assertThat(feedbackData.id).isEmpty();
+    assertThat(feedbackData.message).isEmpty();
   }
 
   @Test
@@ -38,14 +39,14 @@ public class FeedbackDataTest {
   public void testFromStateNonNull() {
     FeedbackState feedbackState = FeedbackState.identifiedBy(id).withMessage(message);
     FeedbackData feedbackData = FeedbackData.from(feedbackState);
-    assertEquals(id, feedbackData.id);
-    assertEquals(message, feedbackData.message);
+    assertThat(feedbackData.id).isEqualTo(id);
+    assertThat(feedbackData.message).isEqualTo(message);
   }
 
   @Test
   public void testJust() {
     FeedbackData feedbackData = FeedbackData.just(message);
-    assertTrue(feedbackData.id.isEmpty());
-    assertEquals(message, feedbackData.message);
+    assertThat(feedbackData.id).isEmpty();
+    assertThat(feedbackData.message).isEqualTo(message);
   }
 }
