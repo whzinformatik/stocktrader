@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
+import io.vlingo.http.Response.Status;
 import com.rabbitmq.client.ConnectionFactory;
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.model.feedback.FeedbackActor;
@@ -28,7 +29,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
 
   @Test
   public void testReady() {
-    givenJsonClient().when().get("/ready").then().statusCode(200);
+    givenJsonClient().when().get("/ready").then().statusCode(Status.Ok.code);
   }
 
   @Test
@@ -42,7 +43,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
     String message = "message";
     createFeedback(message)
         .then()
-        .statusCode(201)
+        .statusCode(Status.Created.code)
         .body("id", notNullValue())
         .body("message", equalTo(message));
 
@@ -64,7 +65,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .when()
         .get("/" + data.id)
         .then()
-        .statusCode(200)
+        .statusCode(Status.Ok.code)
         .body("id", equalTo(data.id))
         .body("message", equalTo(data.message));
   }
@@ -78,7 +79,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .when()
         .get("/")
         .then()
-        .statusCode(200)
+        .statusCode(Status.Ok.code)
         .body("id", contains(data1.id, data2.id))
         .body("message", contains(data1.message, data2.message));
   }
