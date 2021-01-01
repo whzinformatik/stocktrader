@@ -100,8 +100,7 @@ public class FeedbackResource extends ResourceHandler {
             FeedbackData.empty(),
             data ->
                 Completes.withSuccess(
-                    Response.of(
-                        Ok, headers(of(ContentType, APPLICATION_JSON)), serialized(data))))
+                    Response.of(Ok, headers(of(ContentType, APPLICATION_JSON)), serialized(data))))
         .otherwise(noData -> Response.of(NotFound, location(feedbackId)));
   }
 
@@ -117,8 +116,7 @@ public class FeedbackResource extends ResourceHandler {
         .andThenTo(
             data ->
                 Completes.withSuccess(
-                    Response.of(
-                        Ok, headers(of(ContentType, APPLICATION_JSON)), serialized(data))));
+                    Response.of(Ok, headers(of(ContentType, APPLICATION_JSON)), serialized(data))));
   }
 
   @Override
