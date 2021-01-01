@@ -8,9 +8,11 @@
 package com.whz.feedback.model.feedback;
 
 import com.whz.feedback.resource.Publisher;
+import com.whz.feedback.utils.EnvUtils;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +28,7 @@ public final class FeedbackActor extends EventSourced implements Feedback {
    *
    * @since 1.0.0
    */
-  private static final String EXCHANGE_NAME = "feedback";
+  public static final String EXCHANGE_NAME = "feedback";
 
   private final Logger logger = LoggerFactory.getLogger(FeedbackActor.class);
 
@@ -40,13 +42,10 @@ public final class FeedbackActor extends EventSourced implements Feedback {
    * @param id identifier of the feedback message
    * @since 1.0.0
    */
-  public FeedbackActor(final String id) {
+  public FeedbackActor(final String id) throws IOException, TimeoutException {
     super(id);
     this.state = FeedbackState.identifiedBy(id);
-
-    final String serviceName =
-        Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
-    this.publisher = new Publisher<>(serviceName);
+    this.publisher = new Publisher<>(EnvUtils.RABBITMQ_SERVICE.get());
   }
 
   @Override
