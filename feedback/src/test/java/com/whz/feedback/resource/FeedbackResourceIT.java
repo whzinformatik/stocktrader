@@ -7,10 +7,21 @@
  */
 package com.whz.feedback.resource;
 
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
+import com.rabbitmq.client.ConnectionFactory;
 import com.whz.feedback.infrastructure.FeedbackData;
+import com.whz.feedback.model.feedback.FeedbackActor;
+import com.whz.feedback.model.feedback.FeedbackState;
+import com.whz.feedback.utils.EnvUtils;
 import io.restassured.response.Response;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.Test;
 
 public class FeedbackResourceIT extends ResourceTestCase {
@@ -21,12 +32,28 @@ public class FeedbackResourceIT extends ResourceTestCase {
   }
 
   @Test
-  public void testPost() {
-    createFeedback("message")
+  public void testPost() throws IOException, TimeoutException {
+    ConnectionFactory connectionFactory = new ConnectionFactory();
+    connectionFactory.setHost(EnvUtils.RABBITMQ_SERVICE.get());
+    TestSubscriber<FeedbackState> subscriber = new TestSubscriber<>(connectionFactory);
+
+    subscriber.receive(FeedbackActor.EXCHANGE_NAME, FeedbackState.class);
+
+    String message = "message";
+    createFeedback(message)
         .then()
         .statusCode(201)
         .body("id", notNullValue())
-        .body("message", equalTo("message"));
+        .body("message", equalTo(message));
+
+    await().until(subscriber::containsData);
+
+    List<FeedbackState> messages = subscriber.getMessages();
+    assertThat(messages).isNotEmpty();
+
+    FeedbackState state = subscriber.lastMessage();
+    assertThat(state.id).isNotNull();
+    assertThat(state.message).isEqualTo(message);
   }
 
   @Test

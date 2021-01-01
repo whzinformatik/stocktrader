@@ -7,7 +7,10 @@
  */
 package com.whz.feedback.model.feedback;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +32,7 @@ public class FeedbackStateTest {
   @Test
   public void testOnlyId() {
     FeedbackState feedbackState = FeedbackState.identifiedBy(id);
-    assertEquals(id, feedbackState.id);
+    assertThat(feedbackState.id).isEqualTo(id);
     assertNull(feedbackState.message);
     assertFalse(feedbackState.doesNotExist());
     assertTrue(feedbackState.isIdentifiedOnly());
@@ -38,8 +41,8 @@ public class FeedbackStateTest {
   @Test
   public void testIdAndMessage() {
     FeedbackState feedbackState = FeedbackState.identifiedBy(id).withMessage(message);
-    assertEquals(id, feedbackState.id);
-    assertEquals(message, feedbackState.message);
+    assertThat(feedbackState.id).isEqualTo(id);
+    assertThat(feedbackState.message).isEqualTo(message);
     assertFalse(feedbackState.doesNotExist());
     assertFalse(feedbackState.isIdentifiedOnly());
   }
