@@ -20,7 +20,6 @@ import com.whz.feedback.utils.EnvUtils;
 import io.restassured.response.Response;
 import io.vlingo.http.Response.Status;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
