@@ -48,9 +48,6 @@ public class FeedbackResourceIT extends ResourceTestCase {
 
     await().until(subscriber::containsData);
 
-    List<FeedbackState> messages = subscriber.getMessages();
-    assertThat(messages).isNotEmpty();
-
     FeedbackState state = subscriber.lastMessage();
     assertThat(state.id).isNotNull();
     assertThat(state.message).isEqualTo(message);
