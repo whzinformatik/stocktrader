@@ -51,7 +51,7 @@ mvn license:format
 
 How further tests can be carried out is described in the corresponding sub-projects.
 
-## Theoretical Documentation
+## Background Documentation
 
 A small documentation on the tools used can be found in the [`doc`][documentation] folder. This is only a small excerpt. Detailed documentation can be found on the corresponding developer pages.
 
