@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <lationts@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <lationts@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -18,8 +18,14 @@ public final class AccountEntity extends EventSourced implements Account {
     this.state = AccountState.identifiedBy(id);
   }
 
+  @Override
   public Completes<AccountState> accountCreated(final double balance) {
     return apply(new AccountCreated(state.id, balance), () -> state);
+  }
+
+  @Override
+  public Completes<AccountState> moneyInvested(final double amount) {
+    return apply(new MoneyInvested(state.id, amount), () -> state);
   }
 
   // =====================================
@@ -29,9 +35,15 @@ public final class AccountEntity extends EventSourced implements Account {
   static {
     EventSourced.registerConsumer(
         AccountEntity.class, AccountCreated.class, AccountEntity::applyAccountCreated);
+    EventSourced.registerConsumer(
+        AccountEntity.class, MoneyInvested.class, AccountEntity::applyMoneyInvested);
   }
 
   private void applyAccountCreated(final AccountCreated e) {
     state = state.withCreationValues(e.balance);
+  }
+
+  private void applyMoneyInvested(final MoneyInvested e) {
+    state = state.withInvestedMoney(e.amount);
   }
 }

@@ -7,7 +7,18 @@
  */
 package com.whz.account.infrastructure;
 
-public enum EventTypes {
-  AccountCreated,
-  MoneyInvested
+public class BoughtStockData {
+
+  public String owner;
+  public double amount;
+
+  public BoughtStockData(String owner, double amount) {
+    this.owner = owner;
+    this.amount = amount;
+  }
+
+  @Override
+  public String toString() {
+    return "BoughtStockData [owner=" + owner + ", amount=" + amount + "]";
+  }
 }

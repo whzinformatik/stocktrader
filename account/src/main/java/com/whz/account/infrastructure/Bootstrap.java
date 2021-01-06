@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <lationts@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <lationts@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -35,8 +35,7 @@ public class Bootstrap {
   public Bootstrap(final int port) throws Exception {
     world = World.startWithDefaults(NAME);
 
-    final Stage stage = world.stageNamed(NAME); // , Stage.class, new
-    // GridAddressFactory(IdentityGeneratorType.RANDOM));
+    final Stage stage = world.stageNamed(NAME);
 
     final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
     final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);

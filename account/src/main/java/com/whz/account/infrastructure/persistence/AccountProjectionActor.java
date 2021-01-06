@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <lationts@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <lationts@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,6 +10,8 @@ package com.whz.account.infrastructure.persistence;
 import com.whz.account.infrastructure.AccountData;
 import com.whz.account.infrastructure.EventTypes;
 import com.whz.account.model.account.AccountCreated;
+import com.whz.account.model.account.Loyalty;
+import com.whz.account.model.account.MoneyInvested;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
@@ -33,7 +35,6 @@ public class AccountProjectionActor extends StateStoreProjectionActor<AccountDat
       final AccountData currentData,
       final int currentVersion) {
     if (previousVersion == currentVersion) {
-      System.out.println(previousVersion);
       return previousData;
     }
 
@@ -48,6 +49,23 @@ public class AccountProjectionActor extends StateStoreProjectionActor<AccountDat
           currentData.commissions = accountCreated.commissions;
           currentData.free = accountCreated.free;
           currentData.sentiment = accountCreated.sentiment;
+          break;
+        case MoneyInvested:
+          final MoneyInvested moneyInvested = typed(event);
+          currentData.id = previousData.id;
+          currentData.totalInvested += moneyInvested.amount;
+
+          if (currentData.totalInvested > 1000000.00) {
+            currentData.loyalty = Loyalty.PLATINUM;
+          } else if (currentData.totalInvested > 100000.00) {
+            currentData.loyalty = Loyalty.GOLD;
+          } else if (currentData.totalInvested > 50000.00) {
+            currentData.loyalty = Loyalty.SILVER;
+          } else if (currentData.totalInvested > 10000.00) {
+            currentData.loyalty = Loyalty.BRONZE;
+          } else {
+            currentData.loyalty = Loyalty.BASIC;
+          }
           break;
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");

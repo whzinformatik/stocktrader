@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <lationts@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <lationts@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,6 +8,7 @@
 package com.whz.account.infrastructure.persistence;
 
 import com.whz.account.model.account.AccountCreated;
+import com.whz.account.model.account.MoneyInvested;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
@@ -34,8 +35,8 @@ public class ProjectionDispatcherProvider {
 
     final List<ProjectToDescription> descriptions =
         Arrays.asList(
-            ProjectToDescription.with(
-                AccountProjectionActor.class, AccountCreated.class.getName()));
+            ProjectToDescription.with(AccountProjectionActor.class, AccountCreated.class.getName()),
+            ProjectToDescription.with(AccountProjectionActor.class, MoneyInvested.class.getName()));
 
     final Protocols dispatcherProtocols =
         stage.actorFor(

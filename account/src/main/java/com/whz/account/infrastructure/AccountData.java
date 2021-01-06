@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <lationts@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <lationts@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,6 +8,8 @@
 package com.whz.account.infrastructure;
 
 import com.whz.account.model.account.AccountState;
+import com.whz.account.model.account.Loyalty;
+import com.whz.account.model.account.Sentiment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +17,13 @@ public class AccountData {
   public String id;
   public double balance;
   public double totalInvested;
-  public String loyalty;
+  public Loyalty loyalty;
   public double commissions;
   public int free;
-  public String sentiment;
+  public Sentiment sentiment;
 
   public static AccountData empty() {
-    return new AccountData("", 0.0, 0.0, "", 0.0, 0, "");
+    return new AccountData("", 0.0, 0.0, Loyalty.BASIC, 0.0, 0, Sentiment.UNKNOWN);
   }
 
   public static AccountData from(final AccountState state) {
@@ -49,15 +51,15 @@ public class AccountData {
       final String id,
       double balance,
       double totalInvested,
-      String loyalty,
+      Loyalty loyalty,
       double commissions,
       int free,
-      String sentiment) {
+      Sentiment sentiment) {
     return new AccountData(id, balance, totalInvested, loyalty, commissions, free, sentiment);
   }
 
   public static AccountData just(double balance) {
-    return new AccountData("", balance, 0.0, "", 0.0, 0, "");
+    return new AccountData("", balance, 0.0, Loyalty.BASIC, 0.0, 0, Sentiment.UNKNOWN);
   }
 
   @Override
@@ -83,10 +85,10 @@ public class AccountData {
       final String id,
       double balance,
       double totalInvested,
-      String loyalty,
+      Loyalty loyalty,
       double commissions,
       int free,
-      String sentiment) {
+      Sentiment sentiment) {
     this.id = id;
     this.balance = balance;
     this.totalInvested = totalInvested;
