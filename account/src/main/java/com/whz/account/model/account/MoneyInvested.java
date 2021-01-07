@@ -9,18 +9,30 @@ package com.whz.account.model.account;
 
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
+/**
+ * MoneyInvested Event which is responsible for adding invested money to the
+ * totalInvested value of an Account based on the invested amount.
+ * 
+ * @author Lation
+ */
 public class MoneyInvested extends IdentifiedDomainEvent {
 
-  public String id;
-  public double amount;
+	public String id;
+	public double amount;
 
-  public MoneyInvested(final String id, double amount) {
-    this.id = id;
-    this.amount = amount;
-  }
+	/**
+	 * MoneyInvested Event constructor.
+	 * 
+	 * @param id     - id of the corresponding account
+	 * @param amount - amount which was invested and gets added later
+	 */
+	public MoneyInvested(final String id, double amount) {
+		this.id = id;
+		this.amount = amount;
+	}
 
-  @Override
-  public String identity() {
-    return id;
-  }
+	@Override
+	public String identity() {
+		return id;
+	}
 }

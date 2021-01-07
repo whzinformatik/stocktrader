@@ -255,7 +255,7 @@
                         <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
                         <properties>
                             <owner>${project.organization.name}</owner>
-                            <email>lationts@gmail.com</email>
+                            <email>help.flaxel@gmail.com</email>
                             <license.years>2020-2021</license.years>
                         </properties>
                         <includes>

@@ -7,10 +7,11 @@
  */
 package com.whz.account.model.account;
 
+/**
+ * Enum used to represent the loyalty of an account.
+ * 
+ * @author Lation
+ */
 public enum Loyalty {
-  BASIC,
-  BRONZE,
-  SILVER,
-  GOLD,
-  PLATINUM
+	BASIC, BRONZE, SILVER, GOLD, PLATINUM
 }

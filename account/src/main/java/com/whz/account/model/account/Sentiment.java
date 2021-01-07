@@ -7,8 +7,11 @@
  */
 package com.whz.account.model.account;
 
+/**
+ * Enum used to represent the sentiment of an account.
+ * 
+ * @author Lation
+ */
 public enum Sentiment {
-  UNKNOWN,
-  GOOD,
-  BAD
+	UNKNOWN, GOOD, BAD
 }

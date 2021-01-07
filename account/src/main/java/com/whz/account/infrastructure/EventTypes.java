@@ -7,7 +7,11 @@
  */
 package com.whz.account.infrastructure;
 
+/**
+ * EventTypes that are available for the account microservice.
+ * 
+ * @author Lation
+ */
 public enum EventTypes {
-  AccountCreated,
-  MoneyInvested
+	AccountCreated, MoneyInvested
 }
