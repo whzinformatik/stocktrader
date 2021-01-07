@@ -23,7 +23,6 @@ import com.whz.account.infrastructure.AccountData;
 import com.whz.account.infrastructure.persistence.AccountQueries;
 import com.whz.account.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.account.model.account.Account;
-import com.whz.account.model.account.AccountEntity;
 import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
@@ -126,16 +125,6 @@ public class AccountResource extends ResourceHandler {
   }
 
   /**
-   * Returns an Account object which can be used to trigger initial methods to create Events.
-   *
-   * @param id - the id of the Account you want to receive
-   * @return Account - an Account object
-   */
-  private Completes<Account> resolve(final String id) {
-    return stage.actorOf(Account.class, stage.addressFactory().from(id), AccountEntity.class);
-  }
-
-  /**
    * The full HTTP POST-Request call to the Portfolio microservice which will create a Portfolio to
    * our Account in a 1:1 relation based on the given id.
    *
@@ -152,7 +141,7 @@ public class AccountResource extends ResourceHandler {
             .build();
 
     try {
-      HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      client.send(request, HttpResponse.BodyHandlers.ofString());
     } catch (IOException | InterruptedException e) {
       logger.error("Unable to send HTTP Request", e);
     }

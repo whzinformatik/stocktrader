@@ -13,7 +13,7 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
  * AccountCreated Event which is responsible for creating a fresh account based on a given initial
  * balance. It contains an id, an initial balance, the amount of totalInvested money, the loyalty
  * and sentiment of the account, the current commissions for buying stocks and a free integer which
- * represents how many stocks can be bought for free.
+ * represents a flat amount of how many stocks can be bought without paying a commission.
  *
  * @author Lation
  */
