@@ -67,7 +67,7 @@ public enum CommentToneSubscriber {
             stage
                 .actorOf(
                     Account.class,
-                    stage.addressFactory().from(commentToneData.owner),
+                    stage.addressFactory().from(commentToneData.id),
                     AccountEntity.class)
                 .andThenTo(
                     account -> {

@@ -17,16 +17,18 @@ import com.whz.account.model.account.Sentiment;
  */
 public final class CommentToneData {
 
-  public final String owner;
+  public final String id;
+  public final String message;
   public Sentiment sentiment;
 
-  public CommentToneData(String owner, Sentiment sentiment) {
-    this.owner = owner;
+  public CommentToneData(String id, String message, Sentiment sentiment) {
+    this.id = id;
+    this.message = message;
     this.sentiment = sentiment;
   }
 
   @Override
   public String toString() {
-    return "CommentTone{" + "owner='" + owner + '\'' + ", sentiment='" + sentiment + '\'' + '}';
+    return "CommentToneData [id=" + id + ", message=" + message + ", sentiment=" + sentiment + "]";
   }
 }
