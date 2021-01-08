@@ -12,71 +12,75 @@ import com.whz.account.infrastructure.EventTypes;
 import com.whz.account.model.account.AccountCreated;
 import com.whz.account.model.account.Loyalty;
 import com.whz.account.model.account.MoneyInvested;
+import com.whz.account.model.account.SentimentReceived;
+
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
 
 public class AccountProjectionActor extends StateStoreProjectionActor<AccountData> {
-  private static final AccountData Empty = AccountData.empty();
+	private static final AccountData Empty = AccountData.empty();
 
-  public AccountProjectionActor() {
-    super(QueryModelStateStoreProvider.instance().store);
-  }
+	public AccountProjectionActor() {
+		super(QueryModelStateStoreProvider.instance().store);
+	}
 
-  @Override
-  protected AccountData currentDataFor(final Projectable projectable) {
-    return Empty;
-  }
+	@Override
+	protected AccountData currentDataFor(final Projectable projectable) {
+		return Empty;
+	}
 
-  /**
-   * Based on the given Event Type and given values the appropriate case will be triggered and the
-   * Account object will be created or altered.
-   */
-  @Override
-  protected AccountData merge(
-      final AccountData previousData,
-      final int previousVersion,
-      final AccountData currentData,
-      final int currentVersion) {
-    if (previousVersion == currentVersion) {
-      return previousData;
-    }
+	/**
+	 * Based on the given Event Type and given values the appropriate case will be
+	 * triggered and the Account object will be created or altered.
+	 */
+	@Override
+	protected AccountData merge(final AccountData previousData, final int previousVersion,
+			final AccountData currentData, final int currentVersion) {
+		if (previousVersion == currentVersion) {
+			return previousData;
+		}
 
-    for (final Source<?> event : sources()) {
-      switch (EventTypes.valueOf(event.typeName())) {
-        case AccountCreated:
-          final AccountCreated accountCreated = typed(event);
-          currentData.id = accountCreated.id;
-          currentData.balance = accountCreated.balance;
-          currentData.totalInvested = accountCreated.totalInvested;
-          currentData.loyalty = accountCreated.loyalty;
-          currentData.commissions = accountCreated.commissions;
-          currentData.free = accountCreated.free;
-          currentData.sentiment = accountCreated.sentiment;
-          break;
-        case MoneyInvested:
-          final MoneyInvested moneyInvested = typed(event);
-          currentData.id = previousData.id;
-          currentData.totalInvested += moneyInvested.amount;
+		for (final Source<?> event : sources()) {
+			switch (EventTypes.valueOf(event.typeName())) {
+			case AccountCreated:
+				final AccountCreated accountCreated = typed(event);
+				currentData.id = accountCreated.id;
+				currentData.balance = accountCreated.balance;
+				currentData.totalInvested = accountCreated.totalInvested;
+				currentData.loyalty = accountCreated.loyalty;
+				currentData.commissions = accountCreated.commissions;
+				currentData.free = accountCreated.free;
+				currentData.sentiment = accountCreated.sentiment;
+				break;
+			case MoneyInvested:
+				final MoneyInvested moneyInvested = typed(event);
+				currentData.id = previousData.id;
+				currentData.totalInvested += moneyInvested.amount;
 
-          if (currentData.totalInvested > 1000000.00) {
-            currentData.loyalty = Loyalty.PLATINUM;
-          } else if (currentData.totalInvested > 100000.00) {
-            currentData.loyalty = Loyalty.GOLD;
-          } else if (currentData.totalInvested > 50000.00) {
-            currentData.loyalty = Loyalty.SILVER;
-          } else if (currentData.totalInvested > 10000.00) {
-            currentData.loyalty = Loyalty.BRONZE;
-          } else {
-            currentData.loyalty = Loyalty.BASIC;
-          }
-          break;
-        default:
-          logger().warn("Event of type " + event.typeName() + " was not matched.");
-          break;
-      }
-    }
+				if (currentData.totalInvested > 1000000.00) {
+					currentData.loyalty = Loyalty.PLATINUM;
+				} else if (currentData.totalInvested > 100000.00) {
+					currentData.loyalty = Loyalty.GOLD;
+				} else if (currentData.totalInvested > 50000.00) {
+					currentData.loyalty = Loyalty.SILVER;
+				} else if (currentData.totalInvested > 10000.00) {
+					currentData.loyalty = Loyalty.BRONZE;
+				} else {
+					currentData.loyalty = Loyalty.BASIC;
+				}
+				break;
+			case SentimentReceived:
+				final SentimentReceived sentimentReceived = typed(event);
+				currentData.id = previousData.id;
+				currentData.sentiment = sentimentReceived.sentiment;
+				break;
+			default:
+				logger().warn("Event of type " + event.typeName() + " was not matched.");
+				break;
+			}
+		}
 
-    return currentData;
-  }
+		return currentData;
+	}
 }

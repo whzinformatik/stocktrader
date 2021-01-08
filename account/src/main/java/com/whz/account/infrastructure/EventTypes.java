@@ -13,6 +13,5 @@ package com.whz.account.infrastructure;
  * @author Lation
  */
 public enum EventTypes {
-  AccountCreated,
-  MoneyInvested
+	AccountCreated, MoneyInvested, SentimentReceived
 }

@@ -15,7 +15,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
-import com.whz.account.infrastructure.StockData;
+import com.whz.account.infrastructure.CommentToneData;
 import com.whz.account.model.account.Account;
 import com.whz.account.model.account.AccountEntity;
 
@@ -24,15 +24,15 @@ import io.vlingo.actors.Stage;
 import io.vlingo.common.serialization.JsonSerialization;
 
 /**
- * The StockAcquiredSubscriber which subscribes to a StockAcquiredPublisher
- * endpoint and receives messages containing acquired stocks. After receiving a
- * message the "moneyInvested(double amount)" method will be triggered which
- * matches the id of the acquired stock to our account and adds the invested
- * value to our totalInvested value by creating a MoneyInvested event.
+ * The CommentToneSubscriber which subscribes to a CommentTonePublisher endpoint
+ * and receives messages containing a comment tone. After receiving a message
+ * the "sentimentReceived(Sentiment sentiment)" method will be triggered which
+ * matches the id of the comment tone to our account and changes the given
+ * sentiment to the new value by creating a SentimentReceived event.
  *
  * @author Lation
  */
-public enum StockAcquiredSubscriber {
+public enum CommentToneSubscriber {
 	INSTANCE;
 
 	private final Logger logger = Logger.basicLogger();
@@ -41,12 +41,12 @@ public enum StockAcquiredSubscriber {
 
 	/**
 	 * Initializes and establishes a RabbitMQ connection, waits for messages,
-	 * receives them and calls the appropriate moneyInvested() method in the Account
-	 * Interface.
+	 * receives them and calls the appropriate sentimentReceived() method in the
+	 * Account Interface.
 	 */
-	StockAcquiredSubscriber() {
+	CommentToneSubscriber() {
 		String serviceName = System.getenv("RABBITMQ_SERVICE");
-		String exchangeName = System.getenv("RABBITMQ_EXCHANGE_STOCKACQUIRED");
+		String exchangeName = System.getenv("RABBITMQ_EXCHANGE_COMMENTTONE");
 		String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
 
 		try {
@@ -59,19 +59,19 @@ public enum StockAcquiredSubscriber {
 			String queueName = channel.queueDeclare().getQueue();
 			channel.queueBind(queueName, exchangeName, "");
 
-			logger.debug("Started stock acquired subscriber");
+			logger.debug("Started comment tone subscriber");
 			logger.debug("Waiting for messages...");
 
 			DeliverCallback deliverCallback = (consumerTag, delivery) -> {
 				String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-				StockData stockData = JsonSerialization.deserialized(message, StockData.class);
+				CommentToneData commentToneData = JsonSerialization.deserialized(message, CommentToneData.class);
 
-				stage.actorOf(Account.class, stage.addressFactory().from(stockData.owner), AccountEntity.class)
+				stage.actorOf(Account.class, stage.addressFactory().from(commentToneData.owner), AccountEntity.class)
 						.andThenTo(account -> {
-							return account.moneyInvested(stockData.amount);
+							return account.sentimentReceived(commentToneData.sentiment);
 						});
 
-				logger.debug("Stock acquired subscriber received message:'{}'", message);
+				logger.debug("Comment tone subscriber received message:'{}'", message);
 			};
 
 			channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
