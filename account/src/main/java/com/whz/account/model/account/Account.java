@@ -19,16 +19,19 @@ import io.vlingo.common.Completes;
  */
 public interface Account {
 
-	static Completes<AccountState> defineWith(final Stage stage, final double balance) {
-		final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
-		final Account account = stage.actorFor(Account.class,
-				Definition.has(AccountEntity.class, Definition.parameters(address.idString())), address);
-		return account.accountCreated(balance);
-	}
+  static Completes<AccountState> defineWith(final Stage stage, final double balance) {
+    final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
+    final Account account =
+        stage.actorFor(
+            Account.class,
+            Definition.has(AccountEntity.class, Definition.parameters(address.idString())),
+            address);
+    return account.accountCreated(balance);
+  }
 
-	Completes<AccountState> accountCreated(final double balance);
+  Completes<AccountState> accountCreated(final double balance);
 
-	Completes<AccountState> moneyInvested(final double amount);
+  Completes<AccountState> moneyInvested(final double amount);
 
-	Completes<AccountState> sentimentReceived(final Sentiment sentiment);
+  Completes<AccountState> sentimentReceived(final Sentiment sentiment);
 }

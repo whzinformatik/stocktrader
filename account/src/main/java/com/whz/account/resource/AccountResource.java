@@ -19,126 +19,133 @@ import static io.vlingo.http.resource.ResourceBuilder.get;
 import static io.vlingo.http.resource.ResourceBuilder.post;
 import static io.vlingo.http.resource.ResourceBuilder.resource;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
 import com.whz.account.infrastructure.AccountData;
 import com.whz.account.infrastructure.persistence.AccountQueries;
 import com.whz.account.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.account.model.account.Account;
-
 import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 /**
- * The AccountResource is responsible for managing the REST interface and
- * invoking methods/events.
+ * The AccountResource is responsible for managing the REST interface and invoking methods/events.
  *
  * @author Lation
  */
 public class AccountResource extends ResourceHandler {
 
-	private Logger logger;
+  private Logger logger;
 
-	private final Stage stage;
-	private final AccountQueries accountQueries;
-	private final String portfolioUrl = System.getenv("PORTFOLIO_URL");
+  private final Stage stage;
+  private final AccountQueries accountQueries;
+  private final String portfolioUrl = System.getenv("PORTFOLIO_URL");
 
-	/**
-	 * Sets the stage and accountQueries and initializes a StockAcquiredSubscriber
-	 * singleton.
-	 *
-	 * @param stage - stage object of the world
-	 */
-	public AccountResource(final Stage stage) {
-		StockAcquiredSubscriber saSub = StockAcquiredSubscriber.INSTANCE;
-		saSub.setStage(stage);
-		CommentToneSubscriber ctSub = CommentToneSubscriber.INSTANCE;
-		ctSub.setStage(stage);
+  /**
+   * Sets the stage and accountQueries and initializes a StockAcquiredSubscriber singleton.
+   *
+   * @param stage - stage object of the world
+   */
+  public AccountResource(final Stage stage) {
+    StockAcquiredSubscriber saSub = StockAcquiredSubscriber.INSTANCE;
+    saSub.setStage(stage);
+    CommentToneSubscriber ctSub = CommentToneSubscriber.INSTANCE;
+    ctSub.setStage(stage);
 
-		this.logger = stage.world().defaultLogger();
+    this.logger = stage.world().defaultLogger();
 
-		this.stage = stage;
-		this.accountQueries = QueryModelStateStoreProvider.instance().accountQueries;
-	}
+    this.stage = stage;
+    this.accountQueries = QueryModelStateStoreProvider.instance().accountQueries;
+  }
 
-	/**
-	 * Get method which returns an AccountData object based on a given id.
-	 *
-	 * @param id - the id of the AccountData object that gets requested
-	 * @return Response - an HTTP answer (JSON) with the AccountData object
-	 *         representing an Account
-	 */
-	public Completes<Response> handleGetAccount(String id) {
-		return accountQueries.accountOf(id)
-				.andThenTo(AccountData.empty(),
-						data -> Completes.withSuccess(
-								Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
-				.otherwise(noData -> Response.of(NotFound, location(id)));
-	}
+  /**
+   * Get method which returns an AccountData object based on a given id.
+   *
+   * @param id - the id of the AccountData object that gets requested
+   * @return Response - an HTTP answer (JSON) with the AccountData object representing an Account
+   */
+  public Completes<Response> handleGetAccount(String id) {
+    return accountQueries
+        .accountOf(id)
+        .andThenTo(
+            AccountData.empty(),
+            data ->
+                Completes.withSuccess(
+                    Response.of(
+                        Ok, headers(of(ContentType, "application/json")), serialized(data))))
+        .otherwise(noData -> Response.of(NotFound, location(id)));
+  }
 
-	/**
-	 * Post method which creates an Account with a selfdefined id and given balance.
-	 * It accepts a Json format containing a "balance":double value. While creating
-	 * an Event to generate an Account it also triggers a call to a REST interface
-	 * of the Portfolio microservice which creates a corresponding Portfolio to our
-	 * Account in a 1:1 relation based on their id's.
-	 *
-	 * @param data - an AccountData object representing an Account object
-	 * @return Response - an HTTP answer (JSON) which contains the information if
-	 *         the Account was successfully created
-	 */
-	public Completes<Response> handlePostAccount(AccountData data) {
-		return Account.defineWith(stage, data.balance).andThenTo(state -> {
-			createPortfolioRequest(state.id);
-			return Completes.withSuccess(Response.of(Created,
-					headers(of(Location, location(state.id))).and(of(ContentType, "application/json")),
-					serialized(AccountData.from(state))));
-		});
-	}
+  /**
+   * Post method which creates an Account with a selfdefined id and given balance. It accepts a Json
+   * format containing a "balance":double value. While creating an Event to generate an Account it
+   * also triggers a call to a REST interface of the Portfolio microservice which creates a
+   * corresponding Portfolio to our Account in a 1:1 relation based on their id's.
+   *
+   * @param data - an AccountData object representing an Account object
+   * @return Response - an HTTP answer (JSON) which contains the information if the Account was
+   *     successfully created
+   */
+  public Completes<Response> handlePostAccount(AccountData data) {
+    return Account.defineWith(stage, data.balance)
+        .andThenTo(
+            state -> {
+              createPortfolioRequest(state.id);
+              return Completes.withSuccess(
+                  Response.of(
+                      Created,
+                      headers(of(Location, location(state.id)))
+                          .and(of(ContentType, "application/json")),
+                      serialized(AccountData.from(state))));
+            });
+  }
 
-	/** Maps the HTTP-Requests to the corresponding handler method. */
-	@Override
-	public Resource<?> routes() {
-		return resource(getClass().getSimpleName(),
-				get("/account/{id}").param(String.class).handle(this::handleGetAccount),
-				post("/account").body(AccountData.class).handle(this::handlePostAccount));
-	}
+  /** Maps the HTTP-Requests to the corresponding handler method. */
+  @Override
+  public Resource<?> routes() {
+    return resource(
+        getClass().getSimpleName(),
+        get("/account/{id}").param(String.class).handle(this::handleGetAccount),
+        post("/account").body(AccountData.class).handle(this::handlePostAccount));
+  }
 
-	/**
-	 * Parses a String to represent our account id path.
-	 *
-	 * @param id - the id of the AccountState object
-	 * @return String - the parsed id
-	 */
-	private String location(final String id) {
-		return "/account/" + id;
-	}
+  /**
+   * Parses a String to represent our account id path.
+   *
+   * @param id - the id of the AccountState object
+   * @return String - the parsed id
+   */
+  private String location(final String id) {
+    return "/account/" + id;
+  }
 
-	/**
-	 * The full HTTP POST-Request call to the Portfolio microservice which will
-	 * create a Portfolio to our Account in a 1:1 relation based on the given id.
-	 *
-	 * @param id - the id which will be shared between an Account and a Portfolio
-	 */
-	private void createPortfolioRequest(String id) {
-		String requestBody = id;
+  /**
+   * The full HTTP POST-Request call to the Portfolio microservice which will create a Portfolio to
+   * our Account in a 1:1 relation based on the given id.
+   *
+   * @param id - the id which will be shared between an Account and a Portfolio
+   */
+  private void createPortfolioRequest(String id) {
+    String requestBody = id;
 
-		HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(portfolioUrl + "/portfolio"))
-				.POST(HttpRequest.BodyPublishers.ofString(requestBody)).build();
+    HttpClient client = HttpClient.newHttpClient();
+    HttpRequest request =
+        HttpRequest.newBuilder()
+            .uri(URI.create(portfolioUrl + "/portfolio"))
+            .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+            .build();
 
-		try {
-			client.send(request, HttpResponse.BodyHandlers.ofString());
-		} catch (IOException | InterruptedException e) {
-			logger.error("Unable to send HTTP Request", e);
-		}
-	}
+    try {
+      client.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      logger.error("Unable to send HTTP Request", e);
+    }
+  }
 }

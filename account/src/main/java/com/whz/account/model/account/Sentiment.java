@@ -13,5 +13,8 @@ package com.whz.account.model.account;
  * @author Lation
  */
 public enum Sentiment {
-	UNKNOWN, POSITIVE, NEUTRAL, NEGATIVE
+  UNKNOWN,
+  POSITIVE,
+  NEUTRAL,
+  NEGATIVE
 }
