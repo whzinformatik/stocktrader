@@ -7,6 +7,7 @@
  */
 package com.whz.stockquote;
 
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -19,27 +20,54 @@ import org.json.JSONObject;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
+/**
+ * This class can be used to publish stock quote data to RabbitMQ.
+ * The stock quotes are obtained from the "Finance Quotes API for Yahoo Finance" by Stijn Strickx.
+ *
+ * @see <a href="https://github.com/sstrickx/yahoofinance-api">yahoofinance-api by Stijn Strickx</a>
+ * @since 1.0.0
+ */
 public class StockQuotePublisher {
 
-  private static final Logger LOGGER = Logger.getLogger(StockQuotePublisher.class.getName());
+  private static final Logger logger = Logger.getLogger(StockQuotePublisher.class.getName());
 
   private final String exchangeName;
-  private final String exchangeType;
 
   private final ConnectionFactory connectionFactory;
 
-  public StockQuotePublisher(String serviceName, String exchangeName, String exchangeType) {
+  /**
+   * Create a publisher which is connected to a specific RabbitMQ instance.
+   *
+   * @param serviceName name of RabbitMQ host
+   * @param exchangeName name of RabbitMQ exchange
+   * @since 1.0.0
+   */
+  public StockQuotePublisher(String serviceName, String exchangeName) {
     this.exchangeName = exchangeName;
-    this.exchangeType = exchangeType;
 
     this.connectionFactory = new ConnectionFactory();
     this.connectionFactory.setHost(serviceName);
   }
 
-  public void publish(List<String> symbols) throws IOException {
+  /**
+   * Publish a new message to the RabbitMQ instance.
+   * The message contains a string in JSON format with following information of a stock:
+   * <ul>
+   *     <li>symbol</li>
+   *     <li>name</li>
+   *     <li>price</li>
+   *     <li>currency</li>
+   *     <li>time</li>
+   * </ul>
+   *
+   * @param symbols list of official stock symbols
+   * @see <a href="https://www.nasdaq.com/market-activity/stocks/screener">Nasdaq website with list of official stocks</a>
+   * @since 1.0.0
+   */
+  public void publish(List<String> symbols){
     try (Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel()) {
-      channel.exchangeDeclare(exchangeName, exchangeType);
+      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.TOPIC);
       for (String s : symbols) {
         Stock answer = YahooFinance.get(s);
         String answerJsonString =
@@ -53,26 +81,33 @@ public class StockQuotePublisher {
         channel.basicPublish(
             exchangeName, "", null, answerJsonString.getBytes(StandardCharsets.UTF_8));
       }
-    } catch (TimeoutException e) {
-      LOGGER.severe(e.toString());
+    } catch (IOException | TimeoutException e) {
+      logger.severe(e.toString());
     }
   }
 
-  public void run(List<String> symbols) throws IOException, InterruptedException {
-    String randomPublishIntervalString = System.getenv("SET_RANDOM_PUBLISH_INTERVAL");
-
-    if (Boolean.parseBoolean(randomPublishIntervalString)) {
+  /**
+   * Publish messages to RabbitMQ continuously.
+   * The publishing interval may be a random number within zero
+   * and the {@code publishInterval} as an upper limit.
+   *
+   * @param symbols list of official stock symbols
+   * @param publishInterval time interval in seconds
+   * @param publishRandomly true if publishing interval should be random, false otherwise
+   * @since 1.0.0
+   */
+  public void run(List<String> symbols, int publishInterval, boolean publishRandomly){
       while (true) {
         publish(symbols);
-        Thread.sleep((long) (Math.random() * 3000));
+        try {
+          if (publishRandomly) {
+            Thread.sleep((long) (Math.random() * publishInterval));
+          } else {
+            Thread.sleep(publishInterval);
+          }
+        } catch (InterruptedException e) {
+          logger.severe(e.toString());
+        }
       }
-    } else {
-      LOGGER.warning(
-          "Environment variable 'SET_RANDOM_PUBLISH_INTERVAL' either incorrect or not set!");
-      while (true) {
-        publish(symbols);
-        Thread.sleep(30000);
-      }
-    }
   }
 }

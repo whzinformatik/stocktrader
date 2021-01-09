@@ -7,25 +7,71 @@
  */
 package com.whz.stockquote;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+
+/**
+ * This class represents the main class for the stock quote application. It can be used to start
+ * the program.
+ *
+ * @since 1.0.0
+ */
 public class Main {
 
-  public static void main(String[] args) throws IOException, InterruptedException {
-    String serviceName = System.getenv("RABBITMQ_SERVICE");
-    String exchangeName = System.getenv("RABBITMQ_EXCHANGE");
-    String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
+    private static String serviceName;
+    private static String exchangeName;
+    private static int publishInterval;
+    private static boolean publishRandomly = false;
+    private static List<String> symbols;
 
-    List<String> symbols =
-        Arrays.asList(
-            "TSLA", "INTC", "GOOG", "MSFT", "AMZN", "NVDA", "NFLX", "SBUX", "SAP", "ADDYY", "POAHF",
-            "SAP.DE");
+    public static void main(String[] args) {
+        manageRabbitSetup();
 
-    StockQuotePublisher stockQuotePublisher =
-        new StockQuotePublisher(serviceName, exchangeName, exchangeType);
+        managePublishInterval();
 
-    stockQuotePublisher.run(symbols);
-  }
+        manageStocks();
+
+        StockQuotePublisher stockQuotePublisher =
+                new StockQuotePublisher(serviceName, exchangeName);
+
+        stockQuotePublisher.run(symbols, publishInterval, publishRandomly);
+    }
+
+    /**
+     * Sets host and exchange name of RabbitMQ.
+     *
+     * @since 1.0.0
+     */
+    private static void manageRabbitSetup(){
+        serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
+        exchangeName = Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE")).orElse("stocks");
+    }
+
+    /**
+     * Sets publishing interval (fixed or random (within boundaries)).
+     *
+     * @since 1.0.0
+     */
+    private static void managePublishInterval(){
+        String publishIntervalString = Optional.ofNullable(System.getenv("PUBLISH_INTERVAL")).orElse("30000");
+        publishInterval = Integer.parseInt(publishIntervalString);
+
+        String randomPublishIntervalString = Optional.ofNullable(System.getenv("RANDOM_PUBLISH_INTERVAL")).orElse("0");
+        if(!randomPublishIntervalString.equals("0")){
+            publishInterval = Integer.parseInt(randomPublishIntervalString);
+            publishRandomly = true;
+        }
+    }
+
+    /**
+     * Sets list of stock symbols whose information should be published to RabbitMQ.
+     *
+     * @since 1.0.0
+     */
+    private static void manageStocks() {
+        String symbolsString = Optional.ofNullable(System.getenv("STOCK_SYMBOLS")).orElse("TSLA,INTC,GOOG,MSFT,AMZN,NVDA,NFLX,SBUX,SAP,ADDYY,POAHF,SAP.DE");
+        symbols = Arrays.asList(symbolsString.split("\\s*,\\s*"));
+    }
 }
