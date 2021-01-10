@@ -9,12 +9,11 @@ package com.whz.feedback.model.feedback;
 
 import com.whz.feedback.resource.Publisher;
 import com.whz.feedback.utils.EnvUtils;
+import io.vlingo.actors.Logger;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class is used to handle all actions for a feedback message.
@@ -30,7 +29,7 @@ public final class FeedbackActor extends EventSourced implements Feedback {
    */
   public static final String EXCHANGE_NAME = "feedback";
 
-  private final Logger logger = LoggerFactory.getLogger(FeedbackActor.class);
+  private final Logger logger = Logger.basicLogger();
 
   private final Publisher<FeedbackState> publisher;
 
