@@ -11,67 +11,74 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
- * This class represents the main class for the stock quote application. It can be used to start
- * the program.
+ * This class represents the main class for the stock quote application. It can be used to start the
+ * program.
  *
  * @since 1.0.0
  */
 public class Main {
 
-    private static String serviceName;
-    private static String exchangeName;
-    private static int publishInterval;
-    private static boolean publishRandomly = false;
-    private static List<String> symbols;
+  private static String serviceName;
+  private static String exchangeName;
+  private static boolean durableExchange = false;
+  private static int publishInterval;
+  private static boolean publishRandomly = false;
+  private static List<String> symbols;
 
-    public static void main(String[] args) {
-        manageRabbitSetup();
+  public static void main(String[] args) {
+    manageRabbitSetup();
 
-        managePublishInterval();
+    managePublishInterval();
 
-        manageStocks();
+    manageStocks();
 
-        StockQuotePublisher stockQuotePublisher =
-                new StockQuotePublisher(serviceName, exchangeName);
+    StockQuotePublisher stockQuotePublisher =
+        new StockQuotePublisher(serviceName, exchangeName, durableExchange);
 
-        stockQuotePublisher.run(symbols, publishInterval, publishRandomly);
+    stockQuotePublisher.run(symbols, publishInterval, publishRandomly);
+  }
+
+  /**
+   * Sets host and exchange name of RabbitMQ.
+   *
+   * @since 1.0.0
+   */
+  private static void manageRabbitSetup() {
+    serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
+    exchangeName = Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE")).orElse("stocks");
+    String durableExchangeString =
+        Optional.ofNullable(System.getenv("DURABLE_EXCHANGE")).orElse("false");
+    durableExchange = Boolean.parseBoolean(durableExchangeString);
+  }
+
+  /**
+   * Sets publishing interval (fixed or random (within boundaries)).
+   *
+   * @since 1.0.0
+   */
+  private static void managePublishInterval() {
+    String publishIntervalString =
+        Optional.ofNullable(System.getenv("PUBLISH_INTERVAL")).orElse("30000");
+    publishInterval = Integer.parseInt(publishIntervalString);
+
+    String randomPublishIntervalString =
+        Optional.ofNullable(System.getenv("RANDOM_PUBLISH_INTERVAL")).orElse("0");
+    if (!randomPublishIntervalString.equals("0")) {
+      publishInterval = Integer.parseInt(randomPublishIntervalString);
+      publishRandomly = true;
     }
+  }
 
-    /**
-     * Sets host and exchange name of RabbitMQ.
-     *
-     * @since 1.0.0
-     */
-    private static void manageRabbitSetup(){
-        serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
-        exchangeName = Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE")).orElse("stocks");
-    }
-
-    /**
-     * Sets publishing interval (fixed or random (within boundaries)).
-     *
-     * @since 1.0.0
-     */
-    private static void managePublishInterval(){
-        String publishIntervalString = Optional.ofNullable(System.getenv("PUBLISH_INTERVAL")).orElse("30000");
-        publishInterval = Integer.parseInt(publishIntervalString);
-
-        String randomPublishIntervalString = Optional.ofNullable(System.getenv("RANDOM_PUBLISH_INTERVAL")).orElse("0");
-        if(!randomPublishIntervalString.equals("0")){
-            publishInterval = Integer.parseInt(randomPublishIntervalString);
-            publishRandomly = true;
-        }
-    }
-
-    /**
-     * Sets list of stock symbols whose information should be published to RabbitMQ.
-     *
-     * @since 1.0.0
-     */
-    private static void manageStocks() {
-        String symbolsString = Optional.ofNullable(System.getenv("STOCK_SYMBOLS")).orElse("TSLA,INTC,GOOG,MSFT,AMZN,NVDA,NFLX,SBUX,SAP,ADDYY,POAHF,SAP.DE");
-        symbols = Arrays.asList(symbolsString.split("\\s*,\\s*"));
-    }
+  /**
+   * Sets list of stock symbols whose information should be published to RabbitMQ.
+   *
+   * @since 1.0.0
+   */
+  private static void manageStocks() {
+    String symbolsString =
+        Optional.ofNullable(System.getenv("STOCK_SYMBOLS"))
+            .orElse("TSLA,INTC,GOOG,MSFT,AMZN,NVDA,NFLX,SBUX,SAP,ADDYY,POAHF,SAP.DE");
+    symbols = Arrays.asList(symbolsString.toUpperCase().split("\\s*,\\s*"));
+  }
 }

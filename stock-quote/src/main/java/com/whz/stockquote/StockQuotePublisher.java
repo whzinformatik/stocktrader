@@ -21,8 +21,8 @@ import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
 /**
- * This class can be used to publish stock quote data to RabbitMQ.
- * The stock quotes are obtained from the "Finance Quotes API for Yahoo Finance" by Stijn Strickx.
+ * This class can be used to publish stock quote data to RabbitMQ. The stock quotes are obtained
+ * from the "Finance Quotes API for Yahoo Finance" by Stijn Strickx.
  *
  * @see <a href="https://github.com/sstrickx/yahoofinance-api">yahoofinance-api by Stijn Strickx</a>
  * @since 1.0.0
@@ -32,6 +32,7 @@ public class StockQuotePublisher {
   private static final Logger logger = Logger.getLogger(StockQuotePublisher.class.getName());
 
   private final String exchangeName;
+  private final boolean durableExchange;
 
   private final ConnectionFactory connectionFactory;
 
@@ -40,34 +41,38 @@ public class StockQuotePublisher {
    *
    * @param serviceName name of RabbitMQ host
    * @param exchangeName name of RabbitMQ exchange
+   * @param durableExchange true if RabbitMQ exchange should be durable, false otherwise
    * @since 1.0.0
    */
-  public StockQuotePublisher(String serviceName, String exchangeName) {
+  public StockQuotePublisher(String serviceName, String exchangeName, boolean durableExchange) {
     this.exchangeName = exchangeName;
+    this.durableExchange = durableExchange;
 
     this.connectionFactory = new ConnectionFactory();
     this.connectionFactory.setHost(serviceName);
   }
 
   /**
-   * Publish a new message to the RabbitMQ instance.
-   * The message contains a string in JSON format with following information of a stock:
+   * Publish a new message to the RabbitMQ instance. The message contains a string in JSON format
+   * with following information of a stock:
+   *
    * <ul>
-   *     <li>symbol</li>
-   *     <li>name</li>
-   *     <li>price</li>
-   *     <li>currency</li>
-   *     <li>time</li>
+   *   <li>symbol
+   *   <li>name
+   *   <li>price
+   *   <li>currency
+   *   <li>time
    * </ul>
    *
    * @param symbols list of official stock symbols
-   * @see <a href="https://www.nasdaq.com/market-activity/stocks/screener">Nasdaq website with list of official stocks</a>
+   * @see <a href="https://www.nasdaq.com/market-activity/stocks/screener">Nasdaq website with list
+   *     of official stocks</a>
    * @since 1.0.0
    */
-  public void publish(List<String> symbols){
+  public void publish(List<String> symbols) {
     try (Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel()) {
-      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.TOPIC);
+      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.TOPIC, durableExchange);
       for (String s : symbols) {
         Stock answer = YahooFinance.get(s);
         String answerJsonString =
@@ -87,27 +92,26 @@ public class StockQuotePublisher {
   }
 
   /**
-   * Publish messages to RabbitMQ continuously.
-   * The publishing interval may be a random number within zero
-   * and the {@code publishInterval} as an upper limit.
+   * Publish messages to RabbitMQ continuously. The publishing interval may be a random number
+   * within zero and the {@code publishInterval} as an upper limit.
    *
    * @param symbols list of official stock symbols
    * @param publishInterval time interval in seconds
    * @param publishRandomly true if publishing interval should be random, false otherwise
    * @since 1.0.0
    */
-  public void run(List<String> symbols, int publishInterval, boolean publishRandomly){
-      while (true) {
-        publish(symbols);
-        try {
-          if (publishRandomly) {
-            Thread.sleep((long) (Math.random() * publishInterval));
-          } else {
-            Thread.sleep(publishInterval);
-          }
-        } catch (InterruptedException e) {
-          logger.severe(e.toString());
+  public void run(List<String> symbols, int publishInterval, boolean publishRandomly) {
+    while (true) {
+      publish(symbols);
+      try {
+        if (publishRandomly) {
+          Thread.sleep((long) (Math.random() * publishInterval * 1000));
+        } else {
+          Thread.sleep(publishInterval * 1000L);
         }
+      } catch (InterruptedException e) {
+        logger.severe(e.toString());
       }
+    }
   }
 }
