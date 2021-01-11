@@ -2,27 +2,20 @@
 
 ### Usage
 
-- declare as a service in `docker-compose.yml`
-- set environment variables for RabbitMQ in `docker-compose.yml`: 
+- declare as a service in `docker-compose.stocktrader.yml`
+- set environment variables for RabbitMQ in `docker-compose.stocktrader.yml`:
   - `RABBITMQ_SERVICE` – name of the RabbitMQ service
   - `RABBITMQ_EXCHANGE`– name of the exchange which stocks get sent to
-  - `RABBITMQ_EXCHANGE_TYPE` – type of the exchange which stocks get sent to
-  - `RANDOM_PUBLISH_INTERVAL`– set to "true" to let stocks (messages) get published in random intervals (< 5 seconds), otherwise they will get published every 30 seconds 
-- run with `docker-compose up -d --build`:
+  - `DURABLE_EXCHANGE` – if set to "true", the RabbitMQ exchange will be durable
+  - `PUBLISH_INTERVAL` – publishing interval of stock information in seconds
+  - `RANDOM_PUBLISH_INTERVAL`– upper bound of publishing interval of stock information in seconds (setting this variable will override `PUBLISH_INTERVAL`)
+  - `STOCKS` – comma separated string of official stock symbols
+- run with `docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build`:
   - build process will run `mvn clean package` first (if there are any changes)
-  - publisher container with the previously built jar will get started 
+  - publisher container with the previously built jar will get started
 - implement a subscriber:
   - declare a message queue
   - bind the queue to the specified exchange to consume messages
-
----
- 
-### Possible changes / improvements in the future
-
-- make stock requests more adjustable (outside of the code):
-    - environment variable in `docker-compose.yml`
-    - better: handle requests for certain stocks (coming from portfolio project) through messaging
-- make publish interval more adjustable (certain interval, not random etc.)
 
 ---
 
@@ -30,7 +23,7 @@
 
 The following class can be run as a subscriber which will receive published stock messages and print them to the console:
 
-(HINTS: `docker-compose up -d --build` should have executed without errors and `RABBITMQ_EXCHANGE` is set to "stocks" in this example)
+(HINTS: `docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build` should have executed without errors and `RABBITMQ_EXCHANGE` is set to "stocks" in this example)
 
 ```
 import com.rabbitmq.client.Channel;
