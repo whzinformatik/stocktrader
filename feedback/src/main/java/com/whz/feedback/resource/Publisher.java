@@ -39,16 +39,6 @@ public class Publisher<T> {
   }
 
   /**
-   * Create a publisher which is connected to a specific rabbitmq instance.
-   *
-   * @param connectionFactory factory to open a connection to rabbitmq
-   * @since 1.0.0
-   */
-  public Publisher(ConnectionFactory connectionFactory) throws IOException, TimeoutException {
-    this.connection = connectionFactory.newConnection();
-  }
-
-  /**
    * Publish a new message to the rabbitmq instance.
    *
    * @param exchangeName name of the exchange

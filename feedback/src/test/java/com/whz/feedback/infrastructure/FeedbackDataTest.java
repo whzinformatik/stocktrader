@@ -5,12 +5,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package com.whz.feedback.infrastructure.persistence;
+package com.whz.feedback.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.model.feedback.FeedbackState;
 import org.junit.jupiter.api.Test;
 

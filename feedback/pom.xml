@@ -45,7 +45,6 @@
         <junit.version>5.6.0</junit.version>
         <mockito.version>3.5.15</mockito.version>
         <restassured.version>4.3.1</restassured.version>
-        <rabbitmq.mock.version>1.1.1</rabbitmq.mock.version>
         <awaitility.version>3.0.0</awaitility.version>
         <assertj.version>3.18.1</assertj.version>
     </properties>
@@ -119,12 +118,6 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${restassured.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.fridujo</groupId>
-            <artifactId>rabbitmq-mock</artifactId>
-            <version>${rabbitmq.mock.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

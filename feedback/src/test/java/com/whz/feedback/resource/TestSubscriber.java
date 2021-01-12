@@ -34,11 +34,6 @@ class TestSubscriber<T> {
     this.messages = new ArrayList<>();
   }
 
-  public TestSubscriber(ConnectionFactory connectionFactory) throws IOException, TimeoutException {
-    this.connection = connectionFactory.newConnection();
-    this.messages = new ArrayList<>();
-  }
-
   public void receive(String exchangeName, Class<T> clazz) throws IOException {
     final Channel channel = connection.createChannel();
     assertNotNull(channel);

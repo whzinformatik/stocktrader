@@ -10,8 +10,8 @@ package com.whz.feedback.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import com.github.fridujo.rabbitmq.mock.MockConnectionFactory;
 import com.whz.feedback.infrastructure.FeedbackData;
+import com.whz.feedback.utils.EnvUtils;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class PublisherTest {
+public class PublisherIT {
 
   private Publisher<FeedbackData> publisher;
 
@@ -28,9 +28,9 @@ public class PublisherTest {
 
   @BeforeEach
   public void setup() throws IOException, TimeoutException {
-    MockConnectionFactory mockConnectionFactory = new MockConnectionFactory();
-    publisher = new Publisher<>(mockConnectionFactory);
-    subscriber = new TestSubscriber<>(mockConnectionFactory);
+    String host = EnvUtils.RABBITMQ_SERVICE.get();
+    publisher = new Publisher<>(host);
+    subscriber = new TestSubscriber<>(host);
   }
 
   @Test
