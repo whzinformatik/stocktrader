@@ -13,7 +13,9 @@ package com.whz.commenttone.model;
  *
  * @since 1.0.0
  */
-
 public enum Sentiment {
-    UNKNOWN, POSITIVE, NEUTRAL, NEGATIVE
+  UNKNOWN,
+  POSITIVE,
+  NEUTRAL,
+  NEGATIVE
 }
