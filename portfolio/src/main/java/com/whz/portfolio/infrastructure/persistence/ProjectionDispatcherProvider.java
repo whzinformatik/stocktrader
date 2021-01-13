@@ -19,44 +19,49 @@ import io.vlingo.symbio.store.dispatch.Dispatcher;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'. The event types have to be added to
+ * the 'descriptions' list.
+ * 
+ * @since 1.0.0
+ */
 @SuppressWarnings("rawtypes")
 public class ProjectionDispatcherProvider {
-  private static ProjectionDispatcherProvider instance;
+	private static ProjectionDispatcherProvider instance;
 
-  public final ProjectionDispatcher projectionDispatcher;
-  public final Dispatcher storeDispatcher;
+	public final ProjectionDispatcher projectionDispatcher;
+	public final Dispatcher storeDispatcher;
 
-  public static ProjectionDispatcherProvider instance() {
-    return instance;
-  }
+	public static ProjectionDispatcherProvider instance() {
+		return instance;
+	}
 
-  public static ProjectionDispatcherProvider using(final Stage stage) {
-    if (instance != null) return instance;
+	public static ProjectionDispatcherProvider using(final Stage stage) {
+		if (instance != null)
+			return instance;
 
-    final List<ProjectToDescription> descriptions =
-        Arrays.asList(
-            ProjectToDescription.with(
-                PortfolioProjectionActor.class, PortfolioCreated.class.getName()),
-            ProjectToDescription.with(
-                PortfolioProjectionActor.class, StockAcquired.class.getName()));
+		final List<ProjectToDescription> descriptions = Arrays.asList(
+				ProjectToDescription.with(PortfolioProjectionActor.class, PortfolioCreated.class.getName()),
+				ProjectToDescription.with(PortfolioProjectionActor.class, StockAcquired.class.getName()));
 
-    final Protocols dispatcherProtocols =
-        stage.actorFor(
-            new Class<?>[] {Dispatcher.class, ProjectionDispatcher.class},
-            Definition.has(
-                TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
+		final Protocols dispatcherProtocols = stage.actorFor(
+				new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class },
+				Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
 
-    final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers =
-        Protocols.two(dispatcherProtocols);
+		final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
 
-    instance = new ProjectionDispatcherProvider(dispatchers._1, dispatchers._2);
+		instance = new ProjectionDispatcherProvider(dispatchers._1, dispatchers._2);
 
-    return instance;
-  }
+		return instance;
+	}
 
-  private ProjectionDispatcherProvider(
-      final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
-    this.storeDispatcher = storeDispatcher;
-    this.projectionDispatcher = projectionDispatcher;
-  }
+	private ProjectionDispatcherProvider(final Dispatcher storeDispatcher,
+			final ProjectionDispatcher projectionDispatcher) {
+		this.storeDispatcher = storeDispatcher;
+		this.projectionDispatcher = projectionDispatcher;
+	}
+
+	public static void reset() {
+		instance = null;
+	}
 }

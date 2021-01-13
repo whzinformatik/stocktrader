@@ -21,69 +21,75 @@ import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'.
+ * 
+ * @since 1.0.0
+ */
 public class Bootstrap {
 
-  private static final Logger logger = Logger.basicLogger();
+	private static final Logger logger = Logger.basicLogger();
 
-  private static final int DEFAULT_PORT = 18082;
-  private static final String NAME = "portfolio";
+	private static final int DEFAULT_PORT = 18082;
+	private static final String NAME = "portfolio";
 
-  private static Bootstrap instance;
+	private static Bootstrap instance;
 
-  private final Server server;
-  private final World world;
+	private final Server server;
+	private final World world;
 
-  public Bootstrap(final int port) throws Exception {
-    world = World.startWithDefaults(NAME);
+	public Bootstrap(final int port) throws Exception {
+		world = World.startWithDefaults(NAME);
 
-    final Stage stage = world.stageNamed(NAME);
+		final Stage stage = world.stageNamed(NAME);
 
-    final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
-    final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
-    QueryModelStateStoreProvider.using(stage, statefulTypeRegistry);
-    CommandModelJournalProvider.using(
-        stage, sourcedTypeRegistry, ProjectionDispatcherProvider.using(stage).storeDispatcher);
+		final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
+		final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
+		QueryModelStateStoreProvider.using(stage, statefulTypeRegistry);
+		CommandModelJournalProvider.using(stage, sourcedTypeRegistry,
+				ProjectionDispatcherProvider.using(stage).storeDispatcher);
 
-    final PortfolioResource portfolioResource = new PortfolioResource(stage);
-    Resources allResources = Resources.are(portfolioResource.routes());
+		final PortfolioResource portfolioResource = new PortfolioResource(stage);
+		Resources allResources = Resources.are(portfolioResource.routes());
 
-    server = Server.startWith(stage, allResources, port, Sizing.define(), Timing.define());
+		server = Server.startWith(stage, allResources, port, Sizing.define(), Timing.define());
 
-    Runtime.getRuntime()
-        .addShutdownHook(
-            new Thread(
-                () -> {
-                  if (instance != null) {
-                    instance.server.stop();
-                    logger.info("\n");
-                    logger.info("=========================");
-                    logger.info("Stopping portfolio.");
-                    logger.info("=========================");
-                  }
-                }));
-  }
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			if (instance != null) {
+				instance.server.stop();
+				logger.info("\n");
+				logger.info("=========================");
+				logger.info("Stopping portfolio.");
+				logger.info("=========================");
+			}
+		}));
+	}
 
-  void stopServer() throws Exception {
-    if (instance == null) {
-      throw new IllegalStateException("Schemata server not running");
-    }
-    instance.server.stop();
-  }
+	void stopServer() throws Exception {
+		if (instance == null) {
+			throw new IllegalStateException("Schemata server not running");
+		}
+		instance.server.stop();
+	}
 
-  public static void main(final String[] args) throws Exception {
-    logger.info("=========================");
-    logger.info("service: portfolio.");
-    logger.info("=========================");
+	public static void main(final String[] args) throws Exception {
+		logger.info("=========================");
+		logger.info("service: portfolio.");
+		logger.info("=========================");
 
-    int port;
+		int port;
 
-    try {
-      port = Integer.parseInt(args[0]);
-    } catch (Exception e) {
-      port = DEFAULT_PORT;
-      logger.warn("portfolio: Command line does not provide a valid port; defaulting to: {}", port);
-    }
+		try {
+			port = Integer.parseInt(args[0]);
+		} catch (Exception e) {
+			port = DEFAULT_PORT;
+			logger.warn("portfolio: Command line does not provide a valid port; defaulting to: {}", port);
+		}
 
-    instance = new Bootstrap(port);
-  }
+		instance = new Bootstrap(port);
+	}
+
+	public Server getServer() {
+		return server;
+	}
 }

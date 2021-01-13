@@ -9,17 +9,24 @@ package com.whz.portfolio.model.portfolio;
 
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
+/**
+ * Event class. Contains information for the creation of a new Portfolio.
+ * 
+ * @since 1.0.0
+ *
+ */
 public final class PortfolioCreated extends IdentifiedDomainEvent {
-  public final String id;
-  public final String owner;
 
-  public PortfolioCreated(final String id, final String owner) {
-    this.id = id;
-    this.owner = owner;
-  }
+	public final String id;
+	public final String owner;
 
-  @Override
-  public String identity() {
-    return id;
-  }
+	public PortfolioCreated(final String id, final String owner) {
+		this.id = id;
+		this.owner = owner;
+	}
+
+	@Override
+	public String identity() {
+		return id;
+	}
 }

@@ -11,6 +11,11 @@ import com.whz.portfolio.infrastructure.PortfolioData;
 import io.vlingo.common.Completes;
 import java.util.Collection;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'.
+ * 
+ * @since 1.0.0
+ */
 public interface PortfolioQueries {
 
   Completes<PortfolioData> portfolioOf(String id);

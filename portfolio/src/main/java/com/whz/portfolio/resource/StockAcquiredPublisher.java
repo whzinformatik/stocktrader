@@ -10,44 +10,68 @@ package com.whz.portfolio.resource;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.whz.portfolio.infrastructure.StockAcquiredData;
+
 import io.vlingo.actors.Logger;
+import io.vlingo.common.serialization.JsonSerialization;
+
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * RabbitMQ publisher. Notifies the account every time a purchase was made.
+ * 
+ * @since 1.0.0
+ */
 public enum StockAcquiredPublisher {
-  INSTANCE;
+	INSTANCE;
 
-  private final Logger logger = Logger.basicLogger();
+	private final Logger logger = Logger.basicLogger();
 
-  private final String exchangeName;
-  private final String exchangeType;
-  private final ConnectionFactory connectionFactory;
+	private final String exchangeName;
+	private final String exchangeType;
+	private final ConnectionFactory connectionFactory;
 
-  StockAcquiredPublisher() {
-    String serviceName = System.getenv("RABBITMQ_SERVICE");
-    exchangeName = System.getenv("RABBITMQ_EXCHANGE");
-    exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
+	StockAcquiredPublisher() {
+		String serviceName = getenv("RABBITMQ_SERVICE", "localhost");
 
-    connectionFactory = new ConnectionFactory();
-    connectionFactory.setHost(serviceName);
-    logger.debug("Started stock acquired publisher");
-  }
+		exchangeName = getenv("RABBITMQ_STOCK_ACQUIRED_EXCHANGE", "StockAcquiredPublisher");
+		exchangeType = getenv("RABBITMQ_STOCK_ACQUIRED_EXCHANGE_TYPE", "fanout");
 
-  public void send(double data) {
-    try (final Connection connection = connectionFactory.newConnection();
-        final Channel channel = connection.createChannel()) {
-      channel.exchangeDeclare(exchangeName, exchangeType);
-      channel.basicPublish(exchangeName, "", null, toBytes(data));
-      logger.debug("Stock acquired publisher sending: " + data);
-    } catch (IOException | TimeoutException e) {
-      logger.debug(e.getMessage());
-    }
-  }
+		connectionFactory = new ConnectionFactory();
+		connectionFactory.setHost(serviceName);
+		logger.debug("Started stock acquired publisher");
+	}
 
-  private byte[] toBytes(double data) {
-    byte[] result = new byte[8];
-    ByteBuffer.wrap(result).putDouble(data);
-    return result;
-  }
+	/**
+	 * Notifies the account about a purchase.
+	 * 
+	 * @param id of the account
+	 * @param value - the money spent
+	 */
+	public void send(String id, double value) {
+		try (final Connection connection = connectionFactory.newConnection();
+				final Channel channel = connection.createChannel()) {
+			channel.exchangeDeclare(exchangeName, exchangeType);
+			StockAcquiredData data = new StockAcquiredData(id, value);
+			String message = JsonSerialization.serialized(data);
+			channel.basicPublish(exchangeName, "", null, message.getBytes());
+			logger.debug("Stock acquired publisher sending: " + data);
+		} catch (IOException | TimeoutException e) {
+			logger.debug(e.getMessage());
+		}
+	}
+
+	/**
+	 * Helper method to receive an environment variable.
+	 * 
+	 * @param key
+	 * @param alt
+	 * @return The environment variable. If not found the alt param is returned.
+	 */
+	private String getenv(String key, String alt) {
+		String result = System.getenv(key);
+		return result == null ? alt : result;
+	}
+
 }

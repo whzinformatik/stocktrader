@@ -13,6 +13,11 @@ import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.StateAdapter;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'.
+ * 
+ * @since 1.0.0
+ */
 public class PortfolioDataStateAdapter implements StateAdapter<PortfolioData, TextState> {
 
   @Override

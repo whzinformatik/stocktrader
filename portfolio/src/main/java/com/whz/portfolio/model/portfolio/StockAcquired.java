@@ -9,6 +9,12 @@ package com.whz.portfolio.model.portfolio;
 
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
+/**
+ * Event class. Contains information for acquiring a new stock.
+ * 
+ * @since 1.0.0
+ *
+ */
 public final class StockAcquired extends IdentifiedDomainEvent {
 
   public final String id;

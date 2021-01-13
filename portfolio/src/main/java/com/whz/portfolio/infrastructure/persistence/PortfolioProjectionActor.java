@@ -16,6 +16,11 @@ import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'.
+ * 
+ * @since 1.0.0
+ */
 public class PortfolioProjectionActor extends StateStoreProjectionActor<PortfolioData> {
   private static final PortfolioData Empty = PortfolioData.empty();
 
