@@ -9,8 +9,12 @@
 package com.whz.commenttone.rabbitmq;
 
 import com.google.gson.GsonBuilder;
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DeliverCallback;
 import com.whz.commenttone.model.CommentTone;
+import com.whz.commenttone.model.Sentiment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +50,8 @@ public class CommentToneSubscriber {
 
   private final CommentTonePublisher<CommentTone> publisher;
 
-  private final Logger logger = LoggerFactory.getLogger(CommentToneSubscriber.class.getSimpleName());
+  private final Logger logger =
+      LoggerFactory.getLogger(CommentToneSubscriber.class.getSimpleName());
 
   /**
    * Create a subscriber which is connected to a specific rabbitmq instance.
@@ -94,20 +99,23 @@ public class CommentToneSubscriber {
                 new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
 
             /*
-             * Add randomly generated sentiment to comment-tone
+             * Add randomly generated sentiment to comment
              */
-            int randomNumber = new Random().nextInt(11);
-            String sentiment =
-                randomNumber < 4 ? "negative" : randomNumber < 8 ? "neutral" : "positive";
+            int randomNumber = new Random().nextInt(13);
 
-            comment.setSentiment(sentiment);
+            comment.setSentiment(
+                randomNumber < 4
+                    ? Sentiment.UNKNOWN
+                    : randomNumber < 7
+                        ? Sentiment.NEGATIVE
+                        : randomNumber < 10 ? Sentiment.NEUTRAL : Sentiment.POSITIVE);
 
-              publisher.publish(publishExchangeName, exchangeType, comment);
+            publisher.publish(publishExchangeName, exchangeType, comment);
           });
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
     } catch (TimeoutException | IOException exception) {
-        logger.debug(exception.getMessage(), exception);
+      logger.debug(exception.getMessage(), exception);
     }
   }
 }

@@ -34,7 +34,7 @@ public final class CommentTone {
    *
    * @since 1.0.0
    */
-  public String sentiment;
+  public Sentiment sentiment;
 
   /**
    * Create a new comment DTO.
@@ -44,7 +44,7 @@ public final class CommentTone {
    * @param sentiment assessment of the comment
    * @since 1.0.0
    */
-  public CommentTone(String id, String message, String sentiment) {
+  public CommentTone(String id, String message, Sentiment sentiment) {
     this.id = id;
     this.message = message;
     this.sentiment = sentiment;
@@ -56,7 +56,7 @@ public final class CommentTone {
    * @param sentiment assessment of the comment
    * @since 1.0.0
    */
-  public void setSentiment(String sentiment) {
+  public void setSentiment(Sentiment sentiment) {
     this.sentiment = sentiment;
   }
 
