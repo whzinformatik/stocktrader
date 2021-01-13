@@ -6,29 +6,71 @@
 [Vlingo docs](https://docs.vlingo.io/)
 
 ### Data Structure
-	public class Portfolio {
-		private String owner;
-		private double total;
-	    private String loyalty;
-	    private double balance;
-	    private double commissions;
-	    private int free;
-	    private String sentiment;
-	    private double nextCommission;
-	    private List<String> stockIds;
-    }
 
+**Portfolio**
+
+```Java
+public class PortfolioData {
+	public String id;
+	public String owner;
+	public List<Stock> stocks;
+}
+```
+
+**Stock**
+
+```Java
+public class Stock {
+	public final String symbol;
+	public final long acquisitionMarketTime;
+	public final int amount;
+	public final double acquisitionMarketPrice;
+}
+```
 
 ### Events
-* PortfolioRetrieved
 * PortfolioCreated
-* PortfolioUpdated
-* PortfolioDeleted
+
+> Gets triggered, when a new portfolio is created.
+
+* StockAcquired
+
+> Gets triggered, when a stock is acquired and added to a portfolio.
 
 ### API
-* /portfolio/{id}	(GET)
-* /portfolio		(POST)
-* /portfolio		(PUT)
-* /portfolio/{id}	(DELETE)
-* /stocks			(GET)
-* /stocks{id}		(GET)
+* **GET**	/ready				
+
+> Test the connection to the server.
+
+* **GET**	/portfolio/{id}	
+
+> Receive a specific portfolio identified by the id.
+
+* **POST**	/portfolio		
+
+> Create a new portfolio with the given owner.
+
+```
+"owner":""
+```
+
+* **POST**	/portfolio/{id}	
+
+> Acquire a new stock for a specific portfolio identified by the id.
+
+```
+{"symbol":"", "amount":""}
+```
+
+* **GET**	/stocks/{symbol}	
+
+> Receive a specific stock identified by the symbol.
+
+* **GET**	/stocks			
+
+> Receive all stocks from the cache.
+
+
+
+
+
