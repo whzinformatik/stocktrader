@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 /**
  * RabbitMQ subscriber for receiving stock quotes.
@@ -54,11 +55,7 @@ public enum StockQuoteSubscriber {
             StockQuoteData stockQuoteData = deserialized(message);
             stockQuotes.put(stockQuoteData.symbol, stockQuoteData);
 
-            logger.debug(
-                "Stock quote subscriber received '"
-                    + stockQuoteData.symbol
-                    + "' with a length of: "
-                    + message.length());
+            logger.debug("Stock quote subscriber received '{}' with a length of: {}", stockQuoteData.symbol, message.length());
           };
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
@@ -83,16 +80,7 @@ public enum StockQuoteSubscriber {
 
   /** @return All StockQuoteData objects with matching symbols */
   public List<StockQuoteData> get(Collection<String> symbols) {
-    List<StockQuoteData> result = new ArrayList<>();
-    symbols.forEach(
-        symbol -> {
-          StockQuoteData data = stockQuotes.get(symbol);
-          if (data != null) {
-            result.add(data);
-          }
-        });
-
-    return result;
+    return symbols.stream().map(stockQuotes::get).filter(Objects::nonNull).collect(Collectors.toList());
   }
 
   /**

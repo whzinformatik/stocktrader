@@ -62,7 +62,7 @@ public class Bootstrap {
                     instance.server.stop();
                     logger.info("\n");
                     logger.info("=========================");
-                    logger.info("Stopping portfolio.");
+                    logger.info("Stopping {}.", NAME);
                     logger.info("=========================");
                   }
                 }));
@@ -77,7 +77,7 @@ public class Bootstrap {
 
   public static void main(final String[] args) throws Exception {
     logger.info("=========================");
-    logger.info("service: portfolio.");
+    logger.info("service: {}.", NAME);
     logger.info("=========================");
 
     int port;
