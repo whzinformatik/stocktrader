@@ -24,6 +24,7 @@ services:
     container_name: rabbitmq
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq/mnesia/
+    restart: always
     ports:
       - 5672:5672
       - 15672:15672
