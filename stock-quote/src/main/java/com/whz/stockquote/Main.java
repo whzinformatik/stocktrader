@@ -7,11 +7,10 @@
  */
 package com.whz.stockquote;
 
-import org.apache.log4j.BasicConfigurator;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.apache.log4j.BasicConfigurator;
 
 /**
  * This class represents the main class for the stock quote application. It can be used to start the
@@ -23,9 +22,9 @@ public class Main {
 
   private static String serviceName;
   private static String exchangeName;
-  private static boolean durableExchange = false;
+  private static boolean durableExchange;
   private static int publishInterval;
-  private static boolean publishRandomly = false;
+  private static boolean publishRandomly;
   private static List<String> symbols;
 
   public static void main(String[] args) {

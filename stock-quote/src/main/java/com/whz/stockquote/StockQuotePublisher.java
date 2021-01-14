@@ -11,16 +11,15 @@ import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * This class can be used to publish stock quote data to RabbitMQ. The stock quotes are obtained
@@ -56,8 +55,8 @@ class StockQuotePublisher {
   }
 
   /**
-   * Publish a new message to the RabbitMQ instance. The message contains a string in JSON format
-   * with following information of a stock:
+   * Retrieve stock information and publish a new message to the RabbitMQ instance. The message
+   * contains a string in JSON format with following information of a stock:
    *
    * <ul>
    *   <li>symbol
@@ -68,6 +67,7 @@ class StockQuotePublisher {
    * </ul>
    *
    * @param symbols list of official stock symbols
+   * @param channel RabbitMQ channel which messages will get published into
    * @see <a href="https://www.nasdaq.com/market-activity/stocks/screener">Nasdaq website with list
    *     of official stocks</a>
    * @since 1.0.0
@@ -78,8 +78,10 @@ class StockQuotePublisher {
       for (String s : symbols) {
         Stock answer = YahooFinance.get(s);
         try {
-          if(answer==null) throw new StockNotFoundException(String.format("Could not find stock for symbol '%s'! Symbol will be ignored!", s));
-        } catch (StockNotFoundException stockNotFoundException){
+          if (answer == null)
+            throw new StockNotFoundException(
+                String.format("Could not find stock for symbol '%s'! Symbol will be ignored!", s));
+        } catch (StockNotFoundException stockNotFoundException) {
           logger.error(stockNotFoundException.toString());
           continue;
         }
@@ -100,9 +102,9 @@ class StockQuotePublisher {
   }
 
   /**
-   * Creates a connection and a channel to publish messages to RabbitMQ.
-   * Publish messages to RabbitMQ continuously. The publishing interval may be a random number
-   * within zero and the {@code publishInterval} as an upper limit.
+   * Creates a connection and a channel to publish messages to RabbitMQ. Publish messages to
+   * RabbitMQ continuously. The publishing interval may be a random number within zero and the
+   * {@code publishInterval} as an upper limit.
    *
    * @param symbols list of official stock symbols
    * @param publishInterval time interval in seconds
@@ -135,6 +137,7 @@ class StockQuotePublisher {
     }
   }
 
+  /** Exception which is thrown if a stock could not get retrieved. */
   private static class StockNotFoundException extends Exception {
     public StockNotFoundException(String message) {
       super(message);
