@@ -20,68 +20,57 @@ import org.apache.log4j.BasicConfigurator;
  */
 public class Main {
 
-  private static String serviceName;
-  private static String exchangeName;
-  private static boolean durableExchange;
-  private static int publishInterval;
-  private static boolean publishRandomly;
-  private static List<String> symbols;
-
-  public static void main(String[] args) {
-    BasicConfigurator.configure();
-
-    manageRabbitSetup();
-
-    managePublishInterval();
-
-    manageStocks();
-
-    StockQuotePublisher stockQuotePublisher =
-        new StockQuotePublisher(serviceName, exchangeName, durableExchange);
-
-    stockQuotePublisher.run(symbols, publishInterval, publishRandomly);
-  }
+  private final String serviceName;
+  private final String exchangeName;
+  private final boolean durableExchange;
+  private int publishInterval;
+  private boolean publishRandomly;
+  private final List<String> symbols;
 
   /**
-   * Sets host and exchange name of RabbitMQ.
+   * Construct object which contains following information for the publisher setup:
    *
-   * @since 1.0.0
+   * <ul>
+   *   <li>serviceName – name of RabbitMQ service
+   *   <li>exchangeName – name of RabbitMQ exchange
+   *   <li>durableExchange – durability of RabbitMQ exchange
+   *   <li>publishInterval – time interval between each message publication
+   *   <li>publishRandomly – randomness of {@code publishInterval}
+   *   <li>symbols – list of stock symbols
+   * </ul>
    */
-  private static void manageRabbitSetup() {
-    serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
-    exchangeName = Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE")).orElse("stocks");
+  public Main() {
+    this.serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
+    this.exchangeName = Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE")).orElse("stocks");
+
     String durableExchangeString =
         Optional.ofNullable(System.getenv("DURABLE_EXCHANGE")).orElse("false");
-    durableExchange = Boolean.parseBoolean(durableExchangeString);
-  }
+    this.durableExchange = Boolean.parseBoolean(durableExchangeString);
 
-  /**
-   * Sets publishing interval (fixed or random (within boundaries)).
-   *
-   * @since 1.0.0
-   */
-  private static void managePublishInterval() {
     String publishIntervalString =
         Optional.ofNullable(System.getenv("PUBLISH_INTERVAL")).orElse("30000");
-    publishInterval = Integer.parseInt(publishIntervalString);
+    this.publishInterval = Integer.parseInt(publishIntervalString);
 
     String randomPublishIntervalString =
         Optional.ofNullable(System.getenv("RANDOM_PUBLISH_INTERVAL")).orElse("0");
     if (!randomPublishIntervalString.equals("0")) {
-      publishInterval = Integer.parseInt(randomPublishIntervalString);
-      publishRandomly = true;
+      this.publishInterval = Integer.parseInt(randomPublishIntervalString);
+      this.publishRandomly = true;
     }
-  }
 
-  /**
-   * Sets list of stock symbols whose information should be published to RabbitMQ.
-   *
-   * @since 1.0.0
-   */
-  private static void manageStocks() {
     String symbolsString =
         Optional.ofNullable(System.getenv("STOCK_SYMBOLS"))
             .orElse("TSLA,INTC,GOOG,MSFT,AMZN,NVDA,NFLX,SBUX,SAP,ADDYY,POAHF,SAP.DE");
-    symbols = Arrays.asList(symbolsString.toUpperCase().split("\\s*,\\s*"));
+    this.symbols = Arrays.asList(symbolsString.toUpperCase().split("\\s*,\\s*"));
+  }
+
+  public static void main(String[] args) {
+    BasicConfigurator.configure();
+
+    Main m = new Main();
+    StockQuotePublisher stockQuotePublisher =
+        new StockQuotePublisher(m.serviceName, m.exchangeName, m.durableExchange);
+
+    stockQuotePublisher.run(m.symbols, m.publishInterval, m.publishRandomly);
   }
 }
