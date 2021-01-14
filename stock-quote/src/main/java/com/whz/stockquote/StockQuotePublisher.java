@@ -77,6 +77,12 @@ class StockQuotePublisher {
       channel.exchangeDeclare(exchangeName, BuiltinExchangeType.FANOUT, durableExchange);
       for (String s : symbols) {
         Stock answer = YahooFinance.get(s);
+        try {
+          if(answer==null) throw new StockNotFoundException(String.format("Could not find stock for symbol '%s'! Symbol will be ignored!", s));
+        } catch (StockNotFoundException stockNotFoundException){
+          logger.error(stockNotFoundException.toString());
+          continue;
+        }
         String answerJsonString =
             new JSONObject()
                 .put("symbol", answer.getSymbol())
@@ -88,8 +94,8 @@ class StockQuotePublisher {
         channel.basicPublish(
             exchangeName, "", null, answerJsonString.getBytes(StandardCharsets.UTF_8));
       }
-    } catch (IOException | TimeoutException e) {
-      logger.severe(e.toString());
+    } catch (IOException e) {
+      logger.error(e.toString());
     }
   }
 
@@ -126,6 +132,12 @@ class StockQuotePublisher {
       }
     } catch (IOException | TimeoutException e) {
       logger.error(e.toString());
+    }
+  }
+
+  private static class StockNotFoundException extends Exception {
+    public StockNotFoundException(String message) {
+      super(message);
     }
   }
 }
