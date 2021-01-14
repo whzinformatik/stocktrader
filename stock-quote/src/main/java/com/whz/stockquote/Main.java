@@ -7,6 +7,8 @@
  */
 package com.whz.stockquote;
 
+import org.apache.log4j.BasicConfigurator;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,8 @@ public class Main {
   private static List<String> symbols;
 
   public static void main(String[] args) {
+    BasicConfigurator.configure();
+
     manageRabbitSetup();
 
     managePublishInterval();

@@ -11,14 +11,16 @@ import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
-import org.json.JSONObject;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
 
 /**
  * This class can be used to publish stock quote data to RabbitMQ. The stock quotes are obtained
@@ -29,7 +31,7 @@ import yahoofinance.YahooFinance;
  */
 public class StockQuotePublisher {
 
-  private static final Logger logger = Logger.getLogger(StockQuotePublisher.class.getName());
+  private static final Logger logger = LoggerFactory.getLogger(StockQuotePublisher.class);
 
   private final String exchangeName;
   private final boolean durableExchange;
