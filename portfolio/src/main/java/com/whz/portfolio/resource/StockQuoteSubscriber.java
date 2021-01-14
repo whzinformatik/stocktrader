@@ -55,7 +55,10 @@ public enum StockQuoteSubscriber {
             StockQuoteData stockQuoteData = deserialized(message);
             stockQuotes.put(stockQuoteData.symbol, stockQuoteData);
 
-            logger.debug("Stock quote subscriber received '{}' with a length of: {}", stockQuoteData.symbol, message.length());
+            logger.debug(
+                "Stock quote subscriber received '{}' with a length of: {}",
+                stockQuoteData.symbol,
+                message.length());
           };
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
@@ -80,7 +83,10 @@ public enum StockQuoteSubscriber {
 
   /** @return All StockQuoteData objects with matching symbols */
   public List<StockQuoteData> get(Collection<String> symbols) {
-    return symbols.stream().map(stockQuotes::get).filter(Objects::nonNull).collect(Collectors.toList());
+    return symbols.stream()
+        .map(stockQuotes::get)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
   }
 
   /**

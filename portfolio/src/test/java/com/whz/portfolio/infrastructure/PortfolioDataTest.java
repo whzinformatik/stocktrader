@@ -9,7 +9,6 @@ package com.whz.portfolio.infrastructure;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.whz.portfolio.infrastructure.PortfolioData;
 import com.whz.portfolio.model.portfolio.PortfolioState;
 import org.junit.jupiter.api.Test;
 
