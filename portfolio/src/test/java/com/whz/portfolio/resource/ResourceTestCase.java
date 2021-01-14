@@ -10,19 +10,16 @@ package com.whz.portfolio.resource;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
-import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-
 import com.whz.portfolio.infrastructure.Bootstrap;
 import com.whz.portfolio.infrastructure.persistence.CommandModelJournalProvider;
 import com.whz.portfolio.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 abstract class ResourceTestCase {
-
 
   private static final int PORT = 18082;
 
@@ -38,7 +35,7 @@ abstract class ResourceTestCase {
   @AfterEach
   public void cleanup() {
     bootstrap.getServer().stop();
-    
+
     QueryModelStateStoreProvider.reset();
     ProjectionDispatcherProvider.reset();
     CommandModelJournalProvider.reset();

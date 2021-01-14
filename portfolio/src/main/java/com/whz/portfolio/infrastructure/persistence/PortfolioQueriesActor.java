@@ -16,7 +16,7 @@ import java.util.Collection;
 
 /**
  * Generated class by 'VLINGO/XOOM Starter'.
- * 
+ *
  * @since 1.0.0
  */
 public class PortfolioQueriesActor extends StateStoreQueryActor implements PortfolioQueries {

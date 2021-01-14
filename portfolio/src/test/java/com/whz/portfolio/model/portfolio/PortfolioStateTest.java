@@ -11,38 +11,36 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.whz.portfolio.model.portfolio.PortfolioState;
-
 public class PortfolioStateTest {
 
-	private final String id = "new_id";
+  private final String id = "new_id";
 
-	private final String owner = "TestOwner";
+  private final String owner = "TestOwner";
 
-	@Test
-	public void testNullId() {
-		PortfolioState portfolioState = PortfolioState.identifiedBy(null);
-		assertNull(portfolioState.id);
-		assertNull(portfolioState.owner);
-		assertTrue(portfolioState.doesNotExist());
-		assertFalse(portfolioState.isIdentifiedOnly());
-	}
+  @Test
+  public void testNullId() {
+    PortfolioState portfolioState = PortfolioState.identifiedBy(null);
+    assertNull(portfolioState.id);
+    assertNull(portfolioState.owner);
+    assertTrue(portfolioState.doesNotExist());
+    assertFalse(portfolioState.isIdentifiedOnly());
+  }
 
-	@Test
-	public void testOnlyId() {
-		PortfolioState portfolioState = PortfolioState.identifiedBy(id);
-		assertEquals(id, portfolioState.id);
-		assertNull(portfolioState.owner);
-		assertFalse(portfolioState.doesNotExist());
-		assertTrue(portfolioState.isIdentifiedOnly());
-	}
+  @Test
+  public void testOnlyId() {
+    PortfolioState portfolioState = PortfolioState.identifiedBy(id);
+    assertEquals(id, portfolioState.id);
+    assertNull(portfolioState.owner);
+    assertFalse(portfolioState.doesNotExist());
+    assertTrue(portfolioState.isIdentifiedOnly());
+  }
 
-	@Test
-	public void testIdAndMessage() {
-		PortfolioState portfolioState = PortfolioState.identifiedBy(id).withOwner(owner);
-		assertEquals(id, portfolioState.id);
-		assertEquals(owner, portfolioState.owner);
-		assertFalse(portfolioState.doesNotExist());
-		assertFalse(portfolioState.isIdentifiedOnly());
-	}
+  @Test
+  public void testIdAndMessage() {
+    PortfolioState portfolioState = PortfolioState.identifiedBy(id).withOwner(owner);
+    assertEquals(id, portfolioState.id);
+    assertEquals(owner, portfolioState.owner);
+    assertFalse(portfolioState.doesNotExist());
+    assertFalse(portfolioState.isIdentifiedOnly());
+  }
 }

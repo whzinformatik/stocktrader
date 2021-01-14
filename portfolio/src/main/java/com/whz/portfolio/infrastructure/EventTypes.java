@@ -13,5 +13,6 @@ package com.whz.portfolio.infrastructure;
  * @since 1.0.0
  */
 public enum EventTypes {
-	PortfolioCreated, StockAcquired
+  PortfolioCreated,
+  StockAcquired
 }

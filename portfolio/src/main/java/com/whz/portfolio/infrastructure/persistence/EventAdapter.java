@@ -15,7 +15,7 @@ import io.vlingo.symbio.Source;
 
 /**
  * Generated class by 'VLINGO/XOOM Starter'.
- * 
+ *
  * @since 1.0.0
  */
 public final class EventAdapter<T extends Source<?>> implements EntryAdapter<T, TextEntry> {

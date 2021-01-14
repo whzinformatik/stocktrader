@@ -11,9 +11,8 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 /**
  * Event class. Contains information for acquiring a new stock.
- * 
- * @since 1.0.0
  *
+ * @since 1.0.0
  */
 public final class StockAcquired extends IdentifiedDomainEvent {
 

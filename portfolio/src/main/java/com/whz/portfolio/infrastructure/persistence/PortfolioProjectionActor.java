@@ -18,7 +18,7 @@ import io.vlingo.symbio.Source;
 
 /**
  * Generated class by 'VLINGO/XOOM Starter'.
- * 
+ *
  * @since 1.0.0
  */
 public class PortfolioProjectionActor extends StateStoreProjectionActor<PortfolioData> {

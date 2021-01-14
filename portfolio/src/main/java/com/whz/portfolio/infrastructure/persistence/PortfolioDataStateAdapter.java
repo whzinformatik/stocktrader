@@ -15,7 +15,7 @@ import io.vlingo.symbio.StateAdapter;
 
 /**
  * Generated class by 'VLINGO/XOOM Starter'.
- * 
+ *
  * @since 1.0.0
  */
 public class PortfolioDataStateAdapter implements StateAdapter<PortfolioData, TextState> {
