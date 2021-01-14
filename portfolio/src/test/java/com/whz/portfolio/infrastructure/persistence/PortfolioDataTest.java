@@ -22,25 +22,25 @@ public class PortfolioDataTest {
 
 	@Test
 	public void testEmpty() {
-		PortfolioData feedbackData = PortfolioData.empty();
-		assertTrue(feedbackData.id.isEmpty());
-		assertTrue(feedbackData.owner.isEmpty());
+		PortfolioData portfolioData = PortfolioData.empty();
+		assertTrue(portfolioData.id.isEmpty());
+		assertTrue(portfolioData.owner.isEmpty());
 	}
 
 	@Test
 	public void testFromStateWithNull() {
-		PortfolioState feedbackState = PortfolioState.identifiedBy(null);
-		PortfolioData feedbackData = PortfolioData.from(feedbackState);
-		assertNull(feedbackData.id);
-		assertNull(feedbackData.owner);
+		PortfolioState portfolioState = PortfolioState.identifiedBy(null);
+		PortfolioData portfolioData = PortfolioData.from(portfolioState);
+		assertNull(portfolioData.id);
+		assertNull(portfolioData.owner);
 	}
 
 	@Test
 	public void testFromStateNonNull() {
-		PortfolioState feedbackState = PortfolioState.identifiedBy(id).withOwner(owner);
-		PortfolioData feedbackData = PortfolioData.from(feedbackState);
-		assertEquals(id, feedbackData.id);
-		assertEquals(owner, feedbackData.owner);
+		PortfolioState portfolioState = PortfolioState.identifiedBy(id).withOwner(owner);
+		PortfolioData portfolioData = PortfolioData.from(portfolioState);
+		assertEquals(id, portfolioData.id);
+		assertEquals(owner, portfolioData.owner);
 	}
 
 }
