@@ -88,31 +88,33 @@ public class CommentToneSubscriber {
        */
       channel.queueBind(queueName, consumeExchangeName, "");
 
-      DeliverCallback deliverCallback =
-          ((consumerTag, delivery) -> {
-            String feedbackMessage = new String(delivery.getBody(), StandardCharsets.UTF_8);
+      while (true) {
+        DeliverCallback deliverCallback =
+            ((consumerTag, delivery) -> {
+              String feedbackMessage = new String(delivery.getBody(), StandardCharsets.UTF_8);
 
-            logger.info("Received feedback: " + feedbackMessage);
+              logger.info("Received feedback: " + feedbackMessage);
 
-            CommentTone comment =
-                new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
+              CommentTone comment =
+                  new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
 
-            /*
-             * Add randomly generated sentiment to comment
-             */
-            int randomNumber = new Random().nextInt(13);
+              /*
+               * Add randomly generated sentiment to comment
+               */
+              int randomNumber = new Random().nextInt(13);
 
-            comment.setSentiment(
-                randomNumber < 4
-                    ? Sentiment.UNKNOWN
-                    : randomNumber < 7
-                        ? Sentiment.NEGATIVE
-                        : randomNumber < 10 ? Sentiment.NEUTRAL : Sentiment.POSITIVE);
+              comment.setSentiment(
+                  randomNumber < 4
+                      ? Sentiment.UNKNOWN
+                      : randomNumber < 7
+                          ? Sentiment.NEGATIVE
+                          : randomNumber < 10 ? Sentiment.NEUTRAL : Sentiment.POSITIVE);
 
-            publisher.publish(publishExchangeName, exchangeType, comment);
-          });
+              publisher.publish(publishExchangeName, exchangeType, comment);
+            });
 
-      channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
+      }
     } catch (TimeoutException | IOException exception) {
       logger.debug(exception.getMessage(), exception);
     }
