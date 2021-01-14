@@ -29,7 +29,7 @@ import java.util.concurrent.TimeoutException;
  * @see <a href="https://github.com/sstrickx/yahoofinance-api">yahoofinance-api by Stijn Strickx</a>
  * @since 1.0.0
  */
-public class StockQuotePublisher {
+class StockQuotePublisher {
 
   private static final Logger logger = LoggerFactory.getLogger(StockQuotePublisher.class);
 
@@ -37,6 +37,7 @@ public class StockQuotePublisher {
   private final boolean durableExchange;
 
   private final ConnectionFactory connectionFactory;
+  private Connection connection;
 
   /**
    * Create a publisher which is connected to a specific RabbitMQ instance.
@@ -71,10 +72,9 @@ public class StockQuotePublisher {
    *     of official stocks</a>
    * @since 1.0.0
    */
-  public void publish(List<String> symbols) {
-    try (Connection connection = connectionFactory.newConnection();
-        Channel channel = connection.createChannel()) {
-      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.TOPIC, durableExchange);
+  private void publish(List<String> symbols, Channel channel) {
+    try {
+      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.FANOUT, durableExchange);
       for (String s : symbols) {
         Stock answer = YahooFinance.get(s);
         String answerJsonString =
@@ -94,6 +94,7 @@ public class StockQuotePublisher {
   }
 
   /**
+   * Creates a connection and a channel to publish messages to RabbitMQ.
    * Publish messages to RabbitMQ continuously. The publishing interval may be a random number
    * within zero and the {@code publishInterval} as an upper limit.
    *
@@ -103,17 +104,28 @@ public class StockQuotePublisher {
    * @since 1.0.0
    */
   public void run(List<String> symbols, int publishInterval, boolean publishRandomly) {
-    while (true) {
-      publish(symbols);
-      try {
+    try {
+      connection = connectionFactory.newConnection();
+      Channel channel = connection.createChannel();
+
+      int actualPublishInterval = publishInterval * 1000;
+
+      while (true) {
+        publish(symbols, channel);
+
         if (publishRandomly) {
-          Thread.sleep((long) (Math.random() * publishInterval * 1000));
-        } else {
-          Thread.sleep(publishInterval * 1000L);
+          actualPublishInterval = (int) (Math.random() * publishInterval * 1000);
         }
-      } catch (InterruptedException e) {
-        logger.severe(e.toString());
+        logger.info(String.format("Publishing interval: %dms", actualPublishInterval));
+
+        try {
+          Thread.sleep(actualPublishInterval);
+        } catch (InterruptedException e) {
+          logger.error(e.toString());
+        }
       }
+    } catch (IOException | TimeoutException e) {
+      logger.error(e.toString());
     }
   }
 }
