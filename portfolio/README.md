@@ -1,74 +1,55 @@
 # Portfolio
 
-### Resources
-[IBMStockTrader Java EE Portfolio Implementation](https://github.com/IBMStockTrader/portfolio/blob/master/src/main/java/com/ibm/hybrid/cloud/sample/stocktrader/portfolio/json/Portfolio.java)
+[![portfolio](https://github.com/whzinformatik/stocktrader/workflows/portfolio/badge.svg)][portfolio_actions]
 
-[Vlingo docs](https://docs.vlingo.io/)
+The project is used to store stock information for the stock trader application.
 
-### Data Structure
+## Getting Started
 
-**Portfolio**
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-```Java
-public class PortfolioData {
-	public String id;
-	public String owner;
-	public List<Stock> stocks;
-}
+### Installing
+
+In order to get an executable environment for development, some environment variables have to be set first:
+
+| Variable                              | Description                                  | Default Value          |
+|---------------------------------------|----------------------------------------------|------------------------|
+| RABBITMQ_SERVICE                      | default host to use for rabbitmq connections | localhost              |
+| RABBITMQ_STOCK_ACQUIRED_EXCHANGE      | exchange name for stock acquired publisher   | StockAcquiredPublisher |
+| RABBITMQ_STOCK_ACQUIRED_EXCHANGE_TYPE | exchange type for stock acquired publisher   | fanout                 |
+| RABBITMQ_STOCK_QUOTE_EXCHANGE         | exchange name for stock quote subscriber     | StockQuoteSubscriber   |
+| RABBITMQ_STOCK_QUOTE_EXCHANGE_TYPE    | exchange type for stock quote subscriber     | fanout                 |
+
+Make sure that the local environment is active. Then the program can be executed using the following command:
+
+```bash
+mvn exec:exec
 ```
 
-**Stock**
+At the end, you can send a simple REST GET request to test the connection of the portfolio application:
 
-```Java
-public class Stock {
-	public final String symbol;
-	public final long acquisitionMarketTime;
-	public final int amount;
-	public final double acquisitionMarketPrice;
-}
+```bash
+curl --location --request GET 'localhost:18082/ready'
 ```
 
-### Events
-* PortfolioCreated
+## Running the tests
 
-> Gets triggered, when a new portfolio is created.
+You can run all the automated tests of the project with the following command:
 
-* StockAcquired
-
-> Gets triggered, when a stock is acquired and added to a portfolio.
-
-### API
-* **GET**	/ready				
-
-> Test the connection to the server.
-
-* **GET**	/portfolio/{id}	
-
-> Receive a specific portfolio identified by the id.
-
-* **POST**	/portfolio		
-
-> Create a new portfolio with the given owner.
-
-```
-"owner":""
+```bash
+mvn verify
 ```
 
-* **POST**	/portfolio/{id}	
+## Documentation
 
-> Acquire a new stock for a specific portfolio identified by the id.
+You can get more details about the project with the documented code or the domain stories in the [`doc`][documentation] folder.
 
-```
-{"symbol":"", "amount":""}
-```
+[portfolio_actions]: https://github.com/whzinformatik/stocktrader/actions?query=workflow%3Aportfolio
+[documentation]: ./doc
 
-* **GET**	/stocks/{symbol}	
 
-> Receive a specific stock identified by the symbol.
 
-* **GET**	/stocks			
 
-> Receive all stocks from the cache.
 
 
 
