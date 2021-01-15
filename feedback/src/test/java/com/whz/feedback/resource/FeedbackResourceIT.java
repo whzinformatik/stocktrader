@@ -15,7 +15,6 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import com.whz.feedback.exchange.FeedbackDTO;
 import com.whz.feedback.infrastructure.FeedbackData;
-import com.whz.feedback.model.feedback.FeedbackActor;
 import com.whz.feedback.utils.EnvUtils;
 import io.restassured.response.Response;
 import io.vlingo.http.Response.Status;
@@ -35,16 +34,16 @@ public class FeedbackResourceIT extends ResourceTestCase {
   @Test
   public void testPost() throws IOException, TimeoutException {
     TestSubscriber<FeedbackDTO> subscriber = new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
-    subscriber.receive(FeedbackActor.EXCHANGE_NAME, FeedbackDTO.class);
+    subscriber.receive(FeedbackResource.EXCHANGE_NAME, FeedbackDTO.class);
 
     String message = "message";
-    String portfolioId = "portfolio_id";
-    createFeedback(message, portfolioId)
+    String accountId = "account_id";
+    createFeedback(message, accountId)
         .then()
         .statusCode(Status.Created.code)
         .body("id", notNullValue())
         .body("message", equalTo(message))
-        .body("portfolioId", equalTo(portfolioId));
+        .body("accountId", equalTo(accountId));
 
     await().until(subscriber::containsData);
 
@@ -64,7 +63,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .statusCode(Status.Ok.code)
         .body("id", equalTo(data.id))
         .body("message", equalTo(data.message))
-        .body("portfolioId", equalTo(data.accountId));
+        .body("accountId", equalTo(data.accountId));
   }
 
   @Test
@@ -79,10 +78,10 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .statusCode(Status.Ok.code)
         .body("id", contains(data1.id, data2.id))
         .body("message", contains(data1.message, data2.message))
-        .body("portfolioId", contains(data1.accountId, data2.accountId));
+        .body("accountId", contains(data1.accountId, data2.accountId));
   }
 
-  private Response createFeedback(String message, String portfolioId) {
-    return givenJsonClient().body(FeedbackData.just(message, portfolioId)).when().post("/");
+  private Response createFeedback(String message, String accountId) {
+    return givenJsonClient().body(FeedbackData.just(message, accountId)).when().post("/");
   }
 }
