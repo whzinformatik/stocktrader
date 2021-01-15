@@ -16,8 +16,8 @@ In order to get an executable environment for development, some environment vari
 |---------------------------------|----------------------------------------------------------|-------------------|
 | PORTFOLIO_URL                   | to send Portfolio-Requests of format: "http://host:port" | localhost:18082   |
 | RABBITMQ_SERVICE                | RabbitMQ service name                                    | localhost         |
-| RABBITMQ_EXCHANGE_STOCKACQUIRED | used for Queue to link Sub with StockAcquiredPublisher   | stock_logs        |
-| RABBITMQ_EXCHANGE_COMMENTTONE   | used for Queue to link Sub with CommentTonePublisher     | comment_tone_logs |
+| RABBITMQ_EXCHANGE_STOCKACQUIRED | used for Queue to link Sub with StockAcquiredPublisher   | stocks-acquired   |
+| RABBITMQ_EXCHANGE_COMMENTTONE   | used for Queue to link Sub with CommentTonePublisher     | commentTone       |
 | RABBITMQ_EXCHANGE_TYPE          | can be one of direct, fanout, topic and headers          | fanout            |
 
 Make sure that the local environment is active. Then the program can be executed using the following command:

@@ -44,8 +44,7 @@ public enum CommentToneSubscriber {
   CommentToneSubscriber() {
     String serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
     String exchangeName =
-        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_COMMENTTONE"))
-            .orElse("comment_tone_logs");
+        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_COMMENTTONE")).orElse("commentTone");
     String exchangeType =
         Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
 
