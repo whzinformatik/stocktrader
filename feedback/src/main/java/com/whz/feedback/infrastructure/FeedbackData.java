@@ -32,7 +32,9 @@ public class FeedbackData {
    */
   public final String message;
 
-  /** identifier of the portfolio
+  /**
+   * identifier of the portfolio
+   *
    * @since 1.0.0
    */
   public final String portfolioId;
@@ -86,7 +88,7 @@ public class FeedbackData {
    * Create a new DTO for a feedback message.
    *
    * @param message content of the feedback message
-   *                @param portfolioId identifier of the portfolio
+   * @param portfolioId identifier of the portfolio
    * @return feedback DTO with message and without an identifier
    * @since 1.0.0
    */

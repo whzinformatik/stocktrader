@@ -12,7 +12,6 @@ import static org.awaitility.Awaitility.await;
 
 import com.whz.feedback.exchange.FeedbackDTO;
 import com.whz.feedback.exchange.Publisher;
-import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.utils.EnvUtils;
 import java.io.IOException;
 import java.util.List;

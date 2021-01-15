@@ -11,6 +11,7 @@ import com.whz.feedback.model.feedback.FeedbackState;
 
 /**
  * This class is used to send a feedback message with rabbitmq.
+ *
  * @since 1.0.0
  */
 public class FeedbackDTO {

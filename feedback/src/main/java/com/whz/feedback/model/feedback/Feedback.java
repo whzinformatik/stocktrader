@@ -24,7 +24,7 @@ public interface Feedback {
    *
    * @param stage stage of the current world
    * @param message content of the feedback message
-   *                @param portfolioId identifier of the portfolio
+   * @param portfolioId identifier of the portfolio
    * @return response for an asynchronous call with a potential result
    * @since 1.0.0
    */
@@ -43,7 +43,7 @@ public interface Feedback {
    * Add content for the current state of the feedback message.
    *
    * @param message content of the feedback message
-   *                @param portfolioId identifier of the portfolio
+   * @param portfolioId identifier of the portfolio
    * @return response for an asynchronous call with potential result
    * @since 1.0.0
    */

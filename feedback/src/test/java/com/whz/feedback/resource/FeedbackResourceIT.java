@@ -16,10 +16,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import com.whz.feedback.exchange.FeedbackDTO;
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.model.feedback.FeedbackActor;
-import com.whz.feedback.model.feedback.FeedbackState;
 import com.whz.feedback.utils.EnvUtils;
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 import io.vlingo.http.Response.Status;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -36,8 +34,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
 
   @Test
   public void testPost() throws IOException, TimeoutException {
-    TestSubscriber<FeedbackDTO> subscriber =
-        new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
+    TestSubscriber<FeedbackDTO> subscriber = new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
     subscriber.receive(FeedbackActor.EXCHANGE_NAME, FeedbackDTO.class);
 
     String message = "message";

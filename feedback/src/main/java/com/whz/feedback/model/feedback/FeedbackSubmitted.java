@@ -42,7 +42,7 @@ public final class FeedbackSubmitted extends IdentifiedDomainEvent {
    *
    * @param id id of the feedback message
    * @param message content of the feedback message
-   *                @param portfolioId identifier of the portfolio
+   * @param portfolioId identifier of the portfolio
    * @since 1.0.0
    */
   public FeedbackSubmitted(final String id, final String message, final String portfolioId) {
