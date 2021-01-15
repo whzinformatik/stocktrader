@@ -43,7 +43,10 @@ public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackD
       switch (EventTypes.valueOf(event.typeName())) {
         case FeedbackSubmitted:
           final FeedbackSubmitted feedbackSubmittedEvent = typed(event);
-          return FeedbackData.from(feedbackSubmittedEvent.id, feedbackSubmittedEvent.message);
+          return FeedbackData.from(
+              feedbackSubmittedEvent.id,
+              feedbackSubmittedEvent.message,
+              feedbackSubmittedEvent.portfolioId);
         default:
           logger().warn("Event of type {} was not matched.", event.typeName());
           return Empty;

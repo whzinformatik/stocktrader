@@ -75,7 +75,7 @@ public class FeedbackResource extends ResourceHandler {
    * @since 1.0.0
    */
   public Completes<Response> create(FeedbackData feedbackData) {
-    return Feedback.defineWith(stage, feedbackData.message)
+    return Feedback.defineWith(stage, feedbackData.message, feedbackData.portfolioId)
         .andThenTo(
             state ->
                 Completes.withSuccess(

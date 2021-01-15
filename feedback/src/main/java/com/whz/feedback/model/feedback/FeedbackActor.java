@@ -7,6 +7,7 @@
  */
 package com.whz.feedback.model.feedback;
 
+import com.whz.feedback.exchange.FeedbackDTO;
 import com.whz.feedback.exchange.Publisher;
 import com.whz.feedback.utils.EnvUtils;
 import io.vlingo.actors.Logger;
@@ -31,7 +32,7 @@ public final class FeedbackActor extends EventSourced implements Feedback {
 
   private final Logger logger = Logger.basicLogger();
 
-  private final Publisher<FeedbackState> publisher;
+  private final Publisher<FeedbackDTO> publisher;
 
   private FeedbackState state;
 
@@ -48,8 +49,8 @@ public final class FeedbackActor extends EventSourced implements Feedback {
   }
 
   @Override
-  public Completes<FeedbackState> defineWith(final String message) {
-    return apply(new FeedbackSubmitted(state.id, message), () -> state);
+  public Completes<FeedbackState> defineWith(final String message, final String portfolioId) {
+    return apply(new FeedbackSubmitted(state.id, message, portfolioId), () -> state);
   }
 
   // =====================================
@@ -69,10 +70,10 @@ public final class FeedbackActor extends EventSourced implements Feedback {
    * @since 1.0.0
    */
   private void applyFeedbackMessage(final FeedbackSubmitted e) {
-    state = state.withMessage(e.message);
+    state = state.withMessage(e.message).withPortfolioId(e.portfolioId);
 
     try {
-      publisher.send(EXCHANGE_NAME, state);
+      publisher.send(EXCHANGE_NAME, FeedbackDTO.from(state));
     } catch (Exception ex) {
       logger.error("cannot publish message", ex);
     }

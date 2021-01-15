@@ -32,6 +32,11 @@ public class FeedbackData {
    */
   public final String message;
 
+  /** identifier of the portfolio
+   * @since 1.0.0
+   */
+  public final String portfolioId;
+
   /**
    * Create an empty DTO for a feedback message.
    *
@@ -39,25 +44,25 @@ public class FeedbackData {
    * @since 1.0.0
    */
   public static FeedbackData empty() {
-    return new FeedbackData("", "");
+    return new FeedbackData("", "", "");
   }
 
   /**
    * Create a new feedback DTO with the state of another feedback.
    *
    * @param state other feedback state
-   * @return feedback DTO with identifier and message
+   * @return feedback DTO with identifiers and message
    * @since 1.0.0
    */
   public static FeedbackData from(final FeedbackState state) {
-    return new FeedbackData(state.id, state.message);
+    return new FeedbackData(state.id, state.message, state.portfolioId);
   }
 
   /**
    * Create many feedback DTOs from many other feedback states.
    *
    * @param states other feedback states
-   * @return feedback DTOs with identifier and message
+   * @return feedback DTOs with identifiers and message
    * @since 1.0.0
    */
   public static List<FeedbackData> from(final List<FeedbackState> states) {
@@ -69,22 +74,24 @@ public class FeedbackData {
    *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
+   * @param portfolioId identifier of the portfolio
    * @return feedback DTO with identifier and message
    * @since 1.0.0
    */
-  public static FeedbackData from(final String id, final String message) {
-    return new FeedbackData(id, message);
+  public static FeedbackData from(final String id, final String message, final String portfolioId) {
+    return new FeedbackData(id, message, portfolioId);
   }
 
   /**
    * Create a new DTO for a feedback message.
    *
    * @param message content of the feedback message
+   *                @param portfolioId identifier of the portfolio
    * @return feedback DTO with message and without an identifier
    * @since 1.0.0
    */
-  public static FeedbackData just(final String message) {
-    return new FeedbackData("", message);
+  public static FeedbackData just(final String message, final String portfolioId) {
+    return new FeedbackData("", message, portfolioId);
   }
 
   /**
@@ -92,15 +99,17 @@ public class FeedbackData {
    *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
+   * @param portfolioId identifier of the portfolio
    * @since 1.0.0
    */
-  private FeedbackData(final String id, final String message) {
+  private FeedbackData(final String id, final String message, final String portfolioId) {
     this.id = id;
     this.message = message;
+    this.portfolioId = portfolioId;
   }
 
   @Override
   public String toString() {
-    return "FeedbackData [id=" + id + " message=" + message + "]";
+    return String.format("FeedbackData [id=%s message=%s portfolio=%s]", id, message, portfolioId);
   }
 }
