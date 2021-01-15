@@ -28,8 +28,8 @@ At the end, you can send a simple REST request to provide feedback for the stock
 curl --location --request POST 'localhost:18080/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "id": "portfolio id",
-    "message": "your message"
+    "message": "your message",
+    "portfolioId": "portfolio id"
 }'
 ```
 
