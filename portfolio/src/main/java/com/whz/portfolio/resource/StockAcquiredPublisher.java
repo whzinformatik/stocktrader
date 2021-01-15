@@ -28,7 +28,7 @@ public enum StockAcquiredPublisher {
 
   private final String exchangeName;
   private final String exchangeType;
-  
+
   private Connection connection;
   private Channel channel;
 
@@ -40,11 +40,11 @@ public enum StockAcquiredPublisher {
 
     ConnectionFactory connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
-    
+
     try {
-        connection = connectionFactory.newConnection();
-        channel = connection.createChannel();
-        channel.exchangeDeclare(exchangeName, exchangeType);
+      connection = connectionFactory.newConnection();
+      channel = connection.createChannel();
+      channel.exchangeDeclare(exchangeName, exchangeType);
     } catch (IOException | TimeoutException e) {
     	logger.debug("Failed to init the StockAcquiredPublisher", e);
 	}
@@ -69,10 +69,8 @@ public enum StockAcquiredPublisher {
 	  }
       
   }
-  
-  /**
-   * Closes the connection and channel.
-   */
+
+  /** Closes the connection and channel. */
   public void stop() {
 	  try {
 		connection.close();

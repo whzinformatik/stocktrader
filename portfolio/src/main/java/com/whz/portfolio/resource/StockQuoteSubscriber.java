@@ -30,7 +30,7 @@ public enum StockQuoteSubscriber {
 
   private final Logger logger = Logger.basicLogger();
   private final Map<String, StockQuoteData> stockQuotes;
-  
+
   private Connection connection;
   private Channel channel;
 
@@ -68,10 +68,8 @@ public enum StockQuoteSubscriber {
     	logger.debug("Failed to init the StockQuoteSubscriber", e);
     }
   }
-  
-  /**
-   * Closes the connection and channel.
-   */
+
+  /** Closes the connection and channel. */
   public void stop() {
 	  try {
 		connection.close();
