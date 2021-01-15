@@ -30,28 +30,53 @@ public class CommentTonePublisher<T> {
 
   private final Logger logger = LoggerFactory.getLogger(CommentTonePublisher.class.getName());
 
+  private Channel channel;
+
+  private final String exchangeType;
+  private final String exchangeName;
+
   /**
    * Create a publisher which is connected to a specific rabbitmq instance.
    *
    * @param serviceName address of the rabbitmq instance
+   * @param exchangeName name of the exchange
+   * @param exchangeType type of exchange
    * @since 1.0.0
    */
-  public CommentTonePublisher(String serviceName) {
+  public CommentTonePublisher(String serviceName, String exchangeName, String exchangeType) {
     this.connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
+
+    this.exchangeName = exchangeName;
+    this.exchangeType = exchangeType;
+
+    prepareToPublish();
+  }
+
+  /**
+   * Prepare exchange to publish message in rabbitmq instance.
+   *
+   * @since 1.0.0
+   */
+  public void prepareToPublish(){
+    try {
+      Connection connection = connectionFactory.newConnection();
+      channel = connection.createChannel();
+
+      channel.exchangeDeclare(exchangeName, exchangeType);
+    } catch (IOException | TimeoutException ioException) {
+      ioException.printStackTrace();
+    }
   }
 
   /**
    * Publish a new message to the rabbitmq instance.
    *
-   * @param exchangeName name of the exchange
-   * @param exchangeType type of exchange
    * @param message object for the serialization
    * @since 1.0.0
    */
-  public void publish(String exchangeName, String exchangeType, T message) {
-    try (final Connection connection = connectionFactory.newConnection();
-        final Channel channel = connection.createChannel()) {
+  public void publish(T message) {
+    try {
       logger.info(
           "Publishing comment "
               + new GsonBuilder().create().toJson(message)
@@ -59,14 +84,12 @@ public class CommentTonePublisher<T> {
               + exchangeName
               + " exchange");
 
-      channel.exchangeDeclare(exchangeName, exchangeType);
-
       channel.basicPublish(
           exchangeName,
           "",
           null,
           new GsonBuilder().create().toJson(message).getBytes(StandardCharsets.UTF_8));
-    } catch (IOException | TimeoutException exception) {
+    } catch (IOException exception) {
       logger.debug(exception.getMessage(), exception);
     }
   }

@@ -61,7 +61,7 @@ public class CommentToneSubscriber {
     this.connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
 
-    publisher = new CommentTonePublisher<>(serviceName);
+    publisher = new CommentTonePublisher<>(serviceName, publishExchangeName, exchangeType);
   }
 
   /**
@@ -73,19 +73,13 @@ public class CommentToneSubscriber {
     try (final Connection connection = connectionFactory.newConnection();
         final Channel channel = connection.createChannel()) {
 
-      /*
-       * Create exchange with given exchange type to consume comment-tone message
-       */
+      // Create exchange with given exchange type to consume comment-tone message
       channel.exchangeDeclare(consumeExchangeName, exchangeType);
 
-      /*
-       * Create a non-durable, exclusive, auto-delete queue with a generated name
-       */
+      // Create a non-durable, exclusive, auto-delete queue with a generated name
       String queueName = channel.queueDeclare().getQueue();
 
-      /*
-       * Append messages from named exchange to named queue
-       */
+      // Append messages from named exchange to named queue
       channel.queueBind(queueName, consumeExchangeName, "");
 
       while (true) {
@@ -98,9 +92,7 @@ public class CommentToneSubscriber {
               CommentTone comment =
                   new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
 
-              /*
-               * Add randomly generated sentiment to comment
-               */
+              // Add randomly generated sentiment to comment
               int randomNumber = new Random().nextInt(13);
 
               comment.setSentiment(
@@ -110,7 +102,7 @@ public class CommentToneSubscriber {
                           ? Sentiment.NEGATIVE
                           : randomNumber < 10 ? Sentiment.NEUTRAL : Sentiment.POSITIVE);
 
-              publisher.publish(publishExchangeName, exchangeType, comment);
+                publisher.publish(comment);
             });
 
         channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
