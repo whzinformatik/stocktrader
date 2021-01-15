@@ -10,7 +10,8 @@ package com.whz.feedback.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import com.whz.feedback.infrastructure.FeedbackData;
+import com.whz.feedback.exchange.FeedbackDTO;
+import com.whz.feedback.exchange.Publisher;
 import com.whz.feedback.utils.EnvUtils;
 import java.io.IOException;
 import java.util.List;
@@ -22,9 +23,9 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PublisherIT {
 
-  private Publisher<FeedbackData> publisher;
+  private Publisher<FeedbackDTO> publisher;
 
-  private TestSubscriber<FeedbackData> subscriber;
+  private TestSubscriber<FeedbackDTO> subscriber;
 
   @BeforeEach
   public void setup() throws IOException, TimeoutException {
@@ -36,16 +37,16 @@ public class PublisherIT {
   @Test
   public void testSend() throws IOException, TimeoutException {
     String exchangeName = "test_exchange";
-    FeedbackData feedback = FeedbackData.from("0", "test");
+    FeedbackDTO feedback = new FeedbackDTO("0", "test");
 
-    subscriber.receive(exchangeName, FeedbackData.class);
+    subscriber.receive(exchangeName, FeedbackDTO.class);
     publisher.send(exchangeName, feedback);
     await().until(subscriber::containsData);
 
-    List<FeedbackData> messages = subscriber.getMessages();
+    List<FeedbackDTO> messages = subscriber.getMessages();
     assertThat(messages.size()).isEqualTo(1);
 
-    FeedbackData message = subscriber.lastMessage();
+    FeedbackDTO message = subscriber.lastMessage();
     assertThat(message.id).isEqualTo(feedback.id);
     assertThat(message.message).isEqualTo(feedback.message);
   }

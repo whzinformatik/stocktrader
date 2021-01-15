@@ -29,6 +29,13 @@ public final class FeedbackState {
   public final String message;
 
   /**
+   * identifier of the account
+   *
+   * @since 1.0.0
+   */
+  public final String accountId;
+
+  /**
    * Create a feedback state with an identifier of the feedback message.
    *
    * @param id identifier of the feedback message
@@ -56,7 +63,7 @@ public final class FeedbackState {
    * @since 1.0.0
    */
   public boolean isIdentifiedOnly() {
-    return id != null && message == null;
+    return id != null && message == null && accountId == null;
   }
 
   /**
@@ -67,7 +74,18 @@ public final class FeedbackState {
    * @since 1.0.0
    */
   public FeedbackState withMessage(final String message) {
-    return new FeedbackState(this.id, message);
+    return new FeedbackState(this.id, message, this.accountId);
+  }
+
+  /**
+   * Add portfolioId to the feedback message.
+   *
+   * @param accountId identifier of the account
+   * @return updated feedback state
+   * @since 1.0.0
+   */
+  public FeedbackState withPortfolioId(final String accountId) {
+    return new FeedbackState(this.id, this.message, accountId);
   }
 
   /**
@@ -75,11 +93,13 @@ public final class FeedbackState {
    *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
+   * @param accountId identifier of the account
    * @since 1.0.0
    */
-  private FeedbackState(final String id, final String message) {
+  private FeedbackState(final String id, final String message, final String accountId) {
     this.id = id;
     this.message = message;
+    this.accountId = accountId;
   }
 
   /**
@@ -89,7 +109,7 @@ public final class FeedbackState {
    * @since 1.0.0
    */
   private FeedbackState(final String id) {
-    this(id, null);
+    this(id, null, null);
   }
 
   /**
@@ -98,6 +118,6 @@ public final class FeedbackState {
    * @since 1.0.0
    */
   private FeedbackState() {
-    this(null, null);
+    this(null, null, null);
   }
 }

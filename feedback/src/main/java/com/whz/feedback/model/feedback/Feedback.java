@@ -24,25 +24,28 @@ public interface Feedback {
    *
    * @param stage stage of the current world
    * @param message content of the feedback message
+   * @param accountId identifier of the account
    * @return response for an asynchronous call with a potential result
    * @since 1.0.0
    */
-  static Completes<FeedbackState> defineWith(final Stage stage, final String message) {
+  static Completes<FeedbackState> defineWith(
+      final Stage stage, final String message, final String accountId) {
     final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
     final Feedback feedbackActor =
         stage.actorFor(
             Feedback.class,
             Definition.has(FeedbackActor.class, Definition.parameters(address.idString())),
             address);
-    return feedbackActor.defineWith(message);
+    return feedbackActor.defineWith(message, accountId);
   }
 
   /**
    * Add content for the current state of the feedback message.
    *
    * @param message content of the feedback message
+   * @param accountId identifier of the account
    * @return response for an asynchronous call with potential result
    * @since 1.0.0
    */
-  Completes<FeedbackState> defineWith(final String message);
+  Completes<FeedbackState> defineWith(final String message, final String accountId);
 }

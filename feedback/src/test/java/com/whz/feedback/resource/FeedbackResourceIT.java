@@ -13,9 +13,8 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
+import com.whz.feedback.exchange.FeedbackDTO;
 import com.whz.feedback.infrastructure.FeedbackData;
-import com.whz.feedback.model.feedback.FeedbackActor;
-import com.whz.feedback.model.feedback.FeedbackState;
 import com.whz.feedback.utils.EnvUtils;
 import io.restassured.response.Response;
 import io.vlingo.http.Response.Status;
@@ -34,27 +33,28 @@ public class FeedbackResourceIT extends ResourceTestCase {
 
   @Test
   public void testPost() throws IOException, TimeoutException {
-    TestSubscriber<FeedbackState> subscriber =
-        new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
-    subscriber.receive(FeedbackActor.EXCHANGE_NAME, FeedbackState.class);
+    TestSubscriber<FeedbackDTO> subscriber = new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
+    subscriber.receive(FeedbackResource.EXCHANGE_NAME, FeedbackDTO.class);
 
     String message = "message";
-    createFeedback(message)
+    String accountId = "account_id";
+    createFeedback(message, accountId)
         .then()
         .statusCode(Status.Created.code)
         .body("id", notNullValue())
-        .body("message", equalTo(message));
+        .body("message", equalTo(message))
+        .body("accountId", equalTo(accountId));
 
     await().until(subscriber::containsData);
 
-    FeedbackState state = subscriber.lastMessage();
-    assertThat(state.id).isNotNull();
-    assertThat(state.message).isEqualTo(message);
+    FeedbackDTO feedbackDTO = subscriber.lastMessage();
+    assertThat(feedbackDTO.id).isNotNull();
+    assertThat(feedbackDTO.message).isEqualTo(message);
   }
 
   @Test
   public void testGet() {
-    FeedbackData data = createFeedback("test").getBody().as(FeedbackData.class);
+    FeedbackData data = createFeedback("test", "pid").getBody().as(FeedbackData.class);
 
     givenJsonClient()
         .when()
@@ -62,13 +62,14 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .then()
         .statusCode(Status.Ok.code)
         .body("id", equalTo(data.id))
-        .body("message", equalTo(data.message));
+        .body("message", equalTo(data.message))
+        .body("accountId", equalTo(data.accountId));
   }
 
   @Test
   public void testGetAll() {
-    FeedbackData data1 = createFeedback("test1").getBody().as(FeedbackData.class);
-    FeedbackData data2 = createFeedback("test2").getBody().as(FeedbackData.class);
+    FeedbackData data1 = createFeedback("test1", "pid").getBody().as(FeedbackData.class);
+    FeedbackData data2 = createFeedback("test2", "pid").getBody().as(FeedbackData.class);
 
     givenJsonClient()
         .when()
@@ -76,10 +77,11 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .then()
         .statusCode(Status.Ok.code)
         .body("id", contains(data1.id, data2.id))
-        .body("message", contains(data1.message, data2.message));
+        .body("message", contains(data1.message, data2.message))
+        .body("accountId", contains(data1.accountId, data2.accountId));
   }
 
-  private Response createFeedback(String message) {
-    return givenJsonClient().body(FeedbackData.just(message)).when().post("/");
+  private Response createFeedback(String message, String accountId) {
+    return givenJsonClient().body(FeedbackData.just(message, accountId)).when().post("/");
   }
 }

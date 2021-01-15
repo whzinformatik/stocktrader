@@ -7,8 +7,6 @@
  */
 package com.whz.feedback.model.feedback;
 
-import com.whz.feedback.resource.Publisher;
-import com.whz.feedback.utils.EnvUtils;
 import io.vlingo.actors.Logger;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
@@ -22,16 +20,7 @@ import java.util.concurrent.TimeoutException;
  */
 public final class FeedbackActor extends EventSourced implements Feedback {
 
-  /**
-   * name of the feedback exchange
-   *
-   * @since 1.0.0
-   */
-  public static final String EXCHANGE_NAME = "feedback";
-
   private final Logger logger = Logger.basicLogger();
-
-  private final Publisher<FeedbackState> publisher;
 
   private FeedbackState state;
 
@@ -44,12 +33,11 @@ public final class FeedbackActor extends EventSourced implements Feedback {
   public FeedbackActor(final String id) throws IOException, TimeoutException {
     super(id);
     this.state = FeedbackState.identifiedBy(id);
-    this.publisher = new Publisher<>(EnvUtils.RABBITMQ_SERVICE.get());
   }
 
   @Override
-  public Completes<FeedbackState> defineWith(final String message) {
-    return apply(new FeedbackSubmitted(state.id, message), () -> state);
+  public Completes<FeedbackState> defineWith(final String message, final String accountId) {
+    return apply(new FeedbackSubmitted(state.id, message, accountId), () -> state);
   }
 
   // =====================================
@@ -69,12 +57,6 @@ public final class FeedbackActor extends EventSourced implements Feedback {
    * @since 1.0.0
    */
   private void applyFeedbackMessage(final FeedbackSubmitted e) {
-    state = state.withMessage(e.message);
-
-    try {
-      publisher.send(EXCHANGE_NAME, state);
-    } catch (Exception ex) {
-      logger.error("cannot publish message", ex);
-    }
+    state = state.withMessage(e.message).withPortfolioId(e.accountId);
   }
 }

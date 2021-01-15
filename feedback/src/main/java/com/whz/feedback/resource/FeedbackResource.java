@@ -19,16 +19,21 @@ import static io.vlingo.http.resource.ResourceBuilder.get;
 import static io.vlingo.http.resource.ResourceBuilder.post;
 import static io.vlingo.http.resource.ResourceBuilder.resource;
 
+import com.whz.feedback.exchange.FeedbackDTO;
+import com.whz.feedback.exchange.Publisher;
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.infrastructure.persistence.FeedbackQueries;
 import com.whz.feedback.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.feedback.model.feedback.Feedback;
+import com.whz.feedback.utils.EnvUtils;
 import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * This class is used as the rest resource for all feedback messages.
@@ -36,6 +41,15 @@ import io.vlingo.http.resource.ResourceHandler;
  * @since 1.0.0
  */
 public class FeedbackResource extends ResourceHandler {
+
+  /**
+   * name of the feedback exchange
+   *
+   * @since 1.0.0
+   */
+  public static final String EXCHANGE_NAME = "feedback";
+
+  private final Publisher<FeedbackDTO> publisher;
 
   private static final String APPLICATION_JSON = "application/json";
 
@@ -51,10 +65,11 @@ public class FeedbackResource extends ResourceHandler {
    * @param stage stage of the current world
    * @since 1.0.0
    */
-  public FeedbackResource(final Stage stage) {
+  public FeedbackResource(final Stage stage) throws IOException, TimeoutException {
     this.stage = stage;
     this.queries = QueryModelStateStoreProvider.instance().feedbackQueries;
     this.logger = stage.world().defaultLogger();
+    this.publisher = new Publisher<>(EnvUtils.RABBITMQ_SERVICE.get());
   }
 
   /**
@@ -75,15 +90,22 @@ public class FeedbackResource extends ResourceHandler {
    * @since 1.0.0
    */
   public Completes<Response> create(FeedbackData feedbackData) {
-    return Feedback.defineWith(stage, feedbackData.message)
+    return Feedback.defineWith(stage, feedbackData.message, feedbackData.accountId)
         .andThenTo(
-            state ->
-                Completes.withSuccess(
-                    Response.of(
-                        Created,
-                        headers(of(Location, location(state.id)))
-                            .and(of(ContentType, APPLICATION_JSON)),
-                        serialized(FeedbackData.from(state)))));
+            state -> {
+              try {
+                publisher.send(EXCHANGE_NAME, FeedbackDTO.from(state));
+              } catch (Exception ex) {
+                logger.error("cannot publish message with id" + state.id, ex);
+              }
+
+              return Completes.withSuccess(
+                  Response.of(
+                      Created,
+                      headers(of(Location, location(state.id)))
+                          .and(of(ContentType, APPLICATION_JSON)),
+                      serialized(FeedbackData.from(state))));
+            });
   }
 
   /**
