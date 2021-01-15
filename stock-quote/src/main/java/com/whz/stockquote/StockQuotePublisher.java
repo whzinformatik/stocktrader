@@ -13,6 +13,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import org.json.JSONObject;
@@ -74,14 +75,20 @@ class StockQuotePublisher {
   private void publish(List<String> symbols, Channel channel) {
     try {
       channel.exchangeDeclare(exchangeName, BuiltinExchangeType.FANOUT, durableExchange);
-      for (String s : symbols) {
+      Iterator<String> itr = symbols.iterator();
+      while (itr.hasNext()) {
+        String s = itr.next();
         Stock answer = YahooFinance.get(s);
         try {
-          if (answer == null)
+          if (answer == null) {
+            itr.remove();
             throw new StockNotFoundException(
-                String.format("Could not find stock for symbol '%s'! Symbol will be ignored!", s));
-        } catch (StockNotFoundException stockNotFoundException) {
-          logger.error(stockNotFoundException.toString());
+                String.format(
+                    "Could not find stock for symbol '%s'! Symbol will be removed from symbol list!",
+                    s));
+          }
+        } catch (StockNotFoundException e) {
+          logger.warn(e.toString(), e);
           continue;
         }
         String answerJsonString =
@@ -96,7 +103,7 @@ class StockQuotePublisher {
             exchangeName, "", null, answerJsonString.getBytes(StandardCharsets.UTF_8));
       }
     } catch (IOException e) {
-      logger.error(e.toString());
+      logger.error("Could not retrieve stock information!", e);
     }
   }
 
@@ -128,16 +135,20 @@ class StockQuotePublisher {
         try {
           Thread.sleep(actualPublishInterval);
         } catch (InterruptedException e) {
-          logger.error(e.toString());
+          logger.error("Thread got interrupted!", e);
         }
       }
     } catch (IOException | TimeoutException e) {
-      logger.error("Connection error! Check if your RabbitMQ service is running correctly!", e.toString());
+      logger.error(
+          "Connection error! Check if your RabbitMQ service is running and accessible!", e);
     }
   }
 
-  /** Exception which is thrown if a stock could not get retrieved.
-   * @since 1.0.0*/
+  /**
+   * Exception which is thrown if a stock could not get retrieved.
+   *
+   * @since 1.0.0
+   */
   private static class StockNotFoundException extends Exception {
     public StockNotFoundException(String message) {
       super(message);

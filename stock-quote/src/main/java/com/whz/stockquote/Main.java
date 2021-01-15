@@ -7,6 +7,7 @@
  */
 package com.whz.stockquote;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -89,7 +90,7 @@ public class Main {
     String symbolsString =
         Optional.ofNullable(System.getenv("STOCK_SYMBOLS"))
             .orElse("TSLA,INTC,GOOG,MSFT,AMZN,NVDA,NFLX,SBUX,SAP,ADDYY,POAHF,SAP.DE");
-    this.symbols = Arrays.asList(symbolsString.toUpperCase().split("\\s*,\\s*"));
+    this.symbols = new ArrayList<>(Arrays.asList(symbolsString.toUpperCase().split("\\s*,\\s*")));
   }
 
   public static void main(String[] args) {
