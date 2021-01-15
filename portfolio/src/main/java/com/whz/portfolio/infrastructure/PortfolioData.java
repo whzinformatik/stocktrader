@@ -41,7 +41,7 @@ public class PortfolioData {
   /**
    * Creates a list of PortfolioData instances with the data from the list of states param.
    *
-   * @param state
+   * @param states
    * @return New PortfolioData instance
    * @since 1.0.0
    */
