@@ -5,6 +5,21 @@
     <groupId>com.whz</groupId>
     <artifactId>stock-quote</artifactId>
     <version>1.0.0</version>
+
+    <organization>
+        <name>Fachgruppe Informatik WHZ</name>
+        <url>https://www.fh-zwickau.de/pti/organisation/fachgruppe-informatik/homepage-der-fg-informatik/</url>
+    </organization>
+    <inceptionYear>2020-2021</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>Mozilla Public License 2.0</name>
+            <url>https://opensource.org/licenses/MPL-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <properties>
         <jdk.version>11</jdk.version>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
@@ -17,6 +32,7 @@
         <yahoo-finance-api.version>3.15.0</yahoo-finance-api.version>
         <rabbitmq.version>5.10.0</rabbitmq.version>
         <json.version>20201115</json.version>
+        <logger.version>1.7.28</logger.version>
 
     </properties>
     <dependencies>
@@ -34,6 +50,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>${json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${logger.version}</version>
         </dependency>
     </dependencies>
 
@@ -60,6 +81,29 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
+                    <properties>
+                        <owner>${project.organization.name}</owner>
+                        <email>help.flaxel@gmail.com</email>
+                    </properties>
+                    <includes>
+                        <include>src/*/java/**/*.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>process-sources</phase>
                     </execution>
                 </executions>
             </plugin>

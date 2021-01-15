@@ -3,15 +3,17 @@ version: '3.1'
 services:
   stock-quote-publisher:
     build: ./stock-quote/
-    restart: on-failure
+    restart: always
     environment:
       RABBITMQ_SERVICE: "rabbitmq"
       RABBITMQ_EXCHANGE: "stocks"
-      RABBITMQ_EXCHANGE_TYPE: "fanout"
-      SET_RANDOM_PUBLISH_INTERVAL: "true"
+      DURABLE_EXCHANGE: "true"
+      PUBLISH_INTERVAL: 5
+#      RANDOM_PUBLISH_INTERVAL: 15
+#      STOCK_SYMBOLS: "TSLA,INTC,GOOG,MSFT,AMZN,NVDA,NFLX,SBUX,SAP,ADDYY,POAHF,SAP.DE"
   feedback:
     build: ./feedback/
-    restart: on-failure
+    restart: always
     depends_on:
       - postgres
       - rabbitmq
