@@ -49,8 +49,8 @@ public final class FeedbackActor extends EventSourced implements Feedback {
   }
 
   @Override
-  public Completes<FeedbackState> defineWith(final String message, final String portfolioId) {
-    return apply(new FeedbackSubmitted(state.id, message, portfolioId), () -> state);
+  public Completes<FeedbackState> defineWith(final String message, final String accountId) {
+    return apply(new FeedbackSubmitted(state.id, message, accountId), () -> state);
   }
 
   // =====================================
@@ -70,7 +70,7 @@ public final class FeedbackActor extends EventSourced implements Feedback {
    * @since 1.0.0
    */
   private void applyFeedbackMessage(final FeedbackSubmitted e) {
-    state = state.withMessage(e.message).withPortfolioId(e.portfolioId);
+    state = state.withMessage(e.message).withPortfolioId(e.accountId);
 
     try {
       publisher.send(EXCHANGE_NAME, FeedbackDTO.from(state));

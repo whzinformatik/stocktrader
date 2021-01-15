@@ -46,7 +46,7 @@ public class FeedbackProjectionActor extends StateStoreProjectionActor<FeedbackD
           return FeedbackData.from(
               feedbackSubmittedEvent.id,
               feedbackSubmittedEvent.message,
-              feedbackSubmittedEvent.portfolioId);
+              feedbackSubmittedEvent.accountId);
         default:
           logger().warn("Event of type {} was not matched.", event.typeName());
           return Empty;

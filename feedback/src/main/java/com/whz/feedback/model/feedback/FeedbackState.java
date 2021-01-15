@@ -29,11 +29,11 @@ public final class FeedbackState {
   public final String message;
 
   /**
-   * identifier of the portfolio
+   * identifier of the account
    *
    * @since 1.0.0
    */
-  public final String portfolioId;
+  public final String accountId;
 
   /**
    * Create a feedback state with an identifier of the feedback message.
@@ -63,7 +63,7 @@ public final class FeedbackState {
    * @since 1.0.0
    */
   public boolean isIdentifiedOnly() {
-    return id != null && message == null && portfolioId == null;
+    return id != null && message == null && accountId == null;
   }
 
   /**
@@ -74,18 +74,18 @@ public final class FeedbackState {
    * @since 1.0.0
    */
   public FeedbackState withMessage(final String message) {
-    return new FeedbackState(this.id, message, this.portfolioId);
+    return new FeedbackState(this.id, message, this.accountId);
   }
 
   /**
    * Add portfolioId to the feedback message.
    *
-   * @param portfolioId identifier of the portfolio
+   * @param accountId identifier of the account
    * @return updated feedback state
    * @since 1.0.0
    */
-  public FeedbackState withPortfolioId(final String portfolioId) {
-    return new FeedbackState(this.id, this.message, portfolioId);
+  public FeedbackState withPortfolioId(final String accountId) {
+    return new FeedbackState(this.id, this.message, accountId);
   }
 
   /**
@@ -93,13 +93,13 @@ public final class FeedbackState {
    *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
-   * @param portfolioId identifier of the portfolio
+   * @param accountId identifier of the account
    * @since 1.0.0
    */
-  private FeedbackState(final String id, final String message, final String portfolioId) {
+  private FeedbackState(final String id, final String message, final String accountId) {
     this.id = id;
     this.message = message;
-    this.portfolioId = portfolioId;
+    this.accountId = accountId;
   }
 
   /**

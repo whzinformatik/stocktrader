@@ -28,7 +28,7 @@ public final class FeedbackSubmitted extends IdentifiedDomainEvent {
    *
    * @since 1.0.0
    */
-  public final String portfolioId;
+  public final String accountId;
 
   /**
    * content of the feedback message
@@ -42,13 +42,13 @@ public final class FeedbackSubmitted extends IdentifiedDomainEvent {
    *
    * @param id id of the feedback message
    * @param message content of the feedback message
-   * @param portfolioId identifier of the portfolio
+   * @param accountId identifier of the account
    * @since 1.0.0
    */
-  public FeedbackSubmitted(final String id, final String message, final String portfolioId) {
+  public FeedbackSubmitted(final String id, final String message, final String accountId) {
     this.id = id;
     this.message = message;
-    this.portfolioId = portfolioId;
+    this.accountId = accountId;
   }
 
   @Override

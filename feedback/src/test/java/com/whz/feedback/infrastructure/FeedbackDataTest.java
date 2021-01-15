@@ -26,7 +26,7 @@ public class FeedbackDataTest {
     FeedbackData feedbackData = FeedbackData.empty();
     assertThat(feedbackData.id).isEmpty();
     assertThat(feedbackData.message).isEmpty();
-    assertThat(feedbackData.portfolioId).isEmpty();
+    assertThat(feedbackData.accountId).isEmpty();
   }
 
   @Test
@@ -35,7 +35,7 @@ public class FeedbackDataTest {
     FeedbackData feedbackData = FeedbackData.from(feedbackState);
     assertNull(feedbackData.id);
     assertNull(feedbackData.message);
-    assertNull(feedbackData.portfolioId);
+    assertNull(feedbackData.accountId);
   }
 
   @Test
@@ -45,7 +45,7 @@ public class FeedbackDataTest {
     FeedbackData feedbackData = FeedbackData.from(feedbackState);
     assertThat(feedbackData.id).isEqualTo(id);
     assertThat(feedbackData.message).isEqualTo(message);
-    assertThat(feedbackData.portfolioId).isEqualTo(portfolioId);
+    assertThat(feedbackData.accountId).isEqualTo(portfolioId);
   }
 
   @Test
@@ -53,6 +53,6 @@ public class FeedbackDataTest {
     FeedbackData feedbackData = FeedbackData.just(message, portfolioId);
     assertThat(feedbackData.id).isEmpty();
     assertThat(feedbackData.message).isEqualTo(message);
-    assertThat(feedbackData.portfolioId).isEqualTo(portfolioId);
+    assertThat(feedbackData.accountId).isEqualTo(portfolioId);
   }
 }

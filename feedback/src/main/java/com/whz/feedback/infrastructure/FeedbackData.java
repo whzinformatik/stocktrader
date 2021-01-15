@@ -33,11 +33,11 @@ public class FeedbackData {
   public final String message;
 
   /**
-   * identifier of the portfolio
+   * identifier of the account
    *
    * @since 1.0.0
    */
-  public final String portfolioId;
+  public final String accountId;
 
   /**
    * Create an empty DTO for a feedback message.
@@ -57,7 +57,7 @@ public class FeedbackData {
    * @since 1.0.0
    */
   public static FeedbackData from(final FeedbackState state) {
-    return new FeedbackData(state.id, state.message, state.portfolioId);
+    return new FeedbackData(state.id, state.message, state.accountId);
   }
 
   /**
@@ -76,24 +76,24 @@ public class FeedbackData {
    *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
-   * @param portfolioId identifier of the portfolio
+   * @param accountId identifier of the account
    * @return feedback DTO with identifier and message
    * @since 1.0.0
    */
-  public static FeedbackData from(final String id, final String message, final String portfolioId) {
-    return new FeedbackData(id, message, portfolioId);
+  public static FeedbackData from(final String id, final String message, final String accountId) {
+    return new FeedbackData(id, message, accountId);
   }
 
   /**
    * Create a new DTO for a feedback message.
    *
    * @param message content of the feedback message
-   * @param portfolioId identifier of the portfolio
+   * @param accountId identifier of the account
    * @return feedback DTO with message and without an identifier
    * @since 1.0.0
    */
-  public static FeedbackData just(final String message, final String portfolioId) {
-    return new FeedbackData("", message, portfolioId);
+  public static FeedbackData just(final String message, final String accountId) {
+    return new FeedbackData("", message, accountId);
   }
 
   /**
@@ -101,17 +101,17 @@ public class FeedbackData {
    *
    * @param id identifier of the feedback message
    * @param message content of the feedback message
-   * @param portfolioId identifier of the portfolio
+   * @param accountId identifier of the portfolio
    * @since 1.0.0
    */
-  private FeedbackData(final String id, final String message, final String portfolioId) {
+  private FeedbackData(final String id, final String message, final String accountId) {
     this.id = id;
     this.message = message;
-    this.portfolioId = portfolioId;
+    this.accountId = accountId;
   }
 
   @Override
   public String toString() {
-    return String.format("FeedbackData [id=%s message=%s portfolio=%s]", id, message, portfolioId);
+    return String.format("FeedbackData [id=%s message=%s account=%s]", id, message, accountId);
   }
 }

@@ -64,7 +64,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .statusCode(Status.Ok.code)
         .body("id", equalTo(data.id))
         .body("message", equalTo(data.message))
-        .body("portfolioId", equalTo(data.portfolioId));
+        .body("portfolioId", equalTo(data.accountId));
   }
 
   @Test
@@ -79,7 +79,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .statusCode(Status.Ok.code)
         .body("id", contains(data1.id, data2.id))
         .body("message", contains(data1.message, data2.message))
-        .body("portfolioId", contains(data1.portfolioId, data2.portfolioId));
+        .body("portfolioId", contains(data1.accountId, data2.accountId));
   }
 
   private Response createFeedback(String message, String portfolioId) {

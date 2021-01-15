@@ -27,7 +27,7 @@ public class FeedbackStateTest {
     FeedbackState feedbackState = FeedbackState.identifiedBy(null);
     assertNull(feedbackState.id);
     assertNull(feedbackState.message);
-    assertNull(feedbackState.portfolioId);
+    assertNull(feedbackState.accountId);
     assertTrue(feedbackState.doesNotExist());
     assertFalse(feedbackState.isIdentifiedOnly());
   }
@@ -37,7 +37,7 @@ public class FeedbackStateTest {
     FeedbackState feedbackState = FeedbackState.identifiedBy(id);
     assertThat(feedbackState.id).isEqualTo(id);
     assertNull(feedbackState.message);
-    assertNull(feedbackState.portfolioId);
+    assertNull(feedbackState.accountId);
     assertFalse(feedbackState.doesNotExist());
     assertTrue(feedbackState.isIdentifiedOnly());
   }
@@ -48,7 +48,7 @@ public class FeedbackStateTest {
         FeedbackState.identifiedBy(id).withMessage(message).withPortfolioId(portfolioId);
     assertThat(feedbackState.id).isEqualTo(id);
     assertThat(feedbackState.message).isEqualTo(message);
-    assertThat(feedbackState.portfolioId).isEqualTo(portfolioId);
+    assertThat(feedbackState.accountId).isEqualTo(portfolioId);
     assertFalse(feedbackState.doesNotExist());
     assertFalse(feedbackState.isIdentifiedOnly());
   }

@@ -17,7 +17,7 @@ import com.whz.feedback.model.feedback.FeedbackState;
 public class FeedbackDTO {
 
   /**
-   * identifier of the portfolio
+   * identifier of the account
    *
    * @since 1.0.0
    */
@@ -36,6 +36,6 @@ public class FeedbackDTO {
   }
 
   public static FeedbackDTO from(FeedbackState state) {
-    return new FeedbackDTO(state.portfolioId, state.message);
+    return new FeedbackDTO(state.accountId, state.message);
   }
 }
