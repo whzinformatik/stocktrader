@@ -65,18 +65,18 @@ public enum StockQuoteSubscriber {
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
     } catch (IOException | TimeoutException e) {
-    	logger.debug("Failed to init the StockQuoteSubscriber", e);
+      logger.debug("Failed to init the StockQuoteSubscriber", e);
     }
   }
 
   /** Closes the connection and channel. */
   public void stop() {
-	  try {
-		connection.close();
-		channel.close();
-	  } catch (IOException | TimeoutException e) {
-		  logger.debug("Failed to stop the StockAcquiredPublisher", e);
-	}  
+    try {
+      connection.close();
+      channel.close();
+    } catch (IOException | TimeoutException e) {
+      logger.debug("Failed to stop the StockAcquiredPublisher", e);
+    }
   }
 
   private StockQuoteData deserialized(String data) {

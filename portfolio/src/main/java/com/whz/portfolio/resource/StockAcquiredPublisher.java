@@ -46,9 +46,9 @@ public enum StockAcquiredPublisher {
       channel = connection.createChannel();
       channel.exchangeDeclare(exchangeName, exchangeType);
     } catch (IOException | TimeoutException e) {
-    	logger.debug("Failed to init the StockAcquiredPublisher", e);
-	}
-    		
+      logger.debug("Failed to init the StockAcquiredPublisher", e);
+    }
+
     logger.debug("Started stock acquired publisher");
   }
 
@@ -59,25 +59,24 @@ public enum StockAcquiredPublisher {
    * @param value - the money spent
    */
   public void send(String id, double value) {
-      StockAcquiredData data = new StockAcquiredData(id, value);
-      String message = JsonSerialization.serialized(data);
-      try {
-    	logger.debug("Stock acquired publisher sending: {}", message);
-		channel.basicPublish(exchangeName, "", null, message.getBytes());
-	  } catch (IOException e) {
-		logger.debug("Failed to send message with id: " + id, e);
-	  }
-      
+    StockAcquiredData data = new StockAcquiredData(id, value);
+    String message = JsonSerialization.serialized(data);
+    try {
+      logger.debug("Stock acquired publisher sending: {}", message);
+      channel.basicPublish(exchangeName, "", null, message.getBytes());
+    } catch (IOException e) {
+      logger.debug("Failed to send message with id: " + id, e);
+    }
   }
 
   /** Closes the connection and channel. */
   public void stop() {
-	  try {
-		connection.close();
-		channel.close();
-	  } catch (IOException | TimeoutException e) {
-		logger.debug("Failed to stop the StockAcquiredPublisher", e);
-	}  
+    try {
+      connection.close();
+      channel.close();
+    } catch (IOException | TimeoutException e) {
+      logger.debug("Failed to stop the StockAcquiredPublisher", e);
+    }
   }
 
   /**
