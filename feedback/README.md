@@ -29,7 +29,7 @@ curl --location --request POST 'localhost:18080/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "message": "your message",
-    "portfolioId": "portfolio id"
+    "accountId": "account id"
 }'
 ```
 
