@@ -45,6 +45,8 @@
         <junit.version>5.6.0</junit.version>
         <mockito.version>3.5.15</mockito.version>
         <restassured.version>4.3.1</restassured.version>
+        <awaitility.version>3.0.0</awaitility.version>
+        <assertj.version>3.18.1</assertj.version>
     </properties>
 
     <repositories>
@@ -118,6 +120,19 @@
             <version>${restassured.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <profiles>

@@ -24,7 +24,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class Publisher<T> {
 
-  private final ConnectionFactory connectionFactory;
+  private final Connection connection;
 
   /**
    * Create a publisher which is connected to a specific rabbitmq instance.
@@ -32,9 +32,10 @@ public class Publisher<T> {
    * @param host address of the rabbitmq instance
    * @since 1.0.0
    */
-  public Publisher(String host) {
-    this.connectionFactory = new ConnectionFactory();
-    this.connectionFactory.setHost(host);
+  public Publisher(String host) throws IOException, TimeoutException {
+    ConnectionFactory connectionFactory = new ConnectionFactory();
+    connectionFactory.setHost(host);
+    this.connection = connectionFactory.newConnection();
   }
 
   /**
@@ -47,9 +48,8 @@ public class Publisher<T> {
    * @since 1.0.0
    */
   public void send(String exchangeName, T message) throws IOException, TimeoutException {
-    try (final Connection connection = connectionFactory.newConnection();
-        final Channel channel = connection.createChannel()) {
-      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.TOPIC);
+    try (final Channel channel = connection.createChannel()) {
+      channel.exchangeDeclare(exchangeName, BuiltinExchangeType.FANOUT);
 
       channel.basicPublish(
           exchangeName,

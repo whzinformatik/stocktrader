@@ -7,26 +7,49 @@
  */
 package com.whz.feedback.resource;
 
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 import com.whz.feedback.infrastructure.FeedbackData;
+import com.whz.feedback.model.feedback.FeedbackActor;
+import com.whz.feedback.model.feedback.FeedbackState;
+import com.whz.feedback.utils.EnvUtils;
 import io.restassured.response.Response;
+import io.vlingo.http.Response.Status;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FeedbackResourceIT extends ResourceTestCase {
 
   @Test
   public void testReady() {
-    givenJsonClient().when().get("/ready").then().statusCode(200);
+    givenJsonClient().when().get("/ready").then().statusCode(Status.Ok.code);
   }
 
   @Test
-  public void testPost() {
-    createFeedback("message")
+  public void testPost() throws IOException, TimeoutException {
+    TestSubscriber<FeedbackState> subscriber =
+        new TestSubscriber<>(EnvUtils.RABBITMQ_SERVICE.get());
+    subscriber.receive(FeedbackActor.EXCHANGE_NAME, FeedbackState.class);
+
+    String message = "message";
+    createFeedback(message)
         .then()
-        .statusCode(201)
+        .statusCode(Status.Created.code)
         .body("id", notNullValue())
-        .body("message", equalTo("message"));
+        .body("message", equalTo(message));
+
+    await().until(subscriber::containsData);
+
+    FeedbackState state = subscriber.lastMessage();
+    assertThat(state.id).isNotNull();
+    assertThat(state.message).isEqualTo(message);
   }
 
   @Test
@@ -37,7 +60,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .when()
         .get("/" + data.id)
         .then()
-        .statusCode(200)
+        .statusCode(Status.Ok.code)
         .body("id", equalTo(data.id))
         .body("message", equalTo(data.message));
   }
@@ -51,7 +74,7 @@ public class FeedbackResourceIT extends ResourceTestCase {
         .when()
         .get("/")
         .then()
-        .statusCode(200)
+        .statusCode(Status.Ok.code)
         .body("id", contains(data1.id, data2.id))
         .body("message", contains(data1.message, data2.message));
   }

@@ -8,9 +8,16 @@
 package com.whz.feedback.resource;
 
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.*;
-import static io.vlingo.http.ResponseHeader.*;
-import static io.vlingo.http.resource.ResourceBuilder.*;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.Response.Status.NotFound;
+import static io.vlingo.http.Response.Status.Ok;
+import static io.vlingo.http.ResponseHeader.ContentType;
+import static io.vlingo.http.ResponseHeader.Location;
+import static io.vlingo.http.ResponseHeader.headers;
+import static io.vlingo.http.ResponseHeader.of;
+import static io.vlingo.http.resource.ResourceBuilder.get;
+import static io.vlingo.http.resource.ResourceBuilder.post;
+import static io.vlingo.http.resource.ResourceBuilder.resource;
 
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.infrastructure.persistence.FeedbackQueries;
@@ -29,6 +36,8 @@ import io.vlingo.http.resource.ResourceHandler;
  * @since 1.0.0
  */
 public class FeedbackResource extends ResourceHandler {
+
+  private static final String APPLICATION_JSON = "application/json";
 
   private final Stage stage;
 
@@ -73,7 +82,7 @@ public class FeedbackResource extends ResourceHandler {
                     Response.of(
                         Created,
                         headers(of(Location, location(state.id)))
-                            .and(of(ContentType, "application/json")),
+                            .and(of(ContentType, APPLICATION_JSON)),
                         serialized(FeedbackData.from(state)))));
   }
 
@@ -91,8 +100,7 @@ public class FeedbackResource extends ResourceHandler {
             FeedbackData.empty(),
             data ->
                 Completes.withSuccess(
-                    Response.of(
-                        Ok, headers(of(ContentType, "application/json")), serialized(data))))
+                    Response.of(Ok, headers(of(ContentType, APPLICATION_JSON)), serialized(data))))
         .otherwise(noData -> Response.of(NotFound, location(feedbackId)));
   }
 
@@ -108,8 +116,7 @@ public class FeedbackResource extends ResourceHandler {
         .andThenTo(
             data ->
                 Completes.withSuccess(
-                    Response.of(
-                        Ok, headers(of(ContentType, "application/json")), serialized(data))));
+                    Response.of(Ok, headers(of(ContentType, APPLICATION_JSON)), serialized(data))));
   }
 
   @Override
