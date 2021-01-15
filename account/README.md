@@ -1,6 +1,6 @@
 # Account
 
-![account](https://github.com/whzinformatik/stocktrader/workflows/account/badge.svg)
+[![account](https://github.com/whzinformatik/stocktrader/workflows/account/badge.svg)][account_actions]
 
 This project is used to create and manage an account in the stock trader application. It communicates with the comment tone and the portfolio project.
 
