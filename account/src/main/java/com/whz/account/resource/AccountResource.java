@@ -34,11 +34,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 
 /**
  * The AccountResource is responsible for managing the REST interface and invoking methods/events.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public class AccountResource extends ResourceHandler {
 
@@ -46,7 +47,8 @@ public class AccountResource extends ResourceHandler {
 
   private final Stage stage;
   private final AccountQueries accountQueries;
-  private final String portfolioUrl = System.getenv("PORTFOLIO_URL");
+  private final String portfolioUrl =
+      Optional.ofNullable(System.getenv("PORTFOLIO_URL")).orElse("localhost:18082");
 
   /**
    * Sets the stage and accountQueries and initializes a StockAcquiredSubscriber singleton.
@@ -54,10 +56,8 @@ public class AccountResource extends ResourceHandler {
    * @param stage - stage object of the world
    */
   public AccountResource(final Stage stage) {
-    StockAcquiredSubscriber saSub = StockAcquiredSubscriber.INSTANCE;
-    saSub.setStage(stage);
-    CommentToneSubscriber ctSub = CommentToneSubscriber.INSTANCE;
-    ctSub.setStage(stage);
+    StockAcquiredSubscriber.INSTANCE.setStage(stage);
+    CommentToneSubscriber.INSTANCE.setStage(stage);
 
     this.logger = stage.world().defaultLogger();
 
@@ -66,7 +66,7 @@ public class AccountResource extends ResourceHandler {
   }
 
   /**
-   * Get method which returns an AccountData object based on a given id.
+   * Get request method which returns an AccountData object based on a given id.
    *
    * @param id - the id of the AccountData object that gets requested
    * @return Response - an HTTP answer (JSON) with the AccountData object representing an Account

@@ -14,7 +14,7 @@ import io.vlingo.lattice.model.sourcing.EventSourced;
  * AccountEntity managing the Account object by implementing it and realizing the necessary methods
  * through appropriate calls.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public final class AccountEntity extends EventSourced implements Account {
   private AccountState state;

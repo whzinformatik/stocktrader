@@ -1,5 +1,45 @@
 # Account
 
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Installing
+
+In order to get an executable environment for development, some environment variables have to be set first:
+
+| Variable                        | Description                                              | Default Value     |
+|---------------------------------|----------------------------------------------------------|-------------------|
+| PORTFOLIO_URL                   | to send Portfolio-Requests of format: "http://host:port" | localhost:18082   |
+| RABBITMQ_SERVICE                | RabbitMQ service name                                    | localhost         |
+| RABBITMQ_EXCHANGE_STOCKACQUIRED | used for Queue to link Sub with StockAcquiredPublisher   | stock_logs        |
+| RABBITMQ_EXCHANGE_COMMENTTONE   | used for Queue to link Sub with CommentTonePublisher     | comment_tone_logs |
+| RABBITMQ_EXCHANGE_TYPE          | can be one of direct, fanout, topic and headers          | fanout            |
+
+Make sure that the local environment is active. Then the program can be executed using the following command:
+
+```bash
+mvn exec:exec
+```
+
+At the end, you can send a simple REST request to provide feedback for the stock trader application:
+
+```bash
+curl --location --request POST 'localhost:18080/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "id": "portfolio id",
+    "message": "your message"
+}'
+```
+
+## Documentation
+
+You can get more details about the project with the documented code or the domain stories in the [`doc`][documentation] folder.
+
+[feedback_actions]: https://github.com/whzinformatik/stocktrader/actions?query=workflow%3Aaccount
+[documentation]: ./doc
+
 ### Resources
 It is part of the: [IBMStockTrader Java EE Portfolio Implementation](https://github.com/IBMStockTrader/portfolio/blob/master/src/main/java/com/ibm/hybrid/cloud/sample/stocktrader/portfolio/json/Portfolio.java).
 
@@ -36,10 +76,3 @@ The Account will keep all the information that is not of interest to the Portfol
 ### API
 * /account/{id}  (GET)
 * /account       (POST)
-
-### System variables
-* PORTFOLIO_URL - The Portfolio Url to send requests which needs to be of format: "http://host:port"
-* RABBITMQ_SERVICE - The RabbitMQ service name
-* RABBITMQ_EXCHANGE_STOCKACQUIRED - The Exchange name which will be used for the Queue to link this Subscriber with the StockAcquiredPublisher
-* RABBITMQ_EXCHANGE_COMMENTTONE - The Exchange name which will be used for the Queue to link this Subscriber with the CommentTonePublisher
-* RABBITMQ_EXCHANGE_TYPE - The Exchange Type; can be one of direct, fanout, topic and headers

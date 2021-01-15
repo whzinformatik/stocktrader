@@ -19,15 +19,14 @@ import io.vlingo.actors.Stage;
 import io.vlingo.common.serialization.JsonSerialization;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
 /**
- * The CommentToneSubscriber which subscribes to a CommentTonePublisher endpoint and receives
- * messages containing a comment tone. After receiving a message the "sentimentReceived(Sentiment
- * sentiment)" method will be triggered which matches the id of the comment tone to our account and
- * changes the given sentiment to the new value by creating a SentimentReceived event.
+ * The CommentToneSubscriber which subscribes to a CommentTonePublisher endpoint, receives messages
+ * containing a comment tone and processes them.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public enum CommentToneSubscriber {
   INSTANCE;
@@ -41,9 +40,12 @@ public enum CommentToneSubscriber {
    * the appropriate sentimentReceived() method in the Account Interface.
    */
   CommentToneSubscriber() {
-    String serviceName = System.getenv("RABBITMQ_SERVICE");
-    String exchangeName = System.getenv("RABBITMQ_EXCHANGE_COMMENTTONE");
-    String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
+    String serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
+    String exchangeName =
+        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_COMMENTTONE"))
+            .orElse("comment_tone_logs");
+    String exchangeType =
+        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
 
     try {
       final ConnectionFactory factory = new ConnectionFactory();
@@ -69,17 +71,14 @@ public enum CommentToneSubscriber {
                     Account.class,
                     stage.addressFactory().from(commentToneData.id),
                     AccountEntity.class)
-                .andThenTo(
-                    account -> {
-                      return account.sentimentReceived(commentToneData.sentiment);
-                    });
+                .andThenTo(account -> account.sentimentReceived(commentToneData.sentiment));
 
             logger.debug("Comment tone subscriber received message:'{}'", message);
           };
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
     } catch (IOException | TimeoutException e) {
-      logger.debug(e.getMessage(), e);
+      logger.debug("Could not finalize connection.", e);
     }
   }
 

@@ -20,6 +20,7 @@ import io.vlingo.symbio.store.dispatch.Dispatcher;
 import java.util.Arrays;
 import java.util.List;
 
+/** @since 1.0.0 */
 @SuppressWarnings("rawtypes")
 public class ProjectionDispatcherProvider {
   private static ProjectionDispatcherProvider instance;

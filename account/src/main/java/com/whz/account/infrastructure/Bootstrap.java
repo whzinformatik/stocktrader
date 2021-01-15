@@ -21,6 +21,7 @@ import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 
+/** @since 1.0.0 */
 public class Bootstrap {
 
   private static final Logger logger = Logger.basicLogger();

@@ -11,7 +11,7 @@ package com.whz.account.model.account;
  * AccountState managing the Account object. It is responsible for creating and changing an Account
  * object.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public final class AccountState {
   public String id;
@@ -53,7 +53,7 @@ public final class AccountState {
   /**
    * Method which will be called when an Account invests money via a Portfolio by buying a stock.
    *
-   * @param balance - the amount of added invested money
+   * @param amount - amount of the added invested money
    * @return AccountState - temporary AccountState object containing all necessary information
    */
   public AccountState withInvestedMoney(double amount) {
@@ -88,7 +88,7 @@ public final class AccountState {
   }
 
   /** Sets the initial variables when an Account is created. */
-  public void setDefaultValues() {
+  private void setDefaultValues() {
     this.totalInvested = 0.0;
     this.loyalty = Loyalty.BASIC;
     this.commissions = 8.99;

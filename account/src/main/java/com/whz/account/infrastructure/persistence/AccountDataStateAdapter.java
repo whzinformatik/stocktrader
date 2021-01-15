@@ -13,6 +13,7 @@ import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.StateAdapter;
 
+/** @since 1.0.0 */
 public final class AccountDataStateAdapter implements StateAdapter<AccountData, TextState> {
 
   @Override

@@ -10,7 +10,7 @@ package com.whz.account.infrastructure;
 /**
  * EventTypes that are available for the account microservice.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public enum EventTypes {
   AccountCreated,

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * DTO object which represents an Account. It contains all necessary account information.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public class AccountData {
   public String id;

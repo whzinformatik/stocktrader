@@ -15,7 +15,7 @@ import io.vlingo.common.Completes;
 /**
  * Account Interface representing an Account for the Stocktrader project.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public interface Account {
 

@@ -14,6 +14,7 @@ import io.vlingo.symbio.store.state.StateStore;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/** @since 1.0.0 */
 public class AccountQueriesActor extends StateStoreQueryActor implements AccountQueries {
 
   public AccountQueriesActor(StateStore store) {

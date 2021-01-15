@@ -256,7 +256,6 @@
                         <properties>
                             <owner>${project.organization.name}</owner>
                             <email>help.flaxel@gmail.com</email>
-                            <license.years>2020-2021</license.years>
                         </properties>
                         <includes>
                             <include>src/*/java/**/*.java</include>

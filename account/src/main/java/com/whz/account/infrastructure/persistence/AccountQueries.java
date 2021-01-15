@@ -11,6 +11,7 @@ import com.whz.account.infrastructure.AccountData;
 import io.vlingo.common.Completes;
 import java.util.Collection;
 
+/** @since 1.0.0 */
 public interface AccountQueries {
   Completes<AccountData> accountOf(String id);
 

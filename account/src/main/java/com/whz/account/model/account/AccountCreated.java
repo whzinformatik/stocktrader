@@ -15,7 +15,7 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
  * and sentiment of the account, the current commissions for buying stocks and a free integer which
  * represents a flat amount of how many stocks can be bought without paying a commission.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public final class AccountCreated extends IdentifiedDomainEvent {
   public String id;
@@ -26,21 +26,15 @@ public final class AccountCreated extends IdentifiedDomainEvent {
   public int free;
   public Sentiment sentiment;
 
-  /**
-   * AccountCreated Event constructor.
-   *
-   * @param id - id of the corresponding account
-   * @param balance - initial balance of the account
-   */
   public AccountCreated(final String id, double balance) {
+    setDefaultValues();
+
     this.id = id;
     this.balance = balance;
-
-    initAccount();
   }
 
   /** Sets the initial values when an Account is created. */
-  public void initAccount() {
+  private void setDefaultValues() {
     this.totalInvested = 0.0;
     this.loyalty = Loyalty.BASIC;
     this.commissions = 8.99;

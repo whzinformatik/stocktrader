@@ -13,7 +13,7 @@ import com.whz.account.model.account.Sentiment;
  * DTO object which represents a CommentTone in the CommentTone microservice. The given assessment
  * will be adjusted to the Account's Sentiment.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public final class CommentToneData {
 

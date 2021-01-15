@@ -19,15 +19,14 @@ import io.vlingo.actors.Stage;
 import io.vlingo.common.serialization.JsonSerialization;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
 /**
- * The StockAcquiredSubscriber which subscribes to a StockAcquiredPublisher endpoint and receives
- * messages containing acquired stocks. After receiving a message the "moneyInvested(double amount)"
- * method will be triggered which matches the id of the acquired stock to our account and adds the
- * invested value to our totalInvested value by creating a MoneyInvested event.
+ * The StockAcquiredSubscriber which subscribes to a StockAcquiredPublisher endpoint, receives
+ * messages containing acquired stocks and processes them.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public enum StockAcquiredSubscriber {
   INSTANCE;
@@ -41,9 +40,11 @@ public enum StockAcquiredSubscriber {
    * the appropriate moneyInvested() method in the Account Interface.
    */
   StockAcquiredSubscriber() {
-    String serviceName = System.getenv("RABBITMQ_SERVICE");
-    String exchangeName = System.getenv("RABBITMQ_EXCHANGE_STOCKACQUIRED");
-    String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
+    String serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
+    String exchangeName =
+        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_STOCKACQUIRED")).orElse("stock_logs");
+    String exchangeType =
+        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
 
     try {
       final ConnectionFactory factory = new ConnectionFactory();
@@ -68,17 +69,14 @@ public enum StockAcquiredSubscriber {
                     Account.class,
                     stage.addressFactory().from(stockData.owner),
                     AccountEntity.class)
-                .andThenTo(
-                    account -> {
-                      return account.moneyInvested(stockData.amount);
-                    });
+                .andThenTo(account -> account.moneyInvested(stockData.value));
 
             logger.debug("Stock acquired subscriber received message:'{}'", message);
           };
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
     } catch (IOException | TimeoutException e) {
-      logger.debug(e.getMessage(), e);
+      logger.debug("Could not finalize connection.", e);
     }
   }
 

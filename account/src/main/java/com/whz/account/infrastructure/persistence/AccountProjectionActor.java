@@ -9,14 +9,15 @@ package com.whz.account.infrastructure.persistence;
 
 import com.whz.account.infrastructure.AccountData;
 import com.whz.account.infrastructure.EventTypes;
+import com.whz.account.model.account.AccountCalculator;
 import com.whz.account.model.account.AccountCreated;
-import com.whz.account.model.account.Loyalty;
 import com.whz.account.model.account.MoneyInvested;
 import com.whz.account.model.account.SentimentReceived;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
 
+/** @since 1.0.0 */
 public class AccountProjectionActor extends StateStoreProjectionActor<AccountData> {
   private static final AccountData Empty = AccountData.empty();
 
@@ -58,24 +59,17 @@ public class AccountProjectionActor extends StateStoreProjectionActor<AccountDat
         case MoneyInvested:
           final MoneyInvested moneyInvested = typed(event);
           currentData.id = previousData.id;
+          currentData.balance -= moneyInvested.amount;
+          if (currentData.free > 0) currentData.free--;
+          else currentData.balance -= currentData.commissions;
           currentData.totalInvested += moneyInvested.amount;
-
-          if (currentData.totalInvested > 1000000.00) {
-            currentData.loyalty = Loyalty.PLATINUM;
-          } else if (currentData.totalInvested > 100000.00) {
-            currentData.loyalty = Loyalty.GOLD;
-          } else if (currentData.totalInvested > 50000.00) {
-            currentData.loyalty = Loyalty.SILVER;
-          } else if (currentData.totalInvested > 10000.00) {
-            currentData.loyalty = Loyalty.BRONZE;
-          } else {
-            currentData.loyalty = Loyalty.BASIC;
-          }
+          currentData.loyalty = AccountCalculator.calculateLoyalty(currentData.totalInvested);
           break;
         case SentimentReceived:
           final SentimentReceived sentimentReceived = typed(event);
           currentData.id = previousData.id;
           currentData.sentiment = sentimentReceived.sentiment;
+          currentData.free += AccountCalculator.calculateFree(currentData.sentiment);
           break;
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");

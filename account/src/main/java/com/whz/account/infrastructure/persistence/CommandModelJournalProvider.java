@@ -22,6 +22,7 @@ import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 import io.vlingo.xoom.storage.Model;
 import io.vlingo.xoom.storage.StoreActorBuilder;
 
+/** @since 1.0.0 */
 public class CommandModelJournalProvider {
   private static CommandModelJournalProvider instance;
 

@@ -10,7 +10,7 @@ package com.whz.account.model.account;
 /**
  * Enum used to represent the loyalty of an account.
  *
- * @author Lation
+ * @since 1.0.0
  */
 public enum Loyalty {
   BASIC,
