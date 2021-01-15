@@ -33,6 +33,8 @@ public class AccountProjectionActor extends StateStoreProjectionActor<AccountDat
   /**
    * Based on the given Event Type and given values the appropriate case will be triggered and the
    * Account object will be created or altered.
+   *
+   * @since 1.0.0
    */
   @Override
   protected AccountData merge(

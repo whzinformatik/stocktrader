@@ -19,6 +19,7 @@ import io.vlingo.common.Completes;
  */
 public interface Account {
 
+  /** @since 1.0.0 */
   static Completes<AccountState> defineWith(final Stage stage, final double balance) {
     final Address address = stage.world().addressFactory().uniquePrefixedWith("g-");
     final Account account =
@@ -29,9 +30,12 @@ public interface Account {
     return account.accountCreated(balance);
   }
 
+  /** @since 1.0.0 */
   Completes<AccountState> accountCreated(final double balance);
 
+  /** @since 1.0.0 */
   Completes<AccountState> moneyInvested(final double amount);
 
+  /** @since 1.0.0 */
   Completes<AccountState> sentimentReceived(final Sentiment sentiment);
 }

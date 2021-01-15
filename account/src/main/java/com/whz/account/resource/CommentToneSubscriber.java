@@ -38,6 +38,8 @@ public enum CommentToneSubscriber {
   /**
    * Initializes and establishes a RabbitMQ connection, waits for messages, receives them and calls
    * the appropriate sentimentReceived() method in the Account Interface.
+   *
+   * @since 1.0.0
    */
   CommentToneSubscriber() {
     String serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");

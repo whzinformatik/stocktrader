@@ -27,10 +27,12 @@ public class AccountData {
   public int free;
   public Sentiment sentiment;
 
+  /** @since 1.0.0 */
   public static AccountData empty() {
     return new AccountData("", 0.0, 0.0, Loyalty.BASIC, 0.0, 0, Sentiment.UNKNOWN);
   }
 
+  /** @since 1.0.0 */
   public static AccountData from(final AccountState state) {
     return new AccountData(
         state.id,
@@ -42,6 +44,7 @@ public class AccountData {
         state.sentiment);
   }
 
+  /** @since 1.0.0 */
   public static List<AccountData> from(final List<AccountState> states) {
     final List<AccountData> data = new ArrayList<>(states.size());
 
@@ -52,6 +55,7 @@ public class AccountData {
     return data;
   }
 
+  /** @since 1.0.0 */
   public static AccountData from(
       final String id,
       double balance,
@@ -63,6 +67,7 @@ public class AccountData {
     return new AccountData(id, balance, totalInvested, loyalty, commissions, free, sentiment);
   }
 
+  /** @since 1.0.0 */
   public static AccountData just(double balance) {
     return new AccountData("", balance, 0.0, Loyalty.BASIC, 0.0, 0, Sentiment.UNKNOWN);
   }

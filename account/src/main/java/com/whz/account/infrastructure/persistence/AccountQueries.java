@@ -13,7 +13,9 @@ import java.util.Collection;
 
 /** @since 1.0.0 */
 public interface AccountQueries {
+  /** @since 1.0.0 */
   Completes<AccountData> accountOf(String id);
 
+  /** @since 1.0.0 */
   Completes<Collection<AccountData>> accounts();
 }

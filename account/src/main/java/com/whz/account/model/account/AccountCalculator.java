@@ -7,6 +7,11 @@
  */
 package com.whz.account.model.account;
 
+/**
+ * The AccountCalculator is used to provide account related calculations like Loyalty and Free.
+ *
+ * @since 1.0.0
+ */
 public class AccountCalculator {
 
   /**
@@ -28,6 +33,7 @@ public class AccountCalculator {
    * Calculates an additional free amount that will be added to the account based on the given
    * sentiment.
    *
+   * @since 1.0.0
    * @param sentiment - received sentiment
    * @return int - calculated free amount
    */

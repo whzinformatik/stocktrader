@@ -21,11 +21,13 @@ public class AccountQueriesActor extends StateStoreQueryActor implements Account
     super(store);
   }
 
+  /** @since 1.0.0 */
   @Override
   public Completes<AccountData> accountOf(String id) {
     return queryStateFor(id, AccountData.class, AccountData.empty());
   }
 
+  /** @since 1.0.0 */
   @Override
   public Completes<Collection<AccountData>> accounts() {
     return streamAllOf(AccountData.class, new ArrayList<>());

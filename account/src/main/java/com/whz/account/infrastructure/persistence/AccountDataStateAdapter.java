@@ -21,16 +21,19 @@ public final class AccountDataStateAdapter implements StateAdapter<AccountData, 
     return 1;
   }
 
+  /** @since 1.0.0 */
   @Override
   public AccountData fromRawState(TextState raw) {
     return JsonSerialization.deserialized(raw.data, raw.typed());
   }
 
+  /** @since 1.0.0 */
   @Override
   public <ST> ST fromRawState(TextState raw, Class<ST> stateType) {
     return JsonSerialization.deserialized(raw.data, raw.typed());
   }
 
+  /** @since 1.0.0 */
   @Override
   public TextState toRawState(String id, AccountData state, int stateVersion, Metadata metadata) {
     final String serialization = JsonSerialization.serialized(state);
@@ -38,6 +41,7 @@ public final class AccountDataStateAdapter implements StateAdapter<AccountData, 
         id, AccountData.class, typeVersion(), serialization, stateVersion, metadata);
   }
 
+  /** @since 1.0.0 */
   @Override
   public TextState toRawState(AccountData state, int stateVersion, Metadata metadata) {
     final String serialization = JsonSerialization.serialized(state);

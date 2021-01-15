@@ -53,6 +53,7 @@ public class AccountResource extends ResourceHandler {
   /**
    * Sets the stage and accountQueries and initializes a StockAcquiredSubscriber singleton.
    *
+   * @since 1.0.0
    * @param stage - stage object of the world
    */
   public AccountResource(final Stage stage) {
@@ -68,6 +69,7 @@ public class AccountResource extends ResourceHandler {
   /**
    * Get request method which returns an AccountData object based on a given id.
    *
+   * @since 1.0.0
    * @param id - the id of the AccountData object that gets requested
    * @return Response - an HTTP answer (JSON) with the AccountData object representing an Account
    */
@@ -89,6 +91,7 @@ public class AccountResource extends ResourceHandler {
    * also triggers a call to a REST interface of the Portfolio microservice which creates a
    * corresponding Portfolio to our Account in a 1:1 relation based on their id's.
    *
+   * @since 1.0.0
    * @param data - an AccountData object representing an Account object
    * @return Response - an HTTP answer (JSON) which contains the information if the Account was
    *     successfully created
@@ -107,7 +110,11 @@ public class AccountResource extends ResourceHandler {
             });
   }
 
-  /** Maps the HTTP-Requests to the corresponding handler method. */
+  /**
+   * Maps the HTTP-Requests to the corresponding handler method.
+   *
+   * @since 1.0.0
+   */
   @Override
   public Resource<?> routes() {
     return resource(
@@ -119,6 +126,7 @@ public class AccountResource extends ResourceHandler {
   /**
    * Parses a String to represent our account id path.
    *
+   * @since 1.0.0
    * @param id - the id of the AccountState object
    * @return String - the parsed id
    */
@@ -130,6 +138,7 @@ public class AccountResource extends ResourceHandler {
    * The full HTTP POST-Request call to the Portfolio microservice which will create a Portfolio to
    * our Account in a 1:1 relation based on the given id.
    *
+   * @since 1.0.0
    * @param id - the id which will be shared between an Account and a Portfolio
    */
   private void createPortfolioRequest(String id) {

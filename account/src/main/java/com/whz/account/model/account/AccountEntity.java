@@ -24,16 +24,19 @@ public final class AccountEntity extends EventSourced implements Account {
     this.state = AccountState.identifiedBy(id);
   }
 
+  /** @since 1.0.0 */
   @Override
   public Completes<AccountState> accountCreated(final double balance) {
     return apply(new AccountCreated(state.id, balance), () -> state);
   }
 
+  /** @since 1.0.0 */
   @Override
   public Completes<AccountState> moneyInvested(final double amount) {
     return apply(new MoneyInvested(state.id, amount), () -> state);
   }
 
+  /** @since 1.0.0 */
   @Override
   public Completes<AccountState> sentimentReceived(final Sentiment sentiment) {
     return apply(new SentimentReceived(state.id, sentiment), () -> state);
@@ -55,6 +58,7 @@ public final class AccountEntity extends EventSourced implements Account {
   /**
    * Calls a method to create an Account via an initial balance.
    *
+   * @since 1.0.0
    * @param e - AccountCreated Event
    */
   private void applyAccountCreated(final AccountCreated e) {
@@ -64,6 +68,7 @@ public final class AccountEntity extends EventSourced implements Account {
   /**
    * Calls a method to add invested money to an Account.
    *
+   * @since 1.0.0
    * @param e - MoneyInvested Event
    */
   private void applyMoneyInvested(final MoneyInvested e) {
@@ -73,6 +78,7 @@ public final class AccountEntity extends EventSourced implements Account {
   /**
    * Calls a method to change the sentiment of an Account.
    *
+   * @since 1.0.0
    * @param e - SentimentReceived Event
    */
   private void applySentimentReceived(final SentimentReceived e) {

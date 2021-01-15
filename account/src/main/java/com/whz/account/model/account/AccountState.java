@@ -43,6 +43,7 @@ public final class AccountState {
   /**
    * Method which will be called when an Account gets created via a given initial balance.
    *
+   * @since 1.0.0
    * @param balance - the initial balance
    * @return AccountState - temporary AccountState object containing all necessary information
    */
@@ -53,6 +54,7 @@ public final class AccountState {
   /**
    * Method which will be called when an Account invests money via a Portfolio by buying a stock.
    *
+   * @since 1.0.0
    * @param amount - amount of the added invested money
    * @return AccountState - temporary AccountState object containing all necessary information
    */
@@ -64,6 +66,7 @@ public final class AccountState {
    * Method which will be called when an Account receives a sentiment via a CommentTone by giving an
    * assessment.
    *
+   * @since 1.0.0
    * @param sentiment - the sentiment which will be changed
    * @return AccountState - temporary AccountState object containing all necessary information
    */
@@ -74,6 +77,7 @@ public final class AccountState {
   /**
    * Constructor of an AccountState object which represents an Account.
    *
+   * @since 1.0.0
    * @param id - id of the corresponding account
    * @param balance - current balance of the account which will be set when creating an account
    * @param amount - current amount of invested money which will be later added to the account
@@ -87,7 +91,11 @@ public final class AccountState {
     this.sentiment = sentiment;
   }
 
-  /** Sets the initial variables when an Account is created. */
+  /**
+   * Sets the initial variables when an Account is created.
+   *
+   * @since 1.0.0
+   */
   private void setDefaultValues() {
     this.totalInvested = 0.0;
     this.loyalty = Loyalty.BASIC;

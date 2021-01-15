@@ -11,9 +11,7 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 /**
  * AccountCreated Event which is responsible for creating a fresh account based on a given initial
- * balance. It contains an id, an initial balance, the amount of totalInvested money, the loyalty
- * and sentiment of the account, the current commissions for buying stocks and a free integer which
- * represents a flat amount of how many stocks can be bought without paying a commission.
+ * balance.
  *
  * @since 1.0.0
  */
@@ -33,7 +31,11 @@ public final class AccountCreated extends IdentifiedDomainEvent {
     this.balance = balance;
   }
 
-  /** Sets the initial values when an Account is created. */
+  /**
+   * Sets the initial values when an Account is created.
+   *
+   * @since 1.0.0
+   */
   private void setDefaultValues() {
     this.totalInvested = 0.0;
     this.loyalty = Loyalty.BASIC;

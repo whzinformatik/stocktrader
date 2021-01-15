@@ -32,6 +32,7 @@ public class ProjectionDispatcherProvider {
     return instance;
   }
 
+  /** @since 1.0.0 */
   public static ProjectionDispatcherProvider using(final Stage stage) {
     if (instance != null) return instance;
 
@@ -56,6 +57,7 @@ public class ProjectionDispatcherProvider {
     return instance;
   }
 
+  /** @since 1.0.0 */
   private ProjectionDispatcherProvider(
       final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
     this.storeDispatcher = storeDispatcher;

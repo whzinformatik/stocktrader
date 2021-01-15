@@ -16,23 +16,27 @@ import io.vlingo.symbio.Source;
 /** @since 1.0.0 */
 public final class EventAdapter<T extends Source<?>> implements EntryAdapter<T, TextEntry> {
 
+  /** @since 1.0.0 */
   @Override
   public T fromEntry(final TextEntry entry) {
     return JsonSerialization.deserialized(entry.entryData(), entry.typed());
   }
 
+  /** @since 1.0.0 */
   @Override
   public TextEntry toEntry(final T source, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
     return new TextEntry(source.getClass(), 1, serialization, metadata);
   }
 
+  /** @since 1.0.0 */
   @Override
   public TextEntry toEntry(final T source, final String id, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(source);
     return new TextEntry(id, source.getClass(), 1, serialization, metadata);
   }
 
+  /** @since 1.0.0 */
   @Override
   public TextEntry toEntry(
       final T source, final int version, final String id, final Metadata metadata) {

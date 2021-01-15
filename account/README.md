@@ -1,5 +1,9 @@
 # Account
 
+![account](https://github.com/whzinformatik/stocktrader/workflows/account/badge.svg)
+
+This project is used to create and manage an account in the stock trader application. It communicates with the comment tone and the portfolio project.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -22,14 +26,13 @@ Make sure that the local environment is active. Then the program can be executed
 mvn exec:exec
 ```
 
-At the end, you can send a simple REST request to provide feedback for the stock trader application:
+At the end, you can send a simple REST request to create an account for the stock trader application:
 
 ```bash
-curl --location --request POST 'localhost:18080/' \
+curl --location --request POST 'localhost:18084/account' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "id": "portfolio id",
-    "message": "your message"
+    "balance": 40000.0
 }'
 ```
 
@@ -37,8 +40,7 @@ curl --location --request POST 'localhost:18080/' \
 
 You can get more details about the project with the documented code or the domain stories in the [`doc`][documentation] folder.
 
-[feedback_actions]: https://github.com/whzinformatik/stocktrader/actions?query=workflow%3Aaccount
-[documentation]: ./doc
+[account_actions]: https://github.com/whzinformatik/stocktrader/actions?query=workflow%3Aaccount
 
 ### Resources
 It is part of the: [IBMStockTrader Java EE Portfolio Implementation](https://github.com/IBMStockTrader/portfolio/blob/master/src/main/java/com/ibm/hybrid/cloud/sample/stocktrader/portfolio/json/Portfolio.java).

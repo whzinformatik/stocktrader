@@ -34,6 +34,7 @@ public class QueryModelStateStoreProvider {
     return instance;
   }
 
+  /** @since 1.0.0 */
   public static QueryModelStateStoreProvider using(
       final Stage stage, final StatefulTypeRegistry registry) {
     final Dispatcher noop =
@@ -46,6 +47,7 @@ public class QueryModelStateStoreProvider {
     return using(stage, registry, noop);
   }
 
+  /** @since 1.0.0 */
   @SuppressWarnings("rawtypes")
   public static QueryModelStateStoreProvider using(
       final Stage stage, final StatefulTypeRegistry registry, final Dispatcher dispatcher) {
@@ -72,6 +74,7 @@ public class QueryModelStateStoreProvider {
     return instance;
   }
 
+  /** @since 1.0.0 */
   @SuppressWarnings({"unchecked", "rawtypes"})
   private QueryModelStateStoreProvider(final Stage stage, final StateStore store) {
     this.store = store;

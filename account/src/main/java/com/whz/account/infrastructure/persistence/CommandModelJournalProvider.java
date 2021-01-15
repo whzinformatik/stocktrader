@@ -32,6 +32,7 @@ public class CommandModelJournalProvider {
     return instance;
   }
 
+  /** @since 1.0.0 */
   public static CommandModelJournalProvider using(
       final Stage stage, final SourcedTypeRegistry registry) {
     final Dispatcher noop =
@@ -44,6 +45,7 @@ public class CommandModelJournalProvider {
     return using(stage, registry, noop);
   }
 
+  /** @since 1.0.0 */
   @SuppressWarnings({"unchecked", "unused"})
   public static CommandModelJournalProvider using(
       final Stage stage, final SourcedTypeRegistry registry, final Dispatcher dispatcher) {

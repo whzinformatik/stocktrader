@@ -33,6 +33,7 @@ public class Bootstrap {
   private final Server server;
   private final World world;
 
+  /** @since 1.0.0 */
   public Bootstrap(final int port) throws Exception {
     world = World.startWithDefaults(NAME);
 

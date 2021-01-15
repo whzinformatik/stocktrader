@@ -38,11 +38,14 @@ public enum StockAcquiredSubscriber {
   /**
    * Initializes and establishes a RabbitMQ connection, waits for messages, receives them and calls
    * the appropriate moneyInvested() method in the Account Interface.
+   *
+   * @since 1.0.0
    */
   StockAcquiredSubscriber() {
     String serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
     String exchangeName =
-        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_STOCKACQUIRED")).orElse("stock_logs");
+        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_STOCKACQUIRED"))
+            .orElse("stocks-acquired");
     String exchangeType =
         Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
 
