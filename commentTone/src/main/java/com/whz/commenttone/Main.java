@@ -8,13 +8,32 @@
 
 package com.whz.commenttone;
 
+import com.whz.commenttone.model.CommentTone;
+import com.whz.commenttone.rabbitmq.CommentTonePublisher;
 import com.whz.commenttone.rabbitmq.CommentToneSubscriber;
+import java.util.Optional;
+import org.apache.log4j.BasicConfigurator;
 
 public class Main {
 
   public static void main(String[] args) {
-    CommentToneSubscriber subscriber = new CommentToneSubscriber();
+    final String serviceName =
+        Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
 
-    subscriber.consume();
+    final String publishExchangeName =
+        Optional.ofNullable(System.getenv("RABBITMQ_PUBLISH_EXCHANGE")).orElse("commentTone");
+    final String consumeExchangeName =
+        Optional.ofNullable(System.getenv("RABBITMQ_CONSUME_EXCHANGE")).orElse("feedback");
+    final String exchangeType =
+        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
+
+    BasicConfigurator.configure();
+
+    CommentToneSubscriber subscriber =
+        new CommentToneSubscriber(serviceName, consumeExchangeName, exchangeType);
+    CommentTonePublisher<CommentTone> publisher =
+        new CommentTonePublisher<>(serviceName, publishExchangeName, exchangeType);
+
+    subscriber.consume(publisher);
   }
 }

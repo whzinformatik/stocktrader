@@ -64,6 +64,7 @@ public class CommentTonePublisher<T> {
       channel = connection.createChannel();
 
       channel.exchangeDeclare(exchangeName, exchangeType);
+      logger.info("publisher started");
     } catch (IOException | TimeoutException ioException) {
       ioException.printStackTrace();
     }
@@ -78,11 +79,9 @@ public class CommentTonePublisher<T> {
   public void publish(T message) {
     try {
       logger.info(
-          "Publishing comment "
-              + new GsonBuilder().create().toJson(message)
-              + " in "
-              + exchangeName
-              + " exchange");
+          "Publishing comment {} in {} exchange",
+          new GsonBuilder().create().toJson(message),
+          exchangeName);
 
       channel.basicPublish(
           exchangeName,
