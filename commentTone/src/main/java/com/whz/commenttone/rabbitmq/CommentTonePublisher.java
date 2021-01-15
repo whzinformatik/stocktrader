@@ -90,7 +90,7 @@ public class CommentTonePublisher<T> {
           null,
           new GsonBuilder().create().toJson(message).getBytes(StandardCharsets.UTF_8));
     } catch (IOException exception) {
-      logger.debug(exception.getMessage(), exception);
+      logger.debug("error during publish message", exception);
     }
   }
 }

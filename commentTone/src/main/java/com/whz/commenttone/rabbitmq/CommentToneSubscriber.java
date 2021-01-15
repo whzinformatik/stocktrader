@@ -108,7 +108,7 @@ public class CommentToneSubscriber {
         channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
       }
     } catch (TimeoutException | IOException exception) {
-      logger.debug(exception.getMessage(), exception);
+      logger.debug("error during consume message", exception);
     }
   }
 }
