@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -11,6 +11,8 @@ import com.whz.portfolio.infrastructure.persistence.CommandModelJournalProvider;
 import com.whz.portfolio.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.portfolio.resource.PortfolioResource;
+import com.whz.portfolio.resource.StockAcquiredPublisher;
+import com.whz.portfolio.resource.StockQuoteSubscriber;
 import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
@@ -21,6 +23,11 @@ import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'.
+ *
+ * @since 1.0.0
+ */
 public class Bootstrap {
 
   private static final Logger logger = Logger.basicLogger();
@@ -55,9 +62,11 @@ public class Bootstrap {
                 () -> {
                   if (instance != null) {
                     instance.server.stop();
+                    StockQuoteSubscriber.INSTANCE.stop();
+                    StockAcquiredPublisher.INSTANCE.stop();
                     logger.info("\n");
                     logger.info("=========================");
-                    logger.info("Stopping portfolio.");
+                    logger.info("Stopping {}.", NAME);
                     logger.info("=========================");
                   }
                 }));
@@ -72,7 +81,7 @@ public class Bootstrap {
 
   public static void main(final String[] args) throws Exception {
     logger.info("=========================");
-    logger.info("service: portfolio.");
+    logger.info("service: {}.", NAME);
     logger.info("=========================");
 
     int port;
@@ -85,5 +94,9 @@ public class Bootstrap {
     }
 
     instance = new Bootstrap(port);
+  }
+
+  public Server getServer() {
+    return server;
   }
 }

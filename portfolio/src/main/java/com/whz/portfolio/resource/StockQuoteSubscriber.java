@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -18,26 +18,34 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
+/**
+ * RabbitMQ subscriber for receiving stock quotes.
+ *
+ * @since 1.0.0
+ */
 public enum StockQuoteSubscriber {
   INSTANCE;
 
   private final Logger logger = Logger.basicLogger();
   private final Map<String, StockQuoteData> stockQuotes;
 
+  private Connection connection;
+  private Channel channel;
+
   StockQuoteSubscriber() {
     stockQuotes = new HashMap<>();
 
-    String serviceName = System.getenv("RABBITMQ_SERVICE");
-    String exchangeName = System.getenv("RABBITMQ_EXCHANGE");
-    String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
+    String serviceName = getenv("RABBITMQ_SERVICE", "localhost");
+    String exchangeName = getenv("RABBITMQ_STOCK_QUOTE_EXCHANGE", "stocks");
+    String exchangeType = getenv("RABBITMQ_STOCK_QUOTE_EXCHANGE_TYPE", "fanout");
 
     try {
       ConnectionFactory factory = new ConnectionFactory();
       factory.setHost(serviceName);
-      Connection connection = factory.newConnection();
-
-      Channel channel = connection.createChannel();
+      connection = factory.newConnection();
+      channel = connection.createChannel();
       channel.exchangeDeclare(exchangeName, exchangeType);
       String queueName = channel.queueDeclare().getQueue();
       channel.queueBind(queueName, exchangeName, "");
@@ -50,15 +58,24 @@ public enum StockQuoteSubscriber {
             stockQuotes.put(stockQuoteData.symbol, stockQuoteData);
 
             logger.debug(
-                "Stock quote subscriber received '"
-                    + stockQuoteData.symbol
-                    + "' with a length of: "
-                    + message.length());
+                "Stock quote subscriber received '{}' with a length of: {}",
+                stockQuoteData.symbol,
+                message.length());
           };
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
     } catch (IOException | TimeoutException e) {
-      logger.debug(e.getMessage(), e);
+      logger.debug("Failed to init the StockQuoteSubscriber", e);
+    }
+  }
+
+  /** Closes the connection and channel. */
+  public void stop() {
+    try {
+      connection.close();
+      channel.close();
+    } catch (IOException | TimeoutException e) {
+      logger.debug("Failed to stop the StockAcquiredPublisher", e);
     }
   }
 
@@ -78,15 +95,21 @@ public enum StockQuoteSubscriber {
 
   /** @return All StockQuoteData objects with matching symbols */
   public List<StockQuoteData> get(Collection<String> symbols) {
-    List<StockQuoteData> result = new ArrayList<>();
-    symbols.forEach(
-        symbol -> {
-          StockQuoteData data = stockQuotes.get(symbol);
-          if (data != null) {
-            result.add(data);
-          }
-        });
+    return symbols.stream()
+        .map(stockQuotes::get)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+  }
 
-    return result;
+  /**
+   * Helper method to receive an environment variable.
+   *
+   * @param key
+   * @param alt - alternative string
+   * @return The environment variable. If not found the alt param is returned.
+   */
+  private String getenv(String key, String alt) {
+    String result = System.getenv(key);
+    return result == null ? alt : result;
   }
 }

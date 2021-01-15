@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -7,7 +7,11 @@
  */
 package com.whz.portfolio.infrastructure;
 
-/** Used as a Java class representation of the stock data from the stock quote project */
+/**
+ * Used as a Java class representation of the JSON data from the stock quote project
+ *
+ * @since 1.0.0
+ */
 public class StockQuoteData {
 
   public final String symbol;

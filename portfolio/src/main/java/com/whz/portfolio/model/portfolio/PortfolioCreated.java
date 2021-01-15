@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,7 +9,13 @@ package com.whz.portfolio.model.portfolio;
 
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
+/**
+ * Event class. Contains information for the creation of a new Portfolio.
+ *
+ * @since 1.0.0
+ */
 public final class PortfolioCreated extends IdentifiedDomainEvent {
+
   public final String id;
   public final String owner;
 

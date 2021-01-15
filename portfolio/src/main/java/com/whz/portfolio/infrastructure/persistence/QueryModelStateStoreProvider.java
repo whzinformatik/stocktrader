@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -23,6 +23,11 @@ import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 import io.vlingo.xoom.storage.Model;
 import io.vlingo.xoom.storage.StoreActorBuilder;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'.
+ *
+ * @since 1.0.0
+ */
 public class QueryModelStateStoreProvider {
   private static QueryModelStateStoreProvider instance;
 
@@ -64,7 +69,6 @@ public class QueryModelStateStoreProvider {
         StoreActorBuilder.from(
             stage, Model.QUERY, dispatcher, StorageType.STATE_STORE, Settings.properties(), true);
 
-    // nicht vom generator erstellt worden
     registry.register(new Info(store, PortfolioData.class, PortfolioData.class.getSimpleName()));
 
     instance = new QueryModelStateStoreProvider(stage, store);
@@ -77,5 +81,9 @@ public class QueryModelStateStoreProvider {
     this.store = store;
     this.portfolioQueries =
         stage.actorFor(PortfolioQueries.class, PortfolioQueriesActor.class, store);
+  }
+
+  public static void reset() {
+    instance = null;
   }
 }

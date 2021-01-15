@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,6 +10,8 @@ package com.whz.portfolio.infrastructure;
 /**
  * Java representation for the required JSON object in the post request for adding a new stock to
  * the portfolio. The symbol is the unique identifier for a stock.
+ *
+ * @since 1.0.0
  */
 public class AcquireStockData {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -32,18 +32,38 @@ import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
 
+/**
+ * Class for the REST end points of the portfolio service.
+ *
+ * @since 1.0.0
+ */
 public class PortfolioResource extends ResourceHandler {
 
   private final Stage stage;
   private final PortfolioQueries portfolioQueries;
 
+  /**
+   * Initializes the StockQuoteSubscriber and StockAcquiredPublisher singletons.
+   *
+   * @param stage
+   * @since 1.0.0
+   */
   public PortfolioResource(final Stage stage) {
+    this.stage = stage;
+    this.portfolioQueries = QueryModelStateStoreProvider.instance().portfolioQueries;
     // access attempt to initialize the singletons
     StockQuoteSubscriber sub = StockQuoteSubscriber.INSTANCE;
     StockAcquiredPublisher pub = StockAcquiredPublisher.INSTANCE;
+  }
 
-    this.stage = stage;
-    portfolioQueries = QueryModelStateStoreProvider.instance().portfolioQueries;
+  /**
+   * GET-Request to test if the service is ready to do something.
+   *
+   * @return response for an asynchronous call with a potential result
+   * @since 1.0.0
+   */
+  public Completes<Response> ready() {
+    return Completes.withSuccess(Response.of(Response.Status.Ok));
   }
 
   /**
@@ -51,6 +71,7 @@ public class PortfolioResource extends ResourceHandler {
    *
    * @param id identifier for portfolio
    * @return A JSON representation of PortfolioData
+   * @since 1.0.0
    */
   public Completes<Response> handleGetPortfolio(String id) {
     return portfolioQueries
@@ -69,6 +90,7 @@ public class PortfolioResource extends ResourceHandler {
    *
    * @param owner owner of the portfolio
    * @return JSON representation of the created PortfolioData
+   * @since 1.0.0
    */
   public Completes<Response> handleCreatePortfolio(String owner) {
     return Portfolio.defineWith(stage, owner)
@@ -87,6 +109,7 @@ public class PortfolioResource extends ResourceHandler {
    *
    * @param symbol
    * @return JSON representation of StockQuoteData
+   * @since 1.0.0
    */
   public Completes<Response> handleGetStock(String symbol) {
     StockQuoteData result = StockQuoteSubscriber.INSTANCE.get(symbol);
@@ -103,13 +126,15 @@ public class PortfolioResource extends ResourceHandler {
    * @param id identifier for portfolio
    * @param data complete data about the stock which is acquired
    * @return JSON representation of the associated PortfolioData
+   * @since 1.0.0
    */
   public Completes<Response> handleAcquireStock(String id, AcquireStockData data) {
     return resolve(id)
         .andThenTo(
             portfolio -> {
               StockQuoteData stockQuoteData = StockQuoteSubscriber.INSTANCE.get(data.symbol);
-              StockAcquiredPublisher.INSTANCE.send(data.amount * stockQuoteData.regularMarketPrice);
+              StockAcquiredPublisher.INSTANCE.send(
+                  id, data.amount * stockQuoteData.regularMarketPrice);
               return portfolio.stockAcquired(
                   data.symbol,
                   stockQuoteData.regularMarketTime,
@@ -127,9 +152,10 @@ public class PortfolioResource extends ResourceHandler {
   }
 
   /**
-   * Retrieve all stocks from the cache
+   * Retrieve all stocks from the cache.
    *
    * @return JSON representation of multiple StockQuoteData
+   * @since 1.0.0
    */
   public Completes<Response> handleGetStocks() {
     return Completes.withSuccess(
@@ -139,17 +165,23 @@ public class PortfolioResource extends ResourceHandler {
             serialized(StockQuoteSubscriber.INSTANCE.get())));
   }
 
+  /**
+   * Configures the REST end point routes.
+   *
+   * @since 1.0.0
+   */
   @Override
   public Resource<?> routes() {
     return resource(
         getClass().getSimpleName(),
+        get("/ready").handle(this::ready),
         get("/portfolio/{id}").param(String.class).handle(this::handleGetPortfolio),
         post("/portfolio").body(String.class).handle(this::handleCreatePortfolio),
         post("/portfolio/{id}")
             .param(String.class)
             .body(AcquireStockData.class)
             .handle(this::handleAcquireStock),
-        get("/stocks/{symbol}/{time}").param(String.class).handle(this::handleGetStock),
+        get("/stocks/{symbol}").param(String.class).handle(this::handleGetStock),
         get("/stocks").handle(this::handleGetStocks));
   }
 

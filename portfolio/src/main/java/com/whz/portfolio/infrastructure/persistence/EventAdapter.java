@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,6 +13,11 @@ import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.Source;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'.
+ *
+ * @since 1.0.0
+ */
 public final class EventAdapter<T extends Source<?>> implements EntryAdapter<T, TextEntry> {
 
   @Override

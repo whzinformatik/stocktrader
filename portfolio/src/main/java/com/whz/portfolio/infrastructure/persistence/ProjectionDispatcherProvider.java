@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -19,6 +19,12 @@ import io.vlingo.symbio.store.dispatch.Dispatcher;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Generated class by 'VLINGO/XOOM Starter'. The event types have to be added to the 'descriptions'
+ * list.
+ *
+ * @since 1.0.0
+ */
 @SuppressWarnings("rawtypes")
 public class ProjectionDispatcherProvider {
   private static ProjectionDispatcherProvider instance;
@@ -58,5 +64,9 @@ public class ProjectionDispatcherProvider {
       final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
     this.storeDispatcher = storeDispatcher;
     this.projectionDispatcher = projectionDispatcher;
+  }
+
+  public static void reset() {
+    instance = null;
   }
 }

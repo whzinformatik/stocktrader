@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,6 +12,11 @@ import com.whz.portfolio.model.portfolio.Stock;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Java representation for the portfolio JSON object.
+ *
+ * @since 1.0.0
+ */
 public class PortfolioData {
 
   public String id;
@@ -22,10 +27,24 @@ public class PortfolioData {
     return new PortfolioData("", "", new ArrayList<>());
   }
 
+  /**
+   * Creates a PortfolioData instance with the data from the state param.
+   *
+   * @param state
+   * @return New PortfolioData instance
+   * @since 1.0.0
+   */
   public static PortfolioData from(final PortfolioState state) {
     return new PortfolioData(state.id, state.owner, state.stocks);
   }
 
+  /**
+   * Creates a list of PortfolioData instances with the data from the list of states param.
+   *
+   * @param states
+   * @return New PortfolioData instance
+   * @since 1.0.0
+   */
   public static List<PortfolioData> from(final List<PortfolioState> states) {
     final List<PortfolioData> data = new ArrayList<>(states.size());
 
@@ -34,6 +53,17 @@ public class PortfolioData {
     }
 
     return data;
+  }
+
+  /**
+   * Creates a new {@link PortfolioData} instance with the given owner.
+   *
+   * @param owner
+   * @return New {@link PortfolioData} instance
+   * @since 1.0.0
+   */
+  public static PortfolioData just(String owner) {
+    return new PortfolioData("", owner, new ArrayList<>());
   }
 
   @Override
