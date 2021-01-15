@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,6 +13,12 @@ import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.StateAdapter;
 
+/**
+ * Adapts the {@link FeedbackData} to the {@link TextState}, and the {@link TextState} to the {@link
+ * FeedbackData}.
+ *
+ * @since 1.0.0
+ */
 public class FeedbackDataStateAdapter implements StateAdapter<FeedbackData, TextState> {
 
   @Override

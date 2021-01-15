@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,29 +8,43 @@
 package com.whz.feedback.model.feedback;
 
 import com.whz.feedback.resource.Publisher;
+import com.whz.feedback.utils.EnvUtils;
+import io.vlingo.actors.Logger;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
+/**
+ * This class is used to handle all actions for a feedback message.
+ *
+ * @since 1.0.0
+ */
 public final class FeedbackActor extends EventSourced implements Feedback {
 
-  private final Logger logger = LoggerFactory.getLogger(FeedbackActor.class);
+  /**
+   * name of the feedback exchange
+   *
+   * @since 1.0.0
+   */
+  public static final String EXCHANGE_NAME = "feedback";
 
-  private static final String EXCHANGE_NAME = "feedback";
+  private final Logger logger = Logger.basicLogger();
 
   private final Publisher<FeedbackState> publisher;
 
   private FeedbackState state;
 
-  public FeedbackActor(final String id) {
+  /**
+   * Create a new actor to handle all feedback actions.
+   *
+   * @param id identifier of the feedback message
+   * @since 1.0.0
+   */
+  public FeedbackActor(final String id) throws IOException, TimeoutException {
     super(id);
     this.state = FeedbackState.identifiedBy(id);
-
-    final String serviceName =
-        Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
-    this.publisher = new Publisher<>(serviceName);
+    this.publisher = new Publisher<>(EnvUtils.RABBITMQ_SERVICE.get());
   }
 
   @Override
@@ -47,6 +61,13 @@ public final class FeedbackActor extends EventSourced implements Feedback {
         FeedbackActor.class, FeedbackSubmitted.class, FeedbackActor::applyFeedbackMessage);
   }
 
+  /**
+   * Handle the {@link FeedbackSubmitted} event to change the state and send the feedback to
+   * rabbitmq.
+   *
+   * @param e created feedback submitted event
+   * @since 1.0.0
+   */
   private void applyFeedbackMessage(final FeedbackSubmitted e) {
     state = state.withMessage(e.message);
 
