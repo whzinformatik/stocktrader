@@ -10,6 +10,7 @@ package com.whz.feedback.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
+import com.whz.feedback.exchange.Publisher;
 import com.whz.feedback.infrastructure.FeedbackData;
 import com.whz.feedback.utils.EnvUtils;
 import java.io.IOException;

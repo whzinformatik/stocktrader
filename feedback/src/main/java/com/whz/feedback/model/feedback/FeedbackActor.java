@@ -7,7 +7,7 @@
  */
 package com.whz.feedback.model.feedback;
 
-import com.whz.feedback.resource.Publisher;
+import com.whz.feedback.exchange.Publisher;
 import com.whz.feedback.utils.EnvUtils;
 import io.vlingo.actors.Logger;
 import io.vlingo.common.Completes;
