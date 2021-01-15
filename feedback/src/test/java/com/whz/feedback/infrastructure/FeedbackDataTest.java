@@ -19,11 +19,14 @@ public class FeedbackDataTest {
 
   private final String message = "important notice";
 
+  private final String portfolioId = "portfolio_id";
+
   @Test
   public void testEmpty() {
     FeedbackData feedbackData = FeedbackData.empty();
     assertThat(feedbackData.id).isEmpty();
     assertThat(feedbackData.message).isEmpty();
+    assertThat(feedbackData.portfolioId).isEmpty();
   }
 
   @Test
@@ -32,20 +35,24 @@ public class FeedbackDataTest {
     FeedbackData feedbackData = FeedbackData.from(feedbackState);
     assertNull(feedbackData.id);
     assertNull(feedbackData.message);
+    assertNull(feedbackData.portfolioId);
   }
 
   @Test
   public void testFromStateNonNull() {
-    FeedbackState feedbackState = FeedbackState.identifiedBy(id).withMessage(message);
+    FeedbackState feedbackState =
+        FeedbackState.identifiedBy(id).withMessage(message).withPortfolioId(portfolioId);
     FeedbackData feedbackData = FeedbackData.from(feedbackState);
     assertThat(feedbackData.id).isEqualTo(id);
     assertThat(feedbackData.message).isEqualTo(message);
+    assertThat(feedbackData.portfolioId).isEqualTo(portfolioId);
   }
 
   @Test
   public void testJust() {
-    FeedbackData feedbackData = FeedbackData.just(message);
+    FeedbackData feedbackData = FeedbackData.just(message, portfolioId);
     assertThat(feedbackData.id).isEmpty();
     assertThat(feedbackData.message).isEqualTo(message);
+    assertThat(feedbackData.portfolioId).isEqualTo(portfolioId);
   }
 }
