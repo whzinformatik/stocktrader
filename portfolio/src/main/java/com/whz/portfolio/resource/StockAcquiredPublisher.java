@@ -46,7 +46,7 @@ public enum StockAcquiredPublisher {
         channel = connection.createChannel();
         channel.exchangeDeclare(exchangeName, exchangeType);
     } catch (IOException | TimeoutException e) {
-    	logger.debug(e.getMessage(), e);
+    	logger.debug("Failed to init the StockAcquiredPublisher", e);
 	}
     		
     logger.debug("Started stock acquired publisher");
@@ -62,11 +62,12 @@ public enum StockAcquiredPublisher {
       StockAcquiredData data = new StockAcquiredData(id, value);
       String message = JsonSerialization.serialized(data);
       try {
+    	logger.debug("Stock acquired publisher sending: {}", message);
 		channel.basicPublish(exchangeName, "", null, message.getBytes());
 	  } catch (IOException e) {
-		logger.debug(e.getMessage(), e);
+		logger.debug("Failed to send message with id: " + id, e);
 	  }
-      logger.debug("Stock acquired publisher sending: " + data);
+      
   }
   
   /**
@@ -77,7 +78,7 @@ public enum StockAcquiredPublisher {
 		connection.close();
 		channel.close();
 	  } catch (IOException | TimeoutException e) {
-		logger.debug(e.getMessage(), e);
+		logger.debug("Failed to stop the StockAcquiredPublisher", e);
 	}  
   }
 

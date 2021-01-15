@@ -65,7 +65,7 @@ public enum StockQuoteSubscriber {
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
     } catch (IOException | TimeoutException e) {
-      logger.debug(e.getMessage(), e);
+    	logger.debug("Failed to init the StockQuoteSubscriber", e);
     }
   }
   
@@ -77,7 +77,7 @@ public enum StockQuoteSubscriber {
 		connection.close();
 		channel.close();
 	  } catch (IOException | TimeoutException e) {
-		logger.debug(e.getMessage(), e);
+		  logger.debug("Failed to stop the StockAcquiredPublisher", e);
 	}  
   }
 
