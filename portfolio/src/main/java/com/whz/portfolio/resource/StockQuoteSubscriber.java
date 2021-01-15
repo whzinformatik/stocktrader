@@ -30,7 +30,7 @@ public enum StockQuoteSubscriber {
 
   private final Logger logger = Logger.basicLogger();
   private final Map<String, StockQuoteData> stockQuotes;
-  
+
   private Connection connection;
   private Channel channel;
 
@@ -68,17 +68,15 @@ public enum StockQuoteSubscriber {
       logger.debug(e.getMessage(), e);
     }
   }
-  
-  /**
-   * Closes the connection and channel.
-   */
+
+  /** Closes the connection and channel. */
   public void stop() {
-	  try {
-		connection.close();
-		channel.close();
-	  } catch (IOException | TimeoutException e) {
-		logger.debug(e.getMessage(), e);
-	}  
+    try {
+      connection.close();
+      channel.close();
+    } catch (IOException | TimeoutException e) {
+      logger.debug(e.getMessage(), e);
+    }
   }
 
   private StockQuoteData deserialized(String data) {
