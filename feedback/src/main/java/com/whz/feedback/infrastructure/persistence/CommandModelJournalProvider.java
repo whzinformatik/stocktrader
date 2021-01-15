@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -22,20 +22,44 @@ import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 import io.vlingo.xoom.storage.Model;
 import io.vlingo.xoom.storage.StoreActorBuilder;
 
+/**
+ * This class is used as a provider for all command models.
+ *
+ * @since 1.0.0
+ */
 public class CommandModelJournalProvider {
 
   private static CommandModelJournalProvider instance;
 
   public final Journal<String> journal;
 
+  /**
+   * Get the singleton instance of the provider.
+   *
+   * @return instance of the provider
+   * @since 1.0.0
+   */
   public static CommandModelJournalProvider instance() {
     return instance;
   }
 
+  /**
+   * Reset the provider.
+   *
+   * @since 1.0.0
+   */
   public static void reset() {
     instance = null;
   }
 
+  /**
+   * Initialize the command model with all necessary actors.
+   *
+   * @param stage stage of the current world
+   * @param registry registry for {@link io.vlingo.lattice.model.sourcing.Sourced} types
+   * @return initialized provider
+   * @since 1.0.0
+   */
   public static CommandModelJournalProvider using(
       final Stage stage, final SourcedTypeRegistry registry) {
     final Dispatcher noop =
@@ -50,6 +74,15 @@ public class CommandModelJournalProvider {
     return using(stage, registry, noop);
   }
 
+  /**
+   * Initialize the command model with all necessary actors.
+   *
+   * @param stage stage of the current world
+   * @param registry registry for {@link io.vlingo.lattice.model.sourcing.Sourced} types
+   * @param dispatcher data holder for identity and state that has been successfully stored
+   * @return initialized provider
+   * @since 1.0.0
+   */
   public static CommandModelJournalProvider using(
       final Stage stage, final SourcedTypeRegistry registry, final Dispatcher dispatcher) {
     if (instance != null) {
@@ -71,6 +104,12 @@ public class CommandModelJournalProvider {
     return instance;
   }
 
+  /**
+   * Create a provider for the command model.
+   *
+   * @param journal journal to store all actors
+   * @since 1.0.0
+   */
   private CommandModelJournalProvider(final Journal<String> journal) {
     this.journal = journal;
   }

@@ -2,42 +2,32 @@ version: '3.1'
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:13
+    container_name: postgres
     volumes:
       - vlingo_symbio_jdbc_postgres
     restart: always
     ports:
-      - '5432:5432'
+      - 5432:5432
     environment:
       POSTGRES_DB: vlingo_test
       POSTGRES_USER: vlingo_test
       POSTGRES_PASSWORD: vlingo123
+    healthcheck:
+      test: [ "CMD", "psql -h localhost -p 5432 -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   rabbitmq:
-      image: rabbitmq:3-management-alpine
-      container_name: rabbitmq
-      volumes:
-          - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
-          - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
-          - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
-      ports:
-          - 5672:5672
-          - 15672:15672
-  comment-tone:
-    build: ./commentTone/
-    restart: on-failure
-    environment:
-      RABBITMQ_SERVICE: "rabbitmq"
-      RABBITMQ_PUBLISH_EXCHANGE: "commentTone"
-      RABBITMQ_CONSUME_EXCHANGE: "feedback"
-      RABBITMQ_EXCHANGE_TYPE: "fanout"
-  stock-quote-publisher:
-    build: ./stock-quote/
-    restart: on-failure
-    environment:
-      RABBITMQ_SERVICE: "rabbitmq"
-      RABBITMQ_EXCHANGE: "stocks"
-      RABBITMQ_EXCHANGE_TYPE: "fanout"
-      SET_RANDOM_PUBLISH_INTERVAL: "true"
+    image: rabbitmq:3-management-alpine
+    hostname: stocktrader
+    container_name: rabbitmq
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia/
+    ports:
+      - 5672:5672
+      - 15672:15672
 
 volumes:
   vlingo_symbio_jdbc_postgres:
+  rabbitmq_data:

@@ -1,5 +1,14 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.portfolio.infrastructure.persistence;
 
+import com.whz.portfolio.model.portfolio.PortfolioCreated;
+import com.whz.portfolio.model.portfolio.StockAcquired;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
@@ -26,7 +35,10 @@ public class ProjectionDispatcherProvider {
 
     final List<ProjectToDescription> descriptions =
         Arrays.asList(
-            ProjectToDescription.with(PortfolioProjectionActor.class, "PortfolioCreated"));
+            ProjectToDescription.with(
+                PortfolioProjectionActor.class, PortfolioCreated.class.getName()),
+            ProjectToDescription.with(
+                PortfolioProjectionActor.class, StockAcquired.class.getName()));
 
     final Protocols dispatcherProtocols =
         stage.actorFor(

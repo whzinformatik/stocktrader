@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2020, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.whz.portfolio.resource;
 
 import com.rabbitmq.client.Channel;
@@ -9,44 +16,46 @@ import io.vlingo.actors.Logger;
 import io.vlingo.common.serialization.JsonSerialization;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 
-public enum QuotesCache {
-  INSTANCE();
+public enum StockQuoteSubscriber {
+  INSTANCE;
 
   private final Logger logger = Logger.basicLogger();
-  private static final String EXCHANGE_NAME = "logs";
-  private final Map<String, StockQuoteData> stockQuotes = new HashMap<>();
-  private Connection connection;
+  private final Map<String, StockQuoteData> stockQuotes;
 
-  QuotesCache() {
+  StockQuoteSubscriber() {
+    stockQuotes = new HashMap<>();
+
+    String serviceName = System.getenv("RABBITMQ_SERVICE");
+    String exchangeName = System.getenv("RABBITMQ_EXCHANGE");
+    String exchangeType = System.getenv("RABBITMQ_EXCHANGE_TYPE");
+
     try {
       ConnectionFactory factory = new ConnectionFactory();
-      factory.setHost("localhost");
-      connection = factory.newConnection();
+      factory.setHost(serviceName);
+      Connection connection = factory.newConnection();
+
       Channel channel = connection.createChannel();
-
-      channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+      channel.exchangeDeclare(exchangeName, exchangeType);
       String queueName = channel.queueDeclare().getQueue();
-      channel.queueBind(queueName, EXCHANGE_NAME, "");
+      channel.queueBind(queueName, exchangeName, "");
 
-      logger.debug("Quotes cache is waiting for messages..");
-
+      logger.debug("Started stock quote subscriber");
       DeliverCallback deliverCallback =
           (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             StockQuoteData stockQuoteData = deserialized(message);
             stockQuotes.put(stockQuoteData.symbol, stockQuoteData);
+
             logger.debug(
-                "Quotes cache received '"
+                "Stock quote subscriber received '"
                     + stockQuoteData.symbol
                     + "' with a length of: "
                     + message.length());
           };
+
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
     } catch (IOException | TimeoutException e) {
       logger.debug(e.getMessage(), e);
@@ -57,35 +66,27 @@ public enum QuotesCache {
     return JsonSerialization.deserialized(data, StockQuoteData.class);
   }
 
+  /** @return All StockQuoteData objects from the cache */
   public Collection<StockQuoteData> get() {
     return stockQuotes.values();
   }
 
-  public StockQuoteData get(String id) {
-    return stockQuotes.get(id);
+  /** @return The StockQuoteData object with the matching symbol */
+  public StockQuoteData get(String symbol) {
+    return stockQuotes.get(symbol);
   }
 
-  public ArrayList<StockQuoteData> get(Collection<String> ids) {
-    ArrayList<StockQuoteData> result = new ArrayList<>();
-    ids.forEach(
-        id -> {
-          StockQuoteData data = stockQuotes.get(id);
+  /** @return All StockQuoteData objects with matching symbols */
+  public List<StockQuoteData> get(Collection<String> symbols) {
+    List<StockQuoteData> result = new ArrayList<>();
+    symbols.forEach(
+        symbol -> {
+          StockQuoteData data = stockQuotes.get(symbol);
           if (data != null) {
             result.add(data);
           }
         });
+
     return result;
-  }
-
-  public static void main(String[] args) {
-    StockQuoteData data = INSTANCE.deserialized("{'symbol':'INTC','displayName':'Intel'}");
-  }
-
-  public void cleanUp() {
-    try {
-      connection.close();
-    } catch (IOException e) {
-      logger.debug(e.getMessage(), e);
-    }
   }
 }
