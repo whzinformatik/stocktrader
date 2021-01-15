@@ -12,13 +12,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 In order to get an executable environment for development, some environment variables have to be set first:
 
-| Variable                              | Description                                  | Default Value          |
-|---------------------------------------|----------------------------------------------|------------------------|
-| RABBITMQ_SERVICE                      | default host to use for rabbitmq connections | localhost              |
-| RABBITMQ_STOCK_ACQUIRED_EXCHANGE      | exchange name for stock acquired publisher   | StockAcquiredPublisher |
-| RABBITMQ_STOCK_ACQUIRED_EXCHANGE_TYPE | exchange type for stock acquired publisher   | fanout                 |
-| RABBITMQ_STOCK_QUOTE_EXCHANGE         | exchange name for stock quote subscriber     | StockQuoteSubscriber   |
-| RABBITMQ_STOCK_QUOTE_EXCHANGE_TYPE    | exchange type for stock quote subscriber     | fanout                 |
+| Variable                              | Description                                  | Default Value   |
+|---------------------------------------|----------------------------------------------|-----------------|
+| RABBITMQ_SERVICE                      | default host to use for rabbitmq connections | localhost       |
+| RABBITMQ_STOCK_ACQUIRED_EXCHANGE      | exchange name for stock acquired publisher   | stocks-acquired |
+| RABBITMQ_STOCK_ACQUIRED_EXCHANGE_TYPE | exchange type for stock acquired publisher   | fanout          |
+| RABBITMQ_STOCK_QUOTE_EXCHANGE         | exchange name for stock quote subscriber     | stocks          |
+| RABBITMQ_STOCK_QUOTE_EXCHANGE_TYPE    | exchange type for stock quote subscriber     | fanout          |
 
 Make sure that the local environment is active. Then the program can be executed using the following command:
 

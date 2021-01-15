@@ -32,8 +32,8 @@ public final class PortfolioEntity extends EventSourced implements Portfolio {
    * @since 1.0.0
    */
   @Override
-  public Completes<PortfolioState> portfolioCreated(final String value) {
-    return apply(new PortfolioCreated(state.id, value), () -> state);
+  public Completes<PortfolioState> portfolioCreated(final String owner) {
+    return apply(new PortfolioCreated(state.id, owner), () -> state);
   }
 
   /**

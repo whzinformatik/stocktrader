@@ -30,20 +30,22 @@ public enum StockQuoteSubscriber {
 
   private final Logger logger = Logger.basicLogger();
   private final Map<String, StockQuoteData> stockQuotes;
+  
+  private Connection connection;
+  private Channel channel;
 
   StockQuoteSubscriber() {
     stockQuotes = new HashMap<>();
 
     String serviceName = getenv("RABBITMQ_SERVICE", "localhost");
-    String exchangeName = getenv("RABBITMQ_STOCK_QUOTE_EXCHANGE", "StockQuoteSubscriber");
+    String exchangeName = getenv("RABBITMQ_STOCK_QUOTE_EXCHANGE", "stocks");
     String exchangeType = getenv("RABBITMQ_STOCK_QUOTE_EXCHANGE_TYPE", "fanout");
 
     try {
       ConnectionFactory factory = new ConnectionFactory();
       factory.setHost(serviceName);
-      Connection connection = factory.newConnection();
-
-      Channel channel = connection.createChannel();
+      connection = factory.newConnection();
+      channel = connection.createChannel();
       channel.exchangeDeclare(exchangeName, exchangeType);
       String queueName = channel.queueDeclare().getQueue();
       channel.queueBind(queueName, exchangeName, "");
@@ -65,6 +67,18 @@ public enum StockQuoteSubscriber {
     } catch (IOException | TimeoutException e) {
       logger.debug(e.getMessage(), e);
     }
+  }
+  
+  /**
+   * Closes the connection and channel.
+   */
+  public void stop() {
+	  try {
+		connection.close();
+		channel.close();
+	  } catch (IOException | TimeoutException e) {
+		logger.debug(e.getMessage(), e);
+	}  
   }
 
   private StockQuoteData deserialized(String data) {
@@ -93,7 +107,7 @@ public enum StockQuoteSubscriber {
    * Helper method to receive an environment variable.
    *
    * @param key
-   * @param alt
+   * @param alt - alternative string
    * @return The environment variable. If not found the alt param is returned.
    */
   private String getenv(String key, String alt) {

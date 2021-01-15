@@ -11,6 +11,9 @@ import com.whz.portfolio.infrastructure.persistence.CommandModelJournalProvider;
 import com.whz.portfolio.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.whz.portfolio.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.whz.portfolio.resource.PortfolioResource;
+import com.whz.portfolio.resource.StockAcquiredPublisher;
+import com.whz.portfolio.resource.StockQuoteSubscriber;
+
 import io.vlingo.actors.Logger;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
@@ -60,6 +63,8 @@ public class Bootstrap {
                 () -> {
                   if (instance != null) {
                     instance.server.stop();
+                    StockQuoteSubscriber.INSTANCE.stop();
+                    StockAcquiredPublisher.INSTANCE.stop();
                     logger.info("\n");
                     logger.info("=========================");
                     logger.info("Stopping {}.", NAME);

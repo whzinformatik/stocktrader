@@ -28,16 +28,27 @@ public enum StockAcquiredPublisher {
 
   private final String exchangeName;
   private final String exchangeType;
-  private final ConnectionFactory connectionFactory;
+  
+  private Connection connection;
+  private Channel channel;
 
   StockAcquiredPublisher() {
     String serviceName = getenv("RABBITMQ_SERVICE", "localhost");
 
-    exchangeName = getenv("RABBITMQ_STOCK_ACQUIRED_EXCHANGE", "StockAcquiredPublisher");
+    exchangeName = getenv("RABBITMQ_STOCK_ACQUIRED_EXCHANGE", "stocks-acquired");
     exchangeType = getenv("RABBITMQ_STOCK_ACQUIRED_EXCHANGE_TYPE", "fanout");
 
-    connectionFactory = new ConnectionFactory();
+    ConnectionFactory connectionFactory = new ConnectionFactory();
     connectionFactory.setHost(serviceName);
+    
+    try {
+        connection = connectionFactory.newConnection();
+        channel = connection.createChannel();
+        channel.exchangeDeclare(exchangeName, exchangeType);
+    } catch (IOException | TimeoutException e) {
+    	logger.debug(e.getMessage(), e);
+	}
+    		
     logger.debug("Started stock acquired publisher");
   }
 
@@ -48,23 +59,33 @@ public enum StockAcquiredPublisher {
    * @param value - the money spent
    */
   public void send(String id, double value) {
-    try (final Connection connection = connectionFactory.newConnection();
-        final Channel channel = connection.createChannel()) {
-      channel.exchangeDeclare(exchangeName, exchangeType);
       StockAcquiredData data = new StockAcquiredData(id, value);
       String message = JsonSerialization.serialized(data);
-      channel.basicPublish(exchangeName, "", null, message.getBytes());
+      try {
+		channel.basicPublish(exchangeName, "", null, message.getBytes());
+	  } catch (IOException e) {
+		logger.debug(e.getMessage(), e);
+	  }
       logger.debug("Stock acquired publisher sending: " + data);
-    } catch (IOException | TimeoutException e) {
-      logger.debug(e.getMessage());
-    }
+  }
+  
+  /**
+   * Closes the connection and channel.
+   */
+  public void stop() {
+	  try {
+		connection.close();
+		channel.close();
+	  } catch (IOException | TimeoutException e) {
+		logger.debug(e.getMessage(), e);
+	}  
   }
 
   /**
    * Helper method to receive an environment variable.
    *
    * @param key
-   * @param alt
+   * @param alt - alternative string
    * @return The environment variable. If not found the alt param is returned.
    */
   private String getenv(String key, String alt) {

@@ -41,8 +41,8 @@ public interface Portfolio {
   /**
    * Triggers the StockAcquired event.
    *
-   * @param symbol
-   * @param acquisitionMarketTime
+   * @param symbol - unique identifier
+   * @param acquisitionMarketTime - in milliseconds
    * @param amount
    * @param acquisitionMarketPrice
    * @return PortfolioState instance
