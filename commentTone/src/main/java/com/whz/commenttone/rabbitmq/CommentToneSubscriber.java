@@ -102,7 +102,7 @@ public class CommentToneSubscriber {
                           ? Sentiment.NEGATIVE
                           : randomNumber < 10 ? Sentiment.NEUTRAL : Sentiment.POSITIVE);
 
-                publisher.publish(comment);
+              publisher.publish(comment);
             });
 
         channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
