@@ -58,7 +58,7 @@ public class CommentTonePublisher<T> {
    *
    * @since 1.0.0
    */
-  public void prepareToPublish(){
+  public void prepareToPublish() {
     try {
       Connection connection = connectionFactory.newConnection();
       channel = connection.createChannel();
