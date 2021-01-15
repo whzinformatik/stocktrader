@@ -11,7 +11,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
-import com.whz.account.infrastructure.StockData;
+import com.whz.account.infrastructure.CommentToneData;
 import com.whz.account.model.account.Account;
 import com.whz.account.model.account.AccountEntity;
 import io.vlingo.actors.Logger;
@@ -23,12 +23,12 @@ import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
 /**
- * The StockAcquiredSubscriber which subscribes to a StockAcquiredPublisher endpoint, receives
- * messages containing acquired stocks and processes them.
+ * The CommentToneSubscriber which subscribes to a CommentTonePublisher endpoint, receives messages
+ * containing a comment tone and processes them.
  *
  * @since 1.0.0
  */
-public enum StockAcquiredSubscriber {
+public enum CommentToneSubscriber {
   INSTANCE;
 
   private final Logger logger = Logger.basicLogger();
@@ -37,15 +37,14 @@ public enum StockAcquiredSubscriber {
 
   /**
    * Initializes and establishes a RabbitMQ connection, waits for messages, receives them and calls
-   * the appropriate moneyInvested() method in the Account Interface.
+   * the appropriate sentimentReceived() method in the Account Interface.
    *
    * @since 1.0.0
    */
-  StockAcquiredSubscriber() {
+  CommentToneSubscriber() {
     String serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
     String exchangeName =
-        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_STOCKACQUIRED"))
-            .orElse("stocks-acquired");
+        Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_COMMENTTONE")).orElse("commentTone");
     String exchangeType =
         Optional.ofNullable(System.getenv("RABBITMQ_EXCHANGE_TYPE")).orElse("fanout");
 
@@ -59,22 +58,23 @@ public enum StockAcquiredSubscriber {
       String queueName = channel.queueDeclare().getQueue();
       channel.queueBind(queueName, exchangeName, "");
 
-      logger.debug("Started stock acquired subscriber");
+      logger.debug("Started comment tone subscriber");
       logger.debug("Waiting for messages...");
 
       DeliverCallback deliverCallback =
           (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-            StockData stockData = JsonSerialization.deserialized(message, StockData.class);
+            CommentToneData commentToneData =
+                JsonSerialization.deserialized(message, CommentToneData.class);
 
             stage
                 .actorOf(
                     Account.class,
-                    stage.addressFactory().from(stockData.owner),
+                    stage.addressFactory().from(commentToneData.id),
                     AccountEntity.class)
-                .andThenTo(account -> account.moneyInvested(stockData.value));
+                .andThenTo(account -> account.sentimentReceived(commentToneData.sentiment));
 
-            logger.debug("Stock acquired subscriber received message:'{}'", message);
+            logger.debug("Comment tone subscriber received message:'{}'", message);
           };
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});

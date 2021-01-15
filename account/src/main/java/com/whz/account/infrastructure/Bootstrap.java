@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <lationts@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -21,6 +21,7 @@ import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 
+/** @since 1.0.0 */
 public class Bootstrap {
 
   private static final Logger logger = Logger.basicLogger();
@@ -32,11 +33,11 @@ public class Bootstrap {
   private final Server server;
   private final World world;
 
+  /** @since 1.0.0 */
   public Bootstrap(final int port) throws Exception {
     world = World.startWithDefaults(NAME);
 
-    final Stage stage = world.stageNamed(NAME); // , Stage.class, new
-    // GridAddressFactory(IdentityGeneratorType.RANDOM));
+    final Stage stage = world.stageNamed(NAME);
 
     final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
     final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);

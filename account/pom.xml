@@ -10,7 +10,7 @@
         <name>Fachgruppe Informatik WHZ</name>
         <url>https://www.fh-zwickau.de/pti/organisation/fachgruppe-informatik/homepage-der-fg-informatik/</url>
     </organization>
-    <inceptionYear>2020</inceptionYear>
+    <inceptionYear>2020-2021</inceptionYear>
 
     <licenses>
         <license>
@@ -255,8 +255,7 @@
                         <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
                         <properties>
                             <owner>${project.organization.name}</owner>
-                            <email>lationts@gmail.com</email>
-                            <license.years>2020</license.years>
+                            <email>help.flaxel@gmail.com</email>
                         </properties>
                         <includes>
                             <include>src/*/java/**/*.java</include>

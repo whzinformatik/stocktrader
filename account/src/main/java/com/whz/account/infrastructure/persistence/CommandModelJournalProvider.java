@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020, Fachgruppe Informatik WHZ <lationts@gmail.com>
+ * Copyright © 2020-2021, Fachgruppe Informatik WHZ <help.flaxel@gmail.com>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -22,6 +22,7 @@ import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 import io.vlingo.xoom.storage.Model;
 import io.vlingo.xoom.storage.StoreActorBuilder;
 
+/** @since 1.0.0 */
 public class CommandModelJournalProvider {
   private static CommandModelJournalProvider instance;
 
@@ -31,6 +32,7 @@ public class CommandModelJournalProvider {
     return instance;
   }
 
+  /** @since 1.0.0 */
   public static CommandModelJournalProvider using(
       final Stage stage, final SourcedTypeRegistry registry) {
     final Dispatcher noop =
@@ -43,6 +45,7 @@ public class CommandModelJournalProvider {
     return using(stage, registry, noop);
   }
 
+  /** @since 1.0.0 */
   @SuppressWarnings({"unchecked", "unused"})
   public static CommandModelJournalProvider using(
       final Stage stage, final SourcedTypeRegistry registry, final Dispatcher dispatcher) {
@@ -58,7 +61,7 @@ public class CommandModelJournalProvider {
         StoreActorBuilder.from(
             stage, Model.COMMAND, dispatcher, StorageType.JOURNAL, Settings.properties(), true);
 
-    registry.register(new Info(journal, AccountEntity.class, AccountCreated.class.getSimpleName()));
+    registry.register(new Info(journal, AccountEntity.class, AccountEntity.class.getSimpleName()));
 
     instance = new CommandModelJournalProvider(journal);
 

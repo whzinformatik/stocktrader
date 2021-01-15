@@ -5,15 +5,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package com.whz.account.infrastructure;
+package com.whz.account.model.account;
 
 /**
- * EventTypes that are available for the account microservice.
+ * Enum used to represent the sentiment of an account.
  *
  * @since 1.0.0
  */
-public enum EventTypes {
-  AccountCreated,
-  MoneyInvested,
-  SentimentReceived
+public enum Sentiment {
+  UNKNOWN,
+  POSITIVE,
+  NEUTRAL,
+  NEGATIVE
 }
