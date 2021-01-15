@@ -20,24 +20,52 @@ import org.apache.log4j.BasicConfigurator;
  */
 public class Main {
 
+  /**
+   * Name of the RabbitMQ service.
+   *
+   * @since 1.0.0
+   */
   private final String serviceName;
+
+  /**
+   * Name of the RabbitMQ exchange.
+   *
+   * @since 1.0.0
+   */
   private final String exchangeName;
+
+  /**
+   * Durability of the RabbitMQ exchange.
+   *
+   * @since 1.0.0
+   */
   private final boolean durableExchange;
+
+  /**
+   * Time interval between each message publication (in seconds).
+   *
+   * @since 1.0.0
+   */
   private int publishInterval;
+
+  /**
+   * Randomness of the {@code publishInterval}.
+   *
+   * @since 1.0.0
+   */
   private boolean publishRandomly;
+
+  /**
+   * List of stock symbols.
+   *
+   * @since 1.0.0
+   */
   private final List<String> symbols;
 
   /**
-   * Construct object which contains following information for the publisher setup:
+   * Create an object which contains information for the publisher setup.
    *
-   * <ul>
-   *   <li>serviceName – name of RabbitMQ service
-   *   <li>exchangeName – name of RabbitMQ exchange
-   *   <li>durableExchange – durability of RabbitMQ exchange
-   *   <li>publishInterval – time interval between each message publication
-   *   <li>publishRandomly – randomness of {@code publishInterval}
-   *   <li>symbols – list of stock symbols
-   * </ul>
+   * @since 1.0.0
    */
   public Main() {
     this.serviceName = Optional.ofNullable(System.getenv("RABBITMQ_SERVICE")).orElse("localhost");
@@ -48,7 +76,7 @@ public class Main {
     this.durableExchange = Boolean.parseBoolean(durableExchangeString);
 
     String publishIntervalString =
-        Optional.ofNullable(System.getenv("PUBLISH_INTERVAL")).orElse("30000");
+        Optional.ofNullable(System.getenv("PUBLISH_INTERVAL")).orElse("3");
     this.publishInterval = Integer.parseInt(publishIntervalString);
 
     String randomPublishIntervalString =

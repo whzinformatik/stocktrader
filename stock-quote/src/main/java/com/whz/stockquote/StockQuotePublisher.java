@@ -36,7 +36,6 @@ class StockQuotePublisher {
   private final boolean durableExchange;
 
   private final ConnectionFactory connectionFactory;
-  private Connection connection;
 
   /**
    * Create a publisher which is connected to a specific RabbitMQ instance.
@@ -113,7 +112,7 @@ class StockQuotePublisher {
    */
   public void run(List<String> symbols, int publishInterval, boolean publishRandomly) {
     try {
-      connection = connectionFactory.newConnection();
+      Connection connection = connectionFactory.newConnection();
       Channel channel = connection.createChannel();
 
       int actualPublishInterval = publishInterval * 1000;
@@ -133,11 +132,12 @@ class StockQuotePublisher {
         }
       }
     } catch (IOException | TimeoutException e) {
-      logger.error(e.toString());
+      logger.error("Connection error! Check if your RabbitMQ service is running correctly!", e.toString());
     }
   }
 
-  /** Exception which is thrown if a stock could not get retrieved. */
+  /** Exception which is thrown if a stock could not get retrieved.
+   * @since 1.0.0*/
   private static class StockNotFoundException extends Exception {
     public StockNotFoundException(String message) {
       super(message);
