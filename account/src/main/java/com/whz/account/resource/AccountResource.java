@@ -48,7 +48,7 @@ public class AccountResource extends ResourceHandler {
   private final Stage stage;
   private final AccountQueries accountQueries;
   private final String portfolioUrl =
-      Optional.ofNullable(System.getenv("PORTFOLIO_URL")).orElse("localhost:18082");
+      Optional.ofNullable(System.getenv("PORTFOLIO_URL")).orElse("http://localhost:18082");
 
   /**
    * Sets the stage and accountQueries and initializes a StockAcquiredSubscriber singleton.
