@@ -33,4 +33,4 @@ mvn exec:exec
 You can get more details about the project with the documented code or the domain stories in the [`doc`][documentation] folder.
 
 [stock-quote_actions]: https://github.com/whzinformatik/stocktrader/actions?query=workflow%3Astock-quote
-[documentation]: ./doc
+[documentation]: ./../doc
