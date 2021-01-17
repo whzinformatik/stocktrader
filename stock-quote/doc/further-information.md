@@ -6,7 +6,7 @@ The following class can be run as a subscriber which will receive published stoc
 
 (HINTS: `docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build` should have executed without errors and `RABBITMQ_EXCHANGE` is set to "stocks" in this example)
 
-```
+```Java
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
