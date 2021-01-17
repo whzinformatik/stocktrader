@@ -19,13 +19,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 In order to get an executable environment for development, some environment variables have to be set first:
 
-| Variable                        | Description                                              | Default Value     |
-|---------------------------------|----------------------------------------------------------|-------------------|
-| PORTFOLIO_URL                   | to send Portfolio-Requests of format: "http://host:port" | localhost:18082   |
-| RABBITMQ_SERVICE                | RabbitMQ service name                                    | localhost         |
-| RABBITMQ_EXCHANGE_STOCKACQUIRED | used for Queue to link Sub with StockAcquiredPublisher   | stocks-acquired   |
-| RABBITMQ_EXCHANGE_COMMENTTONE   | used for Queue to link Sub with CommentTonePublisher     | commentTone       |
-| RABBITMQ_EXCHANGE_TYPE          | can be one of direct, fanout, topic and headers          | fanout            |
+| Variable                        | Description                                              | Default Value          |
+|---------------------------------|----------------------------------------------------------|------------------------|
+| PORTFOLIO_URL                   | to send Portfolio-Requests of format: "http://host:port" | http://localhost:18082 |
+| RABBITMQ_SERVICE                | RabbitMQ service name                                    | localhost              |
+| RABBITMQ_EXCHANGE_STOCKACQUIRED | used for Queue to link Sub with StockAcquiredPublisher   | stocks-acquired        |
+| RABBITMQ_EXCHANGE_COMMENTTONE   | used for Queue to link Sub with CommentTonePublisher     | commentTone            |
+| RABBITMQ_EXCHANGE_TYPE          | can be one of direct, fanout, topic and headers          | fanout                 |
 
 Make sure that the local environment is active. Then the program can be executed using the following command:
 
