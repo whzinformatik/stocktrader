@@ -15,12 +15,27 @@ services:
     build: ./feedback/
     restart: always
     depends_on:
+      - portfolio
       - postgres
       - rabbitmq
     environment:
       RABBITMQ_SERVICE: "rabbitmq"
     ports:
       - 18080:18080
+  portfolio:
+    build: ./portfolio/
+    restart: always
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      RABBITMQ_SERVICE: "rabbitmq"
+      RABBITMQ_STOCK_ACQUIRED_EXCHANGE: "stocks-acquired"
+      RABBITMQ_STOCK_ACQUIRED_EXCHANGE_TYPE: "fanout"
+      RABBITMQ_STOCK_QUOTE_EXCHANGE: "stocks"
+      RABBITMQ_STOCK_QUOTE_EXCHANGE_TYPE: "fanout"
+    ports:
+      - 18082:18082
   comment-tone:
     build: ./commentTone/
     restart: always
