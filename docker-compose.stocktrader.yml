@@ -4,6 +4,8 @@ services:
   stock-quote-publisher:
     build: ./stock-quote/
     restart: always
+    depends_on:
+      - rabbitmq
     environment:
       RABBITMQ_SERVICE: "rabbitmq"
       RABBITMQ_EXCHANGE: "stocks"
