@@ -111,6 +111,16 @@ public class AccountResource extends ResourceHandler {
   }
 
   /**
+   * GET-Request to test if the service is ready to do something.
+   *
+   * @since 1.0.0
+   * @return response for an asynchronous call with a potential result
+   */
+  public Completes<Response> ready() {
+    return Completes.withSuccess(Response.of(Response.Status.Ok));
+  }
+
+  /**
    * Maps the HTTP-Requests to the corresponding handler method.
    *
    * @since 1.0.0
@@ -119,6 +129,7 @@ public class AccountResource extends ResourceHandler {
   public Resource<?> routes() {
     return resource(
         getClass().getSimpleName(),
+        get("/ready").handle(this::ready),
         get("/account/{id}").param(String.class).handle(this::handleGetAccount),
         post("/account").body(AccountData.class).handle(this::handlePostAccount));
   }

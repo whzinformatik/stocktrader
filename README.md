@@ -14,10 +14,8 @@ The following graphic roughly describes the architecture of the whole project:
 The services can be accessed via the following default ports:
 
 - feedback: port 18080
-- comment tone: port 18081
+- account: port 18081
 - portfolio: port 18082
-- stock quote: port 18083
-- account: port 18084
 
 ## Prerequisites
 

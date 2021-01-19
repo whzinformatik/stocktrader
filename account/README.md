@@ -36,7 +36,7 @@ mvn exec:exec
 At the end, you can send a simple REST request to create an account for the stock trader application:
 
 ```bash
-curl --location --request POST 'localhost:18084/account' \
+curl --location --request POST 'localhost:18081/account' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "balance": 40000.0

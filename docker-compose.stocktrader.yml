@@ -14,7 +14,7 @@ services:
       RABBITMQ_EXCHANGE_COMMENTTONE: "commentTone"
       RABBITMQ_EXCHANGE_TYPE: "fanout"
     ports:
-      - 18084:18084
+      - 18081:18081
   portfolio:
     build: ./portfolio/
     restart: always
