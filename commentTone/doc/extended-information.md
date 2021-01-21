@@ -1,24 +1,5 @@
 # Comment tone
 
-### Data structure
-``` Java
-public class CommentTone {
-    public String id;
-    public String message;
-    public Sentiment *sentiment;
-}
-
-public enum Sentiment {
-    POSITIVE,
-    NEUTRAL,
-    NEGATIVE
-}
-```
-
-*_In this case the sentiment would be generated from random numbers from 0 to 12 (0-3 is unknown, 4-6 is negative, 7-9 is neutral, 10-12 is positive)_   
-
----
-
 ### Quick and dirty test
 
 #### Test feedback consumer
@@ -27,7 +8,7 @@ The following class can be run as a publisher which will publish feedback:
 
 (HINTS: `docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build` should have executed without errors and `RABBITMQ_CONSUME_EXCHANGE` is set to "feedback" and `RABBITMQ_EXCHANGE_TYPE` is set to "fanout" in this example)
 
-``` Java
+```Java
 import com.google.gson.GsonBuilder;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -66,14 +47,13 @@ public class FeedbackPublisher {
 }
 ```
 
-
 #### Test comment publisher
 
 The following class can be run as a subscriber which will receive published comment messages and print them to the console:
 
 (HINTS: `docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build` should have executed without errors and `RABBITMQ_PUBLISH_EXCHANGE` is set to "commentTone" and `RABBITMQ_EXCHANGE_TYPE` is set to "fanout" in this example)
 
-``` Java
+```Java
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
