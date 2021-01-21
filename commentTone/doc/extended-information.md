@@ -6,7 +6,7 @@
 
 The following class can be run as a publisher which will publish feedback:
 
-(HINTS: `docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build` should have executed without errors and `RABBITMQ_CONSUME_EXCHANGE` is set to "feedback" and `RABBITMQ_EXCHANGE_TYPE` is set to "fanout" in this example)
+HINTS: `RABBITMQ_CONSUME_EXCHANGE` is set to "feedback" and `RABBITMQ_EXCHANGE_TYPE` is set to "fanout" in this example
 
 ```Java
 import com.google.gson.GsonBuilder;
@@ -51,7 +51,7 @@ public class FeedbackPublisher {
 
 The following class can be run as a subscriber which will receive published comment messages and print them to the console:
 
-(HINTS: `docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build` should have executed without errors and `RABBITMQ_PUBLISH_EXCHANGE` is set to "commentTone" and `RABBITMQ_EXCHANGE_TYPE` is set to "fanout" in this example)
+HINTS: `RABBITMQ_PUBLISH_EXCHANGE` is set to "commentTone" and `RABBITMQ_EXCHANGE_TYPE` is set to "fanout" in this example
 
 ```Java
 import com.rabbitmq.client.Channel;
