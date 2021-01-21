@@ -2,7 +2,7 @@
 
 [![commentTone](https://github.com/whzinformatik/stocktrader/workflows/commentTone/badge.svg)][comment_tone_actions]
 
-This project receives feedbacks for stocktrader application and send it to account project.
+This project receives feedback for the stocktrader application and send it to the account project.
 
 ## Getting Started
 
@@ -24,8 +24,6 @@ Make sure that the local environment is active. Then the program can be executed
 ```bash
 mvn exec:exec
 ```
-
----
 
 ## Documentation
 
