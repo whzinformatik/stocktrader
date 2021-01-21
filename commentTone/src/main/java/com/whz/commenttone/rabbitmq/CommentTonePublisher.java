@@ -45,7 +45,7 @@ public class CommentTonePublisher<T> {
    */
   public CommentTonePublisher(String serviceName, String exchangeName, String exchangeType) {
     this.connectionFactory = new ConnectionFactory();
-    connectionFactory.setHost(serviceName);
+    this.connectionFactory.setHost(serviceName);
 
     this.exchangeName = exchangeName;
     this.exchangeType = exchangeType;

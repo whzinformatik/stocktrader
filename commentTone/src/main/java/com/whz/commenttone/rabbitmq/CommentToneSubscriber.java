@@ -43,7 +43,10 @@ public class CommentToneSubscriber {
    * @since 1.0.0
    */
   public CommentToneSubscriber(
-      final String serviceName, final String consumeExchangeName, final String exchangeType) {
+      final String serviceName,
+      final String consumeExchangeName,
+      final String exchangeType
+  ) {
     this.connectionFactory = new ConnectionFactory();
     this.connectionFactory.setHost(serviceName);
     this.consumeExchangeName = consumeExchangeName;
@@ -80,14 +83,12 @@ public class CommentToneSubscriber {
                 new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
 
             // Add randomly generated sentiment to comment
-            int randomNumber = new Random().nextInt(13);
+            int randomNumber = new Random().nextInt(10);
 
             comment.setSentiment(
-                randomNumber < 4
-                    ? Sentiment.UNKNOWN
-                    : randomNumber < 7
-                        ? Sentiment.NEGATIVE
-                        : randomNumber < 10 ? Sentiment.NEUTRAL : Sentiment.POSITIVE);
+                randomNumber < 4 ? Sentiment.NEGATIVE
+                    : randomNumber < 7 ? Sentiment.NEUTRAL
+                        : Sentiment.POSITIVE);
 
             publisher.publish(comment);
           });
