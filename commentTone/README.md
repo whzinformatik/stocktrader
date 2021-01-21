@@ -2,7 +2,7 @@
 
 [![commentTone](https://github.com/whzinformatik/stocktrader/workflows/commentTone/badge.svg)][comment_tone_actions]
 
-This project receives feedback for the stocktrader application and send it to the account project.
+This project receives feedback for the stock trader application and send it to the account project.
 
 ## Getting Started
 
