@@ -9,7 +9,6 @@ public class CommentTone {
 }
 
 public enum Sentiment {
-    UNKNOWN,
     POSITIVE,
     NEUTRAL,
     NEGATIVE
