@@ -129,26 +129,28 @@ public class PortfolioResource extends ResourceHandler {
    * @since 1.0.0
    */
   public Completes<Response> handleAcquireStock(String id, AcquireStockData data) {
+    StockQuoteData stockQuoteData = StockQuoteSubscriber.INSTANCE.get(data.symbol);
     return resolve(id)
         .andThenTo(
-            portfolio -> {
-              StockQuoteData stockQuoteData = StockQuoteSubscriber.INSTANCE.get(data.symbol);
-              StockAcquiredPublisher.INSTANCE.send(
-                  id, data.amount * stockQuoteData.regularMarketPrice);
-              return portfolio.stockAcquired(
-                  data.symbol,
-                  stockQuoteData.regularMarketTime,
-                  data.amount,
-                  stockQuoteData.regularMarketPrice);
-            })
-        .andThenTo(
-            state ->
-                Completes.withSuccess(
-                    Response.of(
-                        Ok,
-                        headers(of(ContentType, "application/json")),
-                        serialized(PortfolioData.from(state)))))
-        .otherwise(noData -> Response.of(NotFound, "/portfolio/" + id));
+            portfolio ->
+                portfolio
+                    .stockAcquired(
+                        data.symbol,
+                        stockQuoteData.regularMarketTime,
+                        data.amount,
+                        stockQuoteData.regularMarketPrice)
+                    .andThenTo(
+                        state -> {
+                          PortfolioData portfolioData = PortfolioData.from(state);
+                          StockAcquiredPublisher.INSTANCE.send(
+                              portfolioData.owner, data.amount * stockQuoteData.regularMarketPrice);
+                          return Completes.withSuccess(
+                              Response.of(
+                                  Ok,
+                                  headers(of(ContentType, "application/json")),
+                                  serialized(portfolioData)));
+                        })
+                    .otherwise(noData -> Response.of(NotFound, "/portfolio/" + id)));
   }
 
   /**

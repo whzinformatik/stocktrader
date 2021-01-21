@@ -83,12 +83,13 @@ public class CommentToneSubscriber {
                 new GsonBuilder().create().fromJson(feedbackMessage, CommentTone.class);
 
             // Add randomly generated sentiment to comment
-            int randomNumber = new Random().nextInt(10);
+            int randomNumber = new Random().nextInt(12);
+            Sentiment randomSentiment =
+                randomNumber < 4
+                    ? Sentiment.NEGATIVE
+                    : randomNumber < 8 ? Sentiment.NEUTRAL : Sentiment.POSITIVE;
 
-            comment.setSentiment(
-                randomNumber < 4 ? Sentiment.NEGATIVE
-                    : randomNumber < 7 ? Sentiment.NEUTRAL
-                        : Sentiment.POSITIVE);
+            comment.setSentiment(randomSentiment);
 
             publisher.publish(comment);
           });
