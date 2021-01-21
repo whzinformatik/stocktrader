@@ -28,11 +28,12 @@ public class CommentTonePublisher<T> {
 
   private final ConnectionFactory connectionFactory;
 
-  private final Logger logger = LoggerFactory.getLogger(CommentTonePublisher.class.getName());
+  private final Logger logger = LoggerFactory.getLogger(CommentTonePublisher.class);
 
   private Channel channel;
 
   private final String exchangeType;
+
   private final String exchangeName;
 
   /**
@@ -66,7 +67,7 @@ public class CommentTonePublisher<T> {
       channel.exchangeDeclare(exchangeName, exchangeType);
       logger.info("publisher started");
     } catch (IOException | TimeoutException ioException) {
-      ioException.printStackTrace();
+      logger.error("connection could not be created", ioException);
     }
   }
 
@@ -89,7 +90,7 @@ public class CommentTonePublisher<T> {
           null,
           new GsonBuilder().create().toJson(message).getBytes(StandardCharsets.UTF_8));
     } catch (IOException exception) {
-      logger.debug("error during publish message", exception);
+      logger.error("error during publish message", exception);
     }
   }
 }

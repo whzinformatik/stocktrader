@@ -30,12 +30,12 @@ import org.slf4j.LoggerFactory;
 public class CommentToneSubscriber {
 
   private final String exchangeType;
+
   private final String consumeExchangeName;
 
   private final ConnectionFactory connectionFactory;
 
-  private final Logger logger =
-      LoggerFactory.getLogger(CommentToneSubscriber.class.getSimpleName());
+  private final Logger logger = LoggerFactory.getLogger(CommentToneSubscriber.class);
 
   /**
    * Create a subscriber which is connected to a specific rabbitmq instance.
@@ -43,10 +43,7 @@ public class CommentToneSubscriber {
    * @since 1.0.0
    */
   public CommentToneSubscriber(
-      final String serviceName,
-      final String consumeExchangeName,
-      final String exchangeType
-  ) {
+      final String serviceName, final String consumeExchangeName, final String exchangeType) {
     this.connectionFactory = new ConnectionFactory();
     this.connectionFactory.setHost(serviceName);
     this.consumeExchangeName = consumeExchangeName;
@@ -74,7 +71,7 @@ public class CommentToneSubscriber {
       logger.info("subscriber started");
 
       DeliverCallback deliverCallback =
-          ((consumerTag, delivery) -> {
+          (consumerTag, delivery) -> {
             String feedbackMessage = new String(delivery.getBody(), StandardCharsets.UTF_8);
 
             logger.info("Received feedback: {}", feedbackMessage);
@@ -92,12 +89,12 @@ public class CommentToneSubscriber {
             comment.setSentiment(randomSentiment);
 
             publisher.publish(comment);
-          });
+          };
 
       channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
 
     } catch (TimeoutException | IOException exception) {
-      logger.debug("error during consume message", exception);
+      logger.error("error during consume message", exception);
     }
   }
 }
