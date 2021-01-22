@@ -26,20 +26,11 @@ ContextMap StockTrader {
 BoundedContext Portfolio {
 	domainVisionStatement = "store stock information"
 	implementationTechnology = "VLINGO, RabbitMQ"
-	
-	Aggregate Portfolios {
-		Entity Portfolio
-		Entity QuotesCache
-	}
 }
 
 BoundedContext Account {
 	domainVisionStatement = "create and manage accounts"
 	implementationTechnology = "VLINGO, RabbitMQ"
-	
-	Aggregate Accounts {
-		Entity Account
-	}
 }
 
 BoundedContext StockQuote {
@@ -50,10 +41,6 @@ BoundedContext StockQuote {
 BoundedContext Feedback {
 	domainVisionStatement = "get feedback for stock trader application"
 	implementationTechnology = "VLINGO, RabbitMQ"
-	
-	Aggregate Feedbacks {
-		Entity Feedback
-	}
 }
 
 BoundedContext CommentTone {
