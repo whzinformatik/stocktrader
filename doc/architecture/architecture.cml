@@ -1,0 +1,62 @@
+// created with the eclipse plugin ContextMappper: https://contextmapper.org/
+ContextMap StockTrader {
+	contains Portfolio
+	contains Account
+	contains StockQuote
+	contains Feedback
+	contains CommentTone
+
+	Account [P]<->[P] Portfolio : Communication {
+		implementationTechnology = "Messaging & REST"
+	}
+
+	StockQuote -> Portfolio : ExchangeQuote {
+		implementationTechnology = "Messaging"
+	}
+
+	Feedback -> CommentTone : PublishComment {
+		implementationTechnology = "Messaging"
+	}
+
+	CommentTone -> Account : PublishScore {
+		implementationTechnology = "Messaging"
+	}
+}
+
+BoundedContext Portfolio {
+	domainVisionStatement = "store stock information"
+	implementationTechnology = "VLINGO, RabbitMQ"
+	
+	Aggregate Portfolios {
+		Entity Portfolio
+		Entity QuotesCache
+	}
+}
+
+BoundedContext Account {
+	domainVisionStatement = "create and manage accounts"
+	implementationTechnology = "VLINGO, RabbitMQ"
+	
+	Aggregate Accounts {
+		Entity Account
+	}
+}
+
+BoundedContext StockQuote {
+	domainVisionStatement = "retrieve information about stocks"
+	implementationTechnology = "RabbitMQ"
+}
+
+BoundedContext Feedback {
+	domainVisionStatement = "get feedback for stock trader application"
+	implementationTechnology = "VLINGO, RabbitMQ"
+	
+	Aggregate Feedbacks {
+		Entity Feedback
+	}
+}
+
+BoundedContext CommentTone {
+	domainVisionStatement = "analyze user feedback"
+	implementationTechnology = "RabbitMQ"
+}
