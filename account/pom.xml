@@ -34,6 +34,7 @@
         <maven-shade-plugin.version>3.1.0</maven-shade-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
 
         <vlingo.version>1.4.1-SNAPSHOT</vlingo.version>
         <rabbitmq.version>5.10.0</rabbitmq.version>
@@ -116,8 +117,44 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <build.profile.id>dev</build.profile.id>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile.id>prod</build.profile.id>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
+        <filters>
+            <filter>src/main/resources/vlingo-xoom.${build.profile.id}.properties</filter>
+        </filters>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <finalName>account</finalName>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -169,6 +206,19 @@
                     </arguments>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -178,23 +228,7 @@
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
                         <detail>true</detail>
-                        <includes>
-                            <include>%regex[.*]</include>
-                        </includes>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven-failsafe-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>integration-test</goal>
-                                <goal>verify</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

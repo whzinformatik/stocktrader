@@ -24,9 +24,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: Spotless
+      - name: Spotless Check
         working-directory: stock-quote
         run: mvn spotless:check
+      - name: License Check
+        working-directory: stock-quote
+        run: mvn license:check
       - name: Build docker setup
         run: docker-compose up -d --build
       - name: Build with Maven

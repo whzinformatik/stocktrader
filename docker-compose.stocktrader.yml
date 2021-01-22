@@ -1,23 +1,65 @@
 version: '3.1'
 
 services:
-  stock-quote-publisher:
-    build: ./stock-quote/
+  account:
+    build: ./account/
     restart: always
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      PORTFOLIO_URL: "http://portfolio:18082"
+      RABBITMQ_SERVICE: "rabbitmq"
+      RABBITMQ_EXCHANGE_STOCKACQUIRED: "stocks-acquired"
+      RABBITMQ_EXCHANGE_COMMENTTONE: "commentTone"
+      RABBITMQ_EXCHANGE_TYPE: "fanout"
+    ports:
+      - 18081:18081
+  portfolio:
+    build: ./portfolio/
+    restart: always
+    depends_on:
+      - account
+      - postgres
+      - rabbitmq
     environment:
       RABBITMQ_SERVICE: "rabbitmq"
-      RABBITMQ_EXCHANGE: "stocks"
-      DURABLE_EXCHANGE: "false"
-      PUBLISH_INTERVAL: 5
-#      RANDOM_PUBLISH_INTERVAL: 15
-#      STOCK_SYMBOLS: "TSLA,INTC,GOOG,MSFT,AMZN,NVDA,NFLX,SBUX,SAP,ADDYY,POAHF,SAP.DE"
+      RABBITMQ_STOCK_ACQUIRED_EXCHANGE: "stocks-acquired"
+      RABBITMQ_STOCK_ACQUIRED_EXCHANGE_TYPE: "fanout"
+      RABBITMQ_STOCK_QUOTE_EXCHANGE: "stocks"
+      RABBITMQ_STOCK_QUOTE_EXCHANGE_TYPE: "fanout"
+    ports:
+      - 18082:18082
   feedback:
     build: ./feedback/
     restart: always
     depends_on:
+      - portfolio
       - postgres
       - rabbitmq
     environment:
       RABBITMQ_SERVICE: "rabbitmq"
     ports:
       - 18080:18080
+  comment-tone:
+    build: ./commentTone/
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_SERVICE: "rabbitmq"
+      RABBITMQ_PUBLISH_EXCHANGE: "commentTone"
+      RABBITMQ_CONSUME_EXCHANGE: "feedback"
+      RABBITMQ_EXCHANGE_TYPE: "fanout"
+  stock-quote-publisher:
+    build: ./stock-quote/
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_SERVICE: "rabbitmq"
+      RABBITMQ_EXCHANGE: "stocks"
+      DURABLE_EXCHANGE: "false"
+      PUBLISH_INTERVAL: 3
+  #      RANDOM_PUBLISH_INTERVAL: 15
+  #      STOCK_SYMBOLS: "TSLA,INTC,GOOG,MSFT,AMZN,NVDA,NFLX,SBUX,SAP,ADDYY,POAHF,SAP.DE"

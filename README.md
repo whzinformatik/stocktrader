@@ -14,10 +14,8 @@ The following graphic roughly describes the architecture of the whole project:
 The services can be accessed via the following default ports:
 
 - feedback: port 18080
-- comment tone: port 18081
+- account: port 18081
 - portfolio: port 18082
-- stock quote: port 18083
-- account: port 18084
 
 ## Prerequisites
 
@@ -63,6 +61,9 @@ If you want to deploy the complete project, you can use Docker to set up the ent
 docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build
 ```
 
+If you want to develop on Windows you have to care about the EOL conversion (according to this [StackOverflow post][eol-stackoverflow]).
+
+
 ## Contributing
 
 Please read [CONTRIBUTING.md][contributing] for details on our code of conduct, and the process for submitting pull requests to us.
@@ -87,3 +88,4 @@ This project is licensed under the Mozilla Public License - see the [LICENSE.md]
 [maven]: https://maven.apache.org/
 [openjdk]: https://openjdk.java.net/
 [docker]: https://www.docker.com/
+[eol-stackoverflow]: https://stackoverflow.com/q/39912557/10951752
