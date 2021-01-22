@@ -40,18 +40,4 @@ You can run all the automated tests of the project with the following command:
 mvn verify
 ```
 
-## Documentation
-
-You can get more details about the project with the documented code or the domain stories in the [`doc`][documentation] folder.
-
 [portfolio_actions]: https://github.com/whzinformatik/stocktrader/actions?query=workflow%3Aportfolio
-[documentation]: ./doc
-
-
-
-
-
-
-
-
-

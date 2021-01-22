@@ -43,9 +43,4 @@ curl --location --request POST 'localhost:18081/account' \
 }'
 ```
 
-## Documentation
-
-You can get more details about the project with the documented code or the domain stories in the [`doc`][documentation] folder.
-
 [account_actions]: https://github.com/whzinformatik/stocktrader/actions?query=workflow%3Aaccount
-[documentation]: ./doc
