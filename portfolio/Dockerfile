@@ -9,4 +9,4 @@ COPY --from=build /home/app/target/portfolio.jar portfolio.jar
 COPY --from=build /home/app/wait-for-it.sh wait-for-it.sh
 EXPOSE 18082
 RUN apk add --no-cache bash && chmod 755 wait-for-it.sh
-CMD ./wait-for-it.sh rabbitmq:5672 -t 20 && ./wait-for-it.sh account:18081 -t 20 -- java -jar portfolio.jar
+CMD ./wait-for-it.sh rabbitmq:5672 -t 20 && ./wait-for-it.sh account:18081 -t 20 -- java -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar portfolio.jar

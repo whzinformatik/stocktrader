@@ -9,4 +9,4 @@ COPY --from=build /home/app/target/feedback.jar feedback.jar
 COPY --from=build /home/app/wait-for-it.sh wait-for-it.sh
 EXPOSE 18080
 RUN apk add --no-cache bash && chmod 755 wait-for-it.sh
-CMD ./wait-for-it.sh rabbitmq:5672 -t 20 && ./wait-for-it.sh portfolio:18082 -t 20 -- java -jar feedback.jar
+CMD ./wait-for-it.sh rabbitmq:5672 -t 20 && ./wait-for-it.sh portfolio:18082 -t 20 -- java -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar feedback.jar
