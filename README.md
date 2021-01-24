@@ -9,7 +9,7 @@ The project contains various projects to implement a stock trader. A stock trade
 
 The following graphic roughly describes the architecture of the whole project:
 
-[![ContextMap][contextMap]][contextMap]
+[![Architecture][architecture]][architecture]
 
 The services can be accessed via the following default ports:
 
@@ -76,7 +76,7 @@ We use [SemVer][versioning] for versioning. For the versions available, see the 
 
 This project is licensed under the Mozilla Public License - see the [LICENSE.md][license] file for details
 
-[contextMap]: ./doc/ContextMap.png
+[architecture]: ./doc/architecture/architecture.png
 [documentation_background]: ./doc/background
 [documentation_stories]: ./doc/domain_stories
 [contributing]: CONTRIBUTING.md
