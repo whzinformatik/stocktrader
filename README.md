@@ -49,9 +49,9 @@ mvn license:format
 
 How further tests can be carried out is described in the corresponding sub-projects.
 
-## Background Documentation
+## Documentation
 
-A small documentation on the tools used can be found in the [`doc`][documentation] folder. This is only a small excerpt. Detailed documentation can be found on the corresponding developer pages.
+A small documentation on the tools used can be found in the [`background`][documentation_background] folder. This is only a small excerpt. You can get more details about the project with the documented code or the domain stories in the [`domain_stories`][documentation_stories] folder.
 
 ## Deployment
 
@@ -77,7 +77,8 @@ We use [SemVer][versioning] for versioning. For the versions available, see the 
 This project is licensed under the Mozilla Public License - see the [LICENSE.md][license] file for details
 
 [architecture]: ./doc/architecture/architecture.png
-[documentation]: ./doc
+[documentation_background]: ./doc/background
+[documentation_stories]: ./doc/domain_stories
 [contributing]: CONTRIBUTING.md
 [license]: LICENSE.md
 [versioning]: http://semver.org/

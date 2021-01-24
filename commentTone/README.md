@@ -25,9 +25,4 @@ Make sure that the local environment is active. Then the program can be executed
 mvn exec:exec
 ```
 
-## Documentation
-
-You can get more details about the project with the documented code or the domain stories in the [`doc`][documentation] folder.
-
 [comment_tone_actions]: https://github.com/whzinformatik/stocktrader/actions?query=workflow%3AcommentTone
-[documentation]: ./doc
