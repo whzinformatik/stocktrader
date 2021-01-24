@@ -10,7 +10,7 @@ ContextMap StockTrader {
 		implementationTechnology = "Messaging & REST"
 	}
 
-	StockQuote -> Portfolio : ExchangeQuote {
+	StockQuote -> Portfolio : PublishQuote {
 		implementationTechnology = "Messaging"
 	}
 
