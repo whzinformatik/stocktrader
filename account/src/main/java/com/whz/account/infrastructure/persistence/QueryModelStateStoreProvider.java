@@ -80,4 +80,8 @@ public class QueryModelStateStoreProvider {
     this.store = store;
     this.accountQueries = stage.actorFor(AccountQueries.class, AccountQueriesActor.class, store);
   }
+
+  public static void reset() {
+    instance = null;
+  }
 }
