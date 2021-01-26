@@ -78,10 +78,13 @@ public class AccountResource extends ResourceHandler {
         .accountOf(id)
         .andThenTo(
             AccountData.empty(),
-            data ->
-                Completes.withSuccess(
-                    Response.of(
-                        Ok, headers(of(ContentType, "application/json")), serialized(data))))
+            data -> {
+              data.balance = Math.round(data.balance * 100d) / 100d;
+              data.totalInvested = Math.round(data.totalInvested * 100d) / 100d;
+
+              return Completes.withSuccess(
+                  Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data)));
+            })
         .otherwise(noData -> Response.of(NotFound, location(id)));
   }
 
