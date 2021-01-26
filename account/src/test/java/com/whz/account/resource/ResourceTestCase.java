@@ -16,18 +16,22 @@ import com.whz.account.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.whz.account.infrastructure.persistence.QueryModelStateStoreProvider;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 abstract class ResourceTestCase {
 
-  private static final int PORT = 18081;
+  private static final AtomicInteger portNumberPool = new AtomicInteger(18080);
+
+  private int portNumber;
 
   private Bootstrap bootstrap;
 
   @BeforeEach
   public void setup() throws Exception {
-    bootstrap = new Bootstrap(PORT);
+    portNumber = portNumberPool.getAndIncrement();
+    bootstrap = new Bootstrap(portNumber);
     boolean startupSuccessful = bootstrap.getServer().startUp().await(100);
     assertTrue(startupSuccessful);
   }
@@ -42,6 +46,6 @@ abstract class ResourceTestCase {
   }
 
   protected RequestSpecification givenJsonClient() {
-    return given().port(PORT).accept(ContentType.JSON).contentType(ContentType.JSON);
+    return given().port(portNumber).accept(ContentType.JSON).contentType(ContentType.JSON);
   }
 }
