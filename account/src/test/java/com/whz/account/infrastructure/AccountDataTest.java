@@ -44,7 +44,7 @@ public class AccountDataTest {
     assertEquals(0, accountData.balance);
     assertEquals(0, accountData.totalInvested);
     assertEquals(Loyalty.BASIC, accountData.loyalty);
-    assertEquals(0, accountData.commissions);
+    assertEquals(8.99, accountData.commissions);
     assertEquals(0, accountData.free);
     assertEquals(Sentiment.UNKNOWN, accountData.sentiment);
   }
