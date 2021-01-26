@@ -71,4 +71,8 @@ public class CommandModelJournalProvider {
   private CommandModelJournalProvider(final Journal<String> journal) {
     this.journal = journal;
   }
+
+  public static void reset() {
+    instance = null;
+  }
 }

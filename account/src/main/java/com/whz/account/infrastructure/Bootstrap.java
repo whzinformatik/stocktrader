@@ -89,4 +89,8 @@ public class Bootstrap {
 
     instance = new Bootstrap(port);
   }
+
+  public Server getServer() {
+    return server;
+  }
 }
