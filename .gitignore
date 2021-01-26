@@ -8,7 +8,7 @@
 .settings/
 .classpath
 .project
-.bin/
+bin/
 
 # Intellij files
 .idea/
