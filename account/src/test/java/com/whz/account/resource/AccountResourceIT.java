@@ -7,40 +7,51 @@
  */
 package com.whz.account.resource;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.whz.account.infrastructure.AccountData;
 import io.restassured.response.Response;
+import io.vlingo.http.Response.Status;
 import org.junit.jupiter.api.Test;
 
 public class AccountResourceIT extends ResourceTestCase {
 
   @Test
   public void testReady() {
-    givenJsonClient().when().get("/ready").then().statusCode(200);
+    givenJsonClient().when().get("/ready").then().statusCode(Status.Ok.code);
   }
 
   @Test
   public void testPost() {
-    createAccount(40000d)
-        .then()
-        .statusCode(201)
-        .body("id", notNullValue())
-        .body("balance", equalTo(40000d));
+    double balance = 40_000d;
+    AccountData result =
+        createAccount(balance)
+            .then()
+            .statusCode(Status.Created.code)
+            .extract()
+            .body()
+            .as(AccountData.class);
+
+    assertNotNull(result.id);
+    assertEquals(balance, result.balance);
   }
 
   @Test
   public void testGet() {
     AccountData data = createAccount(40000d).getBody().as(AccountData.class);
+    AccountData result =
+        givenJsonClient()
+            .when()
+            .get("/account/" + data.id)
+            .then()
+            .statusCode(Status.Ok.code)
+            .extract()
+            .body()
+            .as(AccountData.class);
 
-    givenJsonClient()
-        .when()
-        .get("/account/" + data.id)
-        .then()
-        .statusCode(200)
-        .body("id", equalTo(data.id))
-        .body("balance", equalTo(data.balance));
+    assertEquals(data.id, result.id);
+    assertEquals(data.balance, result.balance);
   }
 
   private Response createAccount(double balance) {
