@@ -14,7 +14,7 @@ import com.whz.account.infrastructure.AccountData;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
-public class AccountResourceTest extends ResourceTestCase {
+public class AccountResourceIT extends ResourceTestCase {
 
   @Test
   public void testReady() {
@@ -31,7 +31,7 @@ public class AccountResourceTest extends ResourceTestCase {
   }
 
   @Test
-  public void testGet() throws InterruptedException {
+  public void testGet() {
     AccountData data = createAccount(40000d).getBody().as(AccountData.class);
 
     givenJsonClient()
