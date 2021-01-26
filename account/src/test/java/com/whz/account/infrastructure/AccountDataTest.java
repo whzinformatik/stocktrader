@@ -28,12 +28,12 @@ public class AccountDataTest {
   public void testEmpty() {
     AccountData accountData = AccountData.empty();
     assertTrue(accountData.id.isEmpty());
-    assertTrue(accountData.balance == 0);
-    assertTrue(accountData.totalInvested == 0);
-    assertTrue(accountData.loyalty == Loyalty.BASIC);
-    assertTrue(accountData.commissions == 0);
-    assertTrue(accountData.free == 0);
-    assertTrue(accountData.sentiment == Sentiment.UNKNOWN);
+    assertEquals(0, accountData.balance);
+    assertEquals(0, accountData.totalInvested);
+    assertEquals(Loyalty.BASIC, accountData.loyalty);
+    assertEquals(0, accountData.commissions);
+    assertEquals(0, accountData.free);
+    assertEquals(Sentiment.UNKNOWN, accountData.sentiment);
   }
 
   @Test
@@ -41,12 +41,12 @@ public class AccountDataTest {
     AccountState accountState = AccountState.identifiedBy(null);
     AccountData accountData = AccountData.from(accountState);
     assertNull(accountData.id);
-    assertTrue(accountData.balance == 0);
-    assertTrue(accountData.totalInvested == 0);
-    assertTrue(accountData.loyalty == Loyalty.BASIC);
-    assertTrue(accountData.commissions == 8.99);
-    assertTrue(accountData.free == 0);
-    assertTrue(accountData.sentiment == Sentiment.UNKNOWN);
+    assertEquals(0, accountData.balance);
+    assertEquals(0, accountData.totalInvested);
+    assertEquals(Loyalty.BASIC, accountData.loyalty);
+    assertEquals(0, accountData.commissions);
+    assertEquals(0, accountData.free);
+    assertEquals(Sentiment.UNKNOWN, accountData.sentiment);
   }
 
   @Test
