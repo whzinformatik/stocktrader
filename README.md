@@ -51,7 +51,7 @@ How further tests can be carried out is described in the corresponding sub-proje
 
 ## Documentation
 
-A small documentation on the tools used can be found in the [`background`][documentation_background] folder. This is only a small excerpt. You can get more details about the project with the documented code, the [postman collection][postman] or the [domain_stories][documentation_stories].
+A small documentation on the tools used can be found in the [background][documentation_background] folder. This is only a small excerpt. You can get more details about the project with the documented code, the [postman collection][postman] or the [domain_stories][documentation_stories].
 
 ## Deployment
 
