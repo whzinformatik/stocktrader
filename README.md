@@ -81,7 +81,7 @@ This project is licensed under the Mozilla Public License - see the [LICENSE.md]
 [architecture]: ./doc/architecture/architecture.png
 [documentation_background]: ./doc/background
 [documentation_stories]: ./doc/domain_stories
-[postman]: ./doc/Stocktrader.postman_collection.json
+[postman]: ./doc/postman/Stocktrader.postman_collection.json
 [contributing]: CONTRIBUTING.md
 [license]: LICENSE.md
 [versioning]: http://semver.org/
