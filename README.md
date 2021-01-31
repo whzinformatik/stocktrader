@@ -51,7 +51,7 @@ How further tests can be carried out is described in the corresponding sub-proje
 
 ## Documentation
 
-A small documentation on the tools used can be found in the [`background`][documentation_background] folder. This is only a small excerpt. You can get more details about the project with the documented code or the domain stories in the [`domain_stories`][documentation_stories] folder.
+A small documentation on the tools used can be found in the [background][documentation_background] folder. This is only a small excerpt. You can get more details about the project with the documented code, the [postman collection][postman] or the [domain_stories][documentation_stories].
 
 ## Deployment
 
@@ -61,8 +61,10 @@ If you want to deploy the complete project, you can use Docker to set up the ent
 docker-compose -f docker-compose.yml -f docker-compose.stocktrader.yml up -d --build
 ```
 
-If you want to develop on Windows you have to care about the EOL conversion (according to this [StackOverflow post][eol-stackoverflow]).
+If you want to develop on Windows you have to care about the EOL conversion:
 
+- Notepad++: Edit > EOL Conversion > Unix/OSX Format > Unix
+- Sublime Text: View > Line Endings > Unix
 
 ## Contributing
 
@@ -70,7 +72,7 @@ Please read [CONTRIBUTING.md][contributing] for details on our code of conduct, 
 
 ## Versioning
 
-We use [SemVer][versioning] for versioning. For the versions available, see the [tags on this repository][tags].
+We use [SemVer][versioning] for versioning. For the versions available, see the [releases on this repository][release].
 
 ## License
 
@@ -79,14 +81,13 @@ This project is licensed under the Mozilla Public License - see the [LICENSE.md]
 [architecture]: ./doc/architecture/architecture.png
 [documentation_background]: ./doc/background
 [documentation_stories]: ./doc/domain_stories
+[postman]: ./doc/Stocktrader.postman_collection.json
 [contributing]: CONTRIBUTING.md
 [license]: LICENSE.md
 [versioning]: http://semver.org/
-[tags]: https://github.com/whzinformatik/stocktrader/tags
 [release]: https://github.com/whzinformatik/stocktrader/releases
 [spotless]: https://github.com/diffplug/spotless
 [license-plugin]: https://github.com/mojohaus/license-maven-plugin
 [maven]: https://maven.apache.org/
 [openjdk]: https://openjdk.java.net/
 [docker]: https://www.docker.com/
-[eol-stackoverflow]: https://stackoverflow.com/q/39912557/10951752

@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "7a11285b-068c-4a45-86f7-b182c3b4cac8",
+		"name": "Stocktrader",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Account - Ready",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{account}}/ready",
+							"host": [
+								"{{account}}"
+							],
+							"path": [
+								"ready"
+							]
+						},
+						"description": "check if the account application is ready"
+					},
+					"response": []
+				},
+				{
+					"name": "Account - Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"balance\": 40000.0\n}"
+						},
+						"url": {
+							"raw": "{{account}}/account",
+							"host": [
+								"{{account}}"
+							],
+							"path": [
+								"account"
+							]
+						},
+						"description": "create an account to create a portfolio and acquire stocks"
+					},
+					"response": []
+				},
+				{
+					"name": "Account - Get",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{account}}/account/135",
+							"host": [
+								"{{account}}"
+							],
+							"path": [
+								"account",
+								"135"
+							]
+						},
+						"description": "get all information about the account"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feedback",
+			"item": [
+				{
+					"name": "Feedback - Ready",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{feedback}}/ready",
+							"host": [
+								"{{feedback}}"
+							],
+							"path": [
+								"ready"
+							]
+						},
+						"description": "check if the feedback application is ready"
+					},
+					"response": []
+				},
+				{
+					"name": "Feedback - Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{feedback}}/",
+							"host": [
+								"{{feedback}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "get all information about all feedback messages"
+					},
+					"response": []
+				},
+				{
+					"name": "Feedback - Get Specific",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{feedback}}/135",
+							"host": [
+								"{{feedback}}"
+							],
+							"path": [
+								"135"
+							]
+						},
+						"description": "get all information about a feedback message"
+					},
+					"response": []
+				},
+				{
+					"name": "Feedback - Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"your message\",\n    \"accountId\": \"account id\"\n}"
+						},
+						"url": {
+							"raw": "{{feedback}}/",
+							"host": [
+								"{{feedback}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "create a feedback message"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Portfolio",
+			"item": [
+				{
+					"name": "Portfolio - Ready",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{portfolio}}/ready",
+							"host": [
+								"{{portfolio}}"
+							],
+							"path": [
+								"ready"
+							]
+						},
+						"description": "check if the portfolio application is ready"
+					},
+					"response": []
+				},
+				{
+					"name": "Portfolio - Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{portfolio}}/portfolio/134",
+							"host": [
+								"{{portfolio}}"
+							],
+							"path": [
+								"portfolio",
+								"134"
+							]
+						},
+						"description": "get all information about a portfolio"
+					},
+					"response": []
+				},
+				{
+					"name": "Portfolio - Get Stocks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{portfolio}}/stocks",
+							"host": [
+								"{{portfolio}}"
+							],
+							"path": [
+								"stocks"
+							]
+						},
+						"description": "get all stocks that can be acquired"
+					},
+					"response": []
+				},
+				{
+					"name": "Portfolio - Get Stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{portfolio}}/stocks/MSFT",
+							"host": [
+								"{{portfolio}}"
+							],
+							"path": [
+								"stocks",
+								"MSFT"
+							]
+						},
+						"description": "get one specific stock to get all information about it"
+					},
+					"response": []
+				},
+				{
+					"name": "Portfolio - Acquire Stock",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"symbol\": \"MSFT\",\r\n    \"amount\": 30\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{portfolio}}/portfolio/134",
+							"host": [
+								"{{portfolio}}"
+							],
+							"path": [
+								"portfolio",
+								"134"
+							]
+						},
+						"description": "buy a stock and at it to your portfolio and account"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "feedback",
+			"value": "http://localhost:18080"
+		},
+		{
+			"key": "account",
+			"value": "http://localhost:18081"
+		},
+		{
+			"key": "portfolio",
+			"value": "http://localhost:18082"
+		}
+	]
+}
